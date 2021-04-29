@@ -1,0 +1,35 @@
+{
+	"name": "callum",
+	"version": "1.0.0",
+	"description": "Static Callum.fly site.",
+	"scripts": {
+		"clean": "del dist",
+		"dev:postcss": "postcss src/_assets/*.css -o src/static/app.compiled.css --watch --verbose",
+		"dev:scripts": "webpack --watch --config webpack.config.js",
+		"dev:11ty": "eleventy --serve --watch",
+		"build:postcss": "NODE_ENV=production postcss src/_assets/app.css -o src/_includes/app.compiled.css",
+		"build:scripts": "NODE_ENV=production webpack --config webpack.config.js",
+		"build:11ty": "ELEVENTY_ENV=production eleventy",
+		"start": "run-p dev:* --print-label",
+		"build": "run-s clean build:* --print-label"
+	},
+	"author": "Callum Bonnyman",
+	"license": "ISC",
+	"devDependencies": {
+		"@11ty/eleventy": "^0.12.1",
+		"@babel/core": "^7.13.16",
+		"@babel/preset-env": "^7.13.15",
+		"autoprefixer": "^10.2.5",
+		"babel-loader": "^8.2.2",
+		"del-cli": "^3.0.1",
+		"eleventy-plugin-svg-contents": "^0.7.0",
+		"html-minifier": "^4.0.0",
+		"luxon": "^1.26.0",
+		"npm-run-all": "^4.1.5",
+		"postcss-cli": "^8.3.1",
+		"postcss-import": "^14.0.1",
+		"tailwindcss": "^2.1.2",
+		"webpack": "^5.36.1",
+		"webpack-cli": "^4.6.0"
+	}
+}

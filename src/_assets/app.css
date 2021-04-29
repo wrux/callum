@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	a {
+		@apply text-blue-500;
+		@apply hover:text-blue-900 focus:text-blue-900;
+		@apply dark:hover:text-blue-100 dark:focus:text-blue-100;
+		@apply transition duration-200 ease-in-out;
+		@apply underline;
+		text-underline-position: under;
+	}
+}
+
+@layer components {
+	.icon {
+		width: 1em;
+		height: 1em;
+	}
+}

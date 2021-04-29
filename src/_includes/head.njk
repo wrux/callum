@@ -1,0 +1,26 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script type="text/javascript">
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+</script>
+
+<base href="{{ page.url }}" />
+
+<meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
+<meta name="robots" content="index,follow" />
+<meta name="googlebot" content="index,follow" />
+<meta name="google" content="nositelinkssearchbox" />
+<meta name="google" content="notranslate" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+<title>{% if title %}{{ title }} - {% endif %}{{ site.title }}</title>
+<link rel="author" href="humans.txt" />
+
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />

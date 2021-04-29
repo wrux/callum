@@ -1,0 +1,23 @@
+---
+layout: base.njk
+title: Callum.fyi | Callum Bonnyman | Frontend Develoepr
+---
+
+<main class="px-8 my-32 max-w-xl mx-auto">
+  <button class="absolute top-6 right-6 p-2 rounded-lg bg-black dark:bg-white transition duration-300 ease-in-out" aria-label="Toggle light/dark mode" toggle-dark-mode>
+    {{ '/src/_assets/icons/light.svg'|svgContents('icon text-2xl text-black hidden dark:block')|safe }}
+    {{ '/src/_assets/icons/dark.svg'|svgContents('icon text-2xl text-white dark:hidden')|safe }}
+  </button>
+  <h1 class="font-bold text-2xl md:text-4xl lg:text-5xl md:mb-2">Callum Bonnyman</h1>
+  <h2 class="font-medium text-lg md:text-2xl lg:text-4xl mb-6 md:mb-8 lg:mb-16">Frontend Developer</h2>
+  <p class="md:text-lg mb-4 md:mb-8">
+    Currently working remote somewhere in Europe. I love building performant
+    and accessible websites and solving complex problems in the browser.
+  </p>
+  <p class="md:text-lg">
+    Find me on
+    <a href="https://www.instagram.com/etocallum" rel="nofollow" target="_blank">Instagram</a>,
+    <a href="https://github.com/wrux" rel="nofollow" target="_blank">Github</a> or my
+    travel blog, <a href="https://bloke.blog" rel="nofollow" target="_blank">Bloke Blog</a>.
+  </p>
+</main>

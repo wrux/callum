@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    {% include "head.njk" %}
+    {% if site.env %}
+      {% set css %}{% include "app.compiled.css" %}{% endset %}
+      <style>
+        {{ css | safe }}
+      </style>
+    {% else %}
+      <link rel="stylesheet" href="/static/app.compiled.css">
+    {% endif %}
+  </head>
+  <body class="light:bg-white dark:bg-black light:text-black dark:text-white transition duration-300 ease-in-out">
+    {{ content|safe }}
+  </body>
+  <script src="/static/app.bundled.js"></script>
+</html>
