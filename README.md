@@ -1,5 +1,7 @@
 # Callum.fyi
 
+<img src="src/static/favicon.svg" width="64" height="64" />
+
 <em>11ty · Tailwind CSS · HTML · CSS · Javascript</em>
 
 ## Getting Started
@@ -35,3 +37,4 @@ npm run build
 - [Webpack](https://webpack.js.org/)
 - [NPM Run All](https://www.npmjs.com/package/npm-run-all)
 - [HTML Minifier](https://www.npmjs.com/package/html-minifier)
+- [Icon](https://www.flaticon.com/)
