@@ -3,11 +3,7 @@ layout: base.njk
 title: Callum.fyi | Callum Bonnyman | Frontend Develoepr
 ---
 
-<main class="px-8 my-32 max-w-xl mx-auto">
-  <button class="absolute top-6 right-6 p-2 rounded-lg bg-black dark:bg-white transition duration-300 ease-in-out" aria-label="Toggle light/dark mode" toggle-dark-mode>
-    {{ '/src/_assets/icons/light.svg'|svgContents('icon text-2xl text-black hidden dark:block')|safe }}
-    {{ '/src/_assets/icons/dark.svg'|svgContents('icon text-2xl text-white dark:hidden')|safe }}
-  </button>
+<main id="content" class="px-8 my-32 max-w-xl mx-auto">
   {{ '/src/_assets/icons/robot.svg'|svgContents('icon mb-2 md:mb-4 lg:mb-8 text-5xl md:text-7xl lg:text-9xl text-black dark:text-white')|safe }}
   <h1 class="font-bold text-2xl md:text-4xl lg:text-5xl md:mb-2">Callum Bonnyman</h1>
   <h2 class="font-medium text-lg md:text-2xl lg:text-4xl mb-6 md:mb-8 lg:mb-16">Frontend Developer</h2>
@@ -17,8 +13,9 @@ title: Callum.fyi | Callum Bonnyman | Frontend Develoepr
   </p>
   <p class="md:text-lg">
     Find me on
-    <a href="https://www.instagram.com/etocallum" rel="nofollow" target="_blank">Instagram</a>,
-    <a href="https://github.com/wrux" rel="nofollow" target="_blank">Github</a> or my
-    travel blog, <a href="https://bloke.blog" rel="nofollow" target="_blank">Bloke Blog</a>.
+    <a href="https://www.instagram.com/etocallum" rel="nofollow" target="_blank">Instagram<span class="sr-only"> (opens in new tab)</span></a>,
+    <a href="https://github.com/wrux" rel="nofollow" target="_blank">Github<span class="sr-only"> (opens in new tab)</span></a>
+    or on my travel blog;
+    <a href="https://bloke.blog" target="_blank">Bloke Blog<span class="sr-only"> (opens in new tab)</span></a>.
   </p>
 </main>
