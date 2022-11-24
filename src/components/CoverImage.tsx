@@ -1,18 +1,24 @@
 import Image from 'next/image';
+import cn from 'clsx';
 import { SanityImageAssetDocument } from '@sanity/client';
 import { urlForImage } from 'lib/sanityImage';
 
 interface CoverImageProps {
+  className?: string;
   title: string;
   image: SanityImageAssetDocument;
   priority?: boolean;
 }
 
-export default function CoverImage(props: CoverImageProps) {
-  const { title, image: source, priority } = props;
+export default function CoverImage({
+  className,
+  title,
+  image: source,
+  priority,
+}: CoverImageProps) {
   return source?.asset?._ref ? (
     <Image
-      className="w-full h-auto"
+      className={cn('w-full h-auto', className)}
       width={2000}
       height={1000}
       alt={`Cover Image for ${title}`}
@@ -21,6 +27,9 @@ export default function CoverImage(props: CoverImageProps) {
       priority={priority}
     />
   ) : (
-    <div style={{ paddingTop: '50%', backgroundColor: '#ddd' }} />
+    <div
+      className={className}
+      style={{ paddingTop: '50%', backgroundColor: '#ddd' }}
+    />
   );
 }

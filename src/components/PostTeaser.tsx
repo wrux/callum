@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import CoverImage from './CoverImage';
+import { CountryList, CoverImage } from 'components';
 
 export default function PostTeaser({
+  countries = [],
   excerpt,
   title,
   mainImage,
@@ -11,6 +12,9 @@ export default function PostTeaser({
     <article>
       <CoverImage title={title} image={mainImage} />
       <h2>{title}</h2>
+      {countries && countries.length > 0 && (
+        <CountryList countries={countries} />
+      )}
       {/* Previously `excerpt` was a portable text type so prevent erorr: */}
       {excerpt && typeof excerpt === 'string' && <p>{excerpt}</p>}
       <Link href={`/post/${slug}`} aria-label={`Continue reading: ${title}`}>

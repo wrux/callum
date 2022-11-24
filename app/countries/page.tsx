@@ -10,16 +10,23 @@ export default async function Countries() {
   const countries = await fetchData();
 
   return (
-    <div>
-      <h1>List Countries:</h1>
-      <p>Number of countries: {countries.length}</p>
-      <ul>
+    <div className="items-baseline gap-16 mb-10 md:grid grid-cols-1/3 md:mb-16">
+      <div>
+        <h1 className="md:w-1/2 lg:w-5/12">Countries</h1>
+      </div>
+      <div>
         {countries.map((country) => (
-          <li key={country._id}>
-            <Link href={`/countries/${country.slug}`}>{country.name}</Link>
-          </li>
+          <h3 key={country._id} className="mb-5">
+            <Link
+              href={`/countries/${country}`}
+              className="mb-3 text-3xl leading-snug link"
+              rel="bookmark"
+            >
+              {country.name}
+            </Link>
+          </h3>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

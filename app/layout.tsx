@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { SiteFooter, SiteHeader } from 'components';
 import 'styles/main.css';
 
 export default function RootLayout({
@@ -9,37 +9,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header>
-          <p>
-            <Link href="/">Bloke Blog</Link>
-          </p>
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/countries">Countries</Link>
-            </li>
-          </ul>
-        </header>
-        <hr />
-        <hr />
+        <SiteHeader />
         <main>{children}</main>
-        <hr />
-        <hr />
-        <footer>
-          <p>
-            <Link href="/">Bloke Blog</Link>
-          </p>
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/countries">Countries</Link>
-            </li>
-          </ul>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   );

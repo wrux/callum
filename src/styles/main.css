@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .link {
+    @apply font-bold hover:text-brand hover:underline;
+  }
+}

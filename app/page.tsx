@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity';
 import { client } from 'lib/sanityClient';
-import { PostTeaser } from 'components';
+import { Intro, PostTeaser } from 'components';
 
 async function fetchData() {
   return await client.fetch<Array<Article>>(postQuery);
@@ -11,12 +11,19 @@ export default async function Homepage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold underline">Welcome to Bloke Blog</h1>
-      <p>Posts: {posts.length}</p>
-      <div className="flex flex-col max-w-xl gap-16">
-        {posts.map((post) => (
-          <PostTeaser key={post._id} {...post} />
-        ))}
+      <div className="gap-16 px-5 mx-auto md:grid grid-cols-1/3 max-w-screen-2xl sm:px-12 md:px-16 2xl:px-5">
+        <div className="relative">
+          <div className="md:sticky md:top-24 md:mb-48">
+            <Intro />
+          </div>
+        </div>
+        <div className="grid gap-4 md:gap-8 md:py-16">
+          <div className="flex flex-col gap-16">
+            {posts.map((post) => (
+              <PostTeaser key={post._id} {...post} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

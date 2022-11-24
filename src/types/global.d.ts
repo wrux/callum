@@ -7,7 +7,7 @@ declare global {
     slug: string;
   }
 
-  type CountryTeaser = Pick<Country, '_id' | 'countryCode' | 'name' | 'string'>;
+  type CountryTeaser = Pick<Country, '_id' | 'countryCode' | 'name' | 'slug'>;
 
   interface CountryWithRelatedPosts extends Country {
     posts: Array<ArticleTeaser>;
@@ -16,7 +16,7 @@ declare global {
   interface Article extends SanityDocument {
     _id: string;
     title: string;
-    publishedAt: any;
+    publishedAt: string;
     excerpt?: string;
     countries: Array<CountryTeaser>;
     slug: string;
@@ -25,7 +25,7 @@ declare global {
 
   type ArticleTeaser = Pick<
     Article,
-    '_id' | 'excerpt' | 'mainImage' | 'slug' | 'title'
+    '_id' | 'countries' | 'excerpt' | 'mainImage' | 'slug' | 'title'
   >;
 }
 
