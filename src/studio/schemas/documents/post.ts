@@ -46,15 +46,17 @@ const schema = defineType({
       type: 'text',
       title: 'Excerpt',
     }),
+    // TODO: Remove once no longer needed...
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'blockContent',
+    }),
     {
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [
-        { type: 'image' },
-        // TODO: Get this working
-        // { type: 'portableText' },
-      ],
+      of: [{ type: 'imageBlock' }, { type: 'textBlock' }],
     },
   ],
   preview: {

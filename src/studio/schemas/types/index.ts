@@ -1,8 +1,6 @@
-import portableText from './portableText';
+import imageBlock from './imageBlock';
+import textBlock from './textBlock';
 
-const types = [
-  // portableText
-  portableText,
-];
+const types = [imageBlock, textBlock];
 
 export default types;

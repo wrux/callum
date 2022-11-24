@@ -11,7 +11,13 @@ export async function generateStaticParams() {
   return await getDocumentSlugs('country');
 }
 
-export default async function Country({ params }: { params: any }) {
+interface CountryPageParams {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function Country({ params }: CountryPageParams) {
   const country = await fetchData(params.slug);
   return (
     <div className="gap-16 px-5 mx-auto md:grid grid-cols-1/3 max-w-screen-2xl sm:px-12 md:px-16 2xl:px-5">

@@ -1,4 +1,10 @@
-import { Container, CountryList, CoverImage, Date } from 'components';
+import {
+  Container,
+  CountryList,
+  CoverImage,
+  Date,
+  PortableText,
+} from 'components';
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
@@ -10,8 +16,15 @@ export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }
 
-export default async function Post({ params }: { params: any }) {
+interface PostPageParams {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function Post({ params }: PostPageParams) {
   const post = await fetchData(params.slug);
+
   return (
     <article>
       <Container>
@@ -29,6 +42,7 @@ export default async function Post({ params }: { params: any }) {
           <Date dateString={post.publishedAt} />
         </div>
       </Container>
+      <PortableText value={post.content} />
     </article>
   );
 }
@@ -39,6 +53,7 @@ const postQuery = groq`
     title,
     publishedAt,
     excerpt,
+    content,
     "countries": countries[] -> {
       _id,
       countryCode,
