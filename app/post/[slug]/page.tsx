@@ -10,7 +10,7 @@ export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }
 
-export default async function Post({ params }) {
+export default async function Post({ params }: { params: any }) {
   const post = await fetchData(params.slug);
   return (
     <article>
