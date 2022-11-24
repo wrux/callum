@@ -4,6 +4,29 @@
 
 @layer utilities {
   .link {
-    @apply font-bold hover:text-brand hover:underline;
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all 200ms ease-in-out;
+  }
+
+  .link:hover,
+  .link:focus {
+    color: theme(colors.brand);
+    text-decoration-color: transparent;
+  }
+
+  .link-reverse {
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-position: under;
+    transition: all 200ms ease-in-out;
+  }
+
+  .link-reverse:hover,
+  .link-reverse:focus {
+    color: theme(colors.brand);
+    text-decoration-color: currentColor;
   }
 }

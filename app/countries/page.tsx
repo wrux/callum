@@ -11,9 +11,7 @@ export default async function Countries() {
 
   return (
     <div className="items-baseline gap-16 mb-10 md:grid grid-cols-1/3 md:mb-16">
-      <div>
-        <h1 className="md:w-1/2 lg:w-5/12">Countries</h1>
-      </div>
+      <h1 className="md:text-right c-h1">Countries</h1>
       <div>
         {countries.map((country) => (
           <h3 key={country._id} className="mb-5">

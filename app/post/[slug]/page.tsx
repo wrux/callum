@@ -15,9 +15,7 @@ export default async function Post({ params }) {
   return (
     <article>
       <Container>
-        <h1 className="mb-12 text-6xl font-bold leading-tight tracking-tight md:text-7xl lg:text-8xl md:leading-none md:text-left">
-          {post.title}
-        </h1>
+        <h1 className="mb-12 c-h1">{post.title}</h1>
         {post.countries && post.countries.length > 0 && (
           <CountryList className="mb-8" countries={post.countries} large />
         )}
