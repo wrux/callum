@@ -16,7 +16,7 @@ export default async function Countries() {
         {countries.map((country) => (
           <h3 key={country._id} className="mb-5">
             <Link
-              href={`/countries/${country}`}
+              href={`/countries/${country.slug}`}
               className="mb-3 text-3xl leading-snug link"
               rel="bookmark"
             >
