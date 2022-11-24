@@ -23,7 +23,10 @@ declare global {
     mainImage: SanityImageAssetDocument;
   }
 
-  type ArticleTeaser = Pick<Article, '_id' | 'title'>;
+  type ArticleTeaser = Pick<
+    Article,
+    '_id' | 'excerpt' | 'mainImage' | 'slug' | 'title'
+  >;
 }
 
 export {};

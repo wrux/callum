@@ -1,5 +1,6 @@
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
+import { PostTeaser } from 'components';
 
 async function fetchData(slug: string) {
   return await client.fetch<CountryWithRelatedPosts>(countryQuery, { slug });
@@ -18,11 +19,11 @@ export default async function Country({ params }) {
         <h2>Slug: /{country.slug}</h2>
       </article>
       <p>Related posts: {country.posts.length}</p>
-      <ul>
-        {country.posts.map((country) => (
-          <li key={country._id}>{country.title}</li>
+      <div className="flex flex-col max-w-xl gap-16">
+        {country.posts.map((post) => (
+          <PostTeaser key={post._id} {...post} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
