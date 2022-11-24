@@ -1,4 +1,6 @@
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
+import { PortableTextBlock } from '@portabletext/types';
+import { Block } from 'sanity';
 
 declare global {
   interface Country extends SanityDocument {
@@ -15,12 +17,13 @@ declare global {
 
   interface Article extends SanityDocument {
     _id: string;
-    title: string;
-    publishedAt: string;
-    excerpt?: string;
     countries: Array<CountryTeaser>;
-    slug: string;
+    excerpt?: string;
+    content: PortableTextBlock;
     mainImage: SanityImageAssetDocument;
+    publishedAt: string;
+    slug: string;
+    title: string;
   }
 
   type ArticleTeaser = Pick<

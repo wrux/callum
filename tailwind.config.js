@@ -32,11 +32,11 @@ const textStyles = ({ theme }) => ({
     textTransform: 'uppercase',
   },
   pLg: {
-    fontSize: theme('fontSize.step-1'),
+    fontSize: theme('fontSize.step-0'),
     fontWeight: theme('fontWeight.normal'),
   },
   p: {
-    fontSize: theme('fontSize.step-0'),
+    fontSize: theme('fontSize.step--1'),
     fontWeight: theme('fontWeight.normal'),
   },
 });
