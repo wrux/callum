@@ -9,7 +9,7 @@ export default function PostTeaser({
   slug,
 }: ArticleTeaser) {
   return (
-    <article className="flex flex-col gap-2">
+    <article className="flex flex-col gap-2 link-overlay">
       <CoverImage title={title} image={mainImage} />
       <h2 className="c-h2">{title}</h2>
       {countries && countries.length > 0 && (
@@ -22,7 +22,7 @@ export default function PostTeaser({
         </div>
       )}
       <Link
-        className="c-p link"
+        className="c-p link link-overlay__link"
         href={`/post/${slug}`}
         aria-label={`Continue reading: ${title}`}
       >

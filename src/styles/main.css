@@ -29,4 +29,20 @@
     color: theme(colors.brand);
     text-decoration-color: currentColor;
   }
+
+  .link-overlay {
+    position: relative;
+  }
+
+  .link-overlay__link:before {
+    position: absolute;
+    inset: 0;
+    display: block;
+    content: '';
+  }
+
+  .link-overlay a[href]:not(.link-overlay__link) {
+    position: relative;
+    z-index: 1;
+  }
 }
