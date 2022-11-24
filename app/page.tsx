@@ -1,6 +1,6 @@
-import { client } from 'lib/sanityClient';
-import { groq } from 'next-sanity';
 import Link from 'next/link';
+import { groq } from 'next-sanity';
+import { client } from 'lib/sanityClient';
 
 async function fetchData() {
   return await client.fetch<Array<Article>>(postQuery);
@@ -10,7 +10,7 @@ export default async function Homepage() {
   const posts = await fetchData();
   return (
     <div>
-      <h1>Welcome to Bloke Blog</h1>
+      <h1 className="text-3xl font-bold underline">Welcome to Bloke Blog</h1>
       <p>Posts: {posts.length}</p>
       <ul>
         {posts.map((post) => (

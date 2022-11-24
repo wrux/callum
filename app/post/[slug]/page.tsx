@@ -1,4 +1,4 @@
-import { client } from 'lib/sanityClient';
+import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
 async function fetchData(slug: string) {
@@ -6,9 +6,7 @@ async function fetchData(slug: string) {
 }
 
 export async function generateStaticParams() {
-  return await client.fetch(
-    groq`*[_type == "post"][] { "slug": slug.current }`
-  );
+  return await getDocumentSlugs('post');
 }
 
 export default async function Post({ params }) {
