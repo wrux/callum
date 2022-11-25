@@ -6,11 +6,23 @@ const schema = defineType({
   name: 'country',
   type: 'document',
   title: 'Country',
+  groups: [
+    {
+      name: 'content',
+      title: 'Content',
+      default: true,
+    },
+    {
+      name: 'metadata',
+      title: 'SEO & metadata',
+    },
+  ],
   fields: [
     defineField({
       name: 'name',
       type: 'string',
       title: 'Name',
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -20,6 +32,7 @@ const schema = defineType({
       options: {
         list: countryListAlpha2,
       },
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -30,12 +43,20 @@ const schema = defineType({
         source: 'name',
         maxLength: 96,
       },
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'description',
       type: 'text',
       title: 'Description',
+      group: 'content',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'metadata',
     }),
   ],
   preview: {
