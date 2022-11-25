@@ -10,7 +10,7 @@ const schema = defineType({
     defineField({
       name: 'name',
       type: 'string',
-      title: 'Book title',
+      title: 'Name',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -41,11 +41,13 @@ const schema = defineType({
   preview: {
     select: {
       countryCode: 'countryCode',
+      description: 'description',
       name: 'name',
     },
-    prepare({ countryCode, name }) {
+    prepare({ countryCode, description, name }) {
       return {
         title: name,
+        subtitle: description,
         media: (
           <span style={{ fontSize: '1.5rem' }}>
             {countryCode ? countryCodeEmoji(countryCode) : '🌍'}
