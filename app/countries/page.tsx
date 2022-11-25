@@ -2,12 +2,8 @@ import Link from 'next/link';
 import { groq } from 'next-sanity';
 import { client } from 'lib/sanityClient';
 
-async function fetchData() {
-  return await client.fetch<Array<Country>>(countryListQuery);
-}
-
 export default async function Countries() {
-  const countries = await fetchData();
+  const countries = await client.fetch<Array<Country>>(countryListQuery);
 
   return (
     <div className="items-baseline gap-16 mb-10 md:grid grid-cols-1/3 md:mb-16">
