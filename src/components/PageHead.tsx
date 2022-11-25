@@ -38,6 +38,9 @@ export default function PageHead({
 
   return (
     <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
       <title>{`${title} | Callum.co.uk`}</title>
       <meta name="description" content={desc} />
 
