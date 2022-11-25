@@ -12,7 +12,10 @@ export const client = createClient({
 });
 
 export const getDocumentSlugs = async (documentType: string) =>
-  await client.fetch(
+  await client.fetch<string[]>(
     groq`*[_type == $documentType][] { "slug": slug.current }`,
     { documentType }
   );
+
+export const getDocumentMeta = async (slug: string) =>
+  await client.fetch<MetaData>(groq`*[slug.current == $slug][0].seo`, { slug });
