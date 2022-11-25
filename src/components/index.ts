@@ -6,5 +6,6 @@ export { default as Intro } from './Intro';
 export { default as Logo } from './Logo';
 export { default as PortableText } from './PortableText';
 export { default as PostTeaser } from './PostTeaser';
+export { default as Section } from './Section';
 export { default as SiteFooter } from './SiteFooter';
 export { default as SiteHeader } from './SiteHeader';

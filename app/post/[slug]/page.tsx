@@ -28,12 +28,14 @@ export default async function Post({ params }: PostPageParams) {
         {post.countries && post.countries.length > 0 && (
           <CountryList className="mb-8" countries={post.countries} large />
         )}
-        <CoverImage
-          className="mb-8 md:mb-16"
-          title={post.title}
-          image={post.mainImage}
-          priority
-        />
+      </Container>
+      <CoverImage
+        className="mb-8 md:mb-16 max-w-screen-2xl"
+        title={post.title}
+        image={post.mainImage}
+        priority
+      />
+      <Container>
         <div className="max-w-2xl mx-auto mb-6 text-lg">
           <Date dateString={post.publishedAt} />
         </div>
