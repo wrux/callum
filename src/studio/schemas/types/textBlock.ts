@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { Article } from 'phosphor-react';
 import { previewStructuredText } from 'studio/helpers/previewStructuredText';
 
 const schema = defineType({
@@ -20,6 +21,7 @@ const schema = defineType({
       return {
         title: previewStructuredText(content) || 'No content',
         subtitle: 'Text Block',
+        media: Article,
       };
     },
   },

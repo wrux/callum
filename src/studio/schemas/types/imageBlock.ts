@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { Image } from 'phosphor-react';
 
 const schema = defineType({
   type: 'object',
@@ -26,7 +27,7 @@ const schema = defineType({
       return {
         title,
         subtitle: 'Image Block',
-        media,
+        media: media || Image,
       };
     },
   },
