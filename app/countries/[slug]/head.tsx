@@ -2,11 +2,13 @@ import PageHead from 'components/PageHead';
 import { getDocumentMeta } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
-type Params = {
-  slug: string;
-};
+interface CountriesPageParams {
+  params: {
+    slug: string;
+  };
+}
 
-export default async function Head({ params }: NextPage<Params>) {
+export default async function Head({ params }: CountriesPageParams) {
   const { seo, additionalData } = await getDocumentMeta<
     Pick<Country, 'description' | 'name'>
   >(params.slug, groq`description, name`);

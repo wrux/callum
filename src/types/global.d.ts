@@ -3,12 +3,6 @@ import { PortableTextBlock } from '@portabletext/types';
 import { Block } from 'sanity';
 
 declare global {
-  // TODO: Refactor when I find a type provided by Next
-  type NextPage<T = any, S = any> = {
-    params: T;
-    searchParams: S;
-  };
-
   interface Country extends SanityDocument {
     countryCode: string;
     name: string;

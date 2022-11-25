@@ -12,11 +12,13 @@ export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }
 
-type Params = {
-  slug: string;
-};
+interface PostPageParams {
+  params: {
+    slug: string;
+  };
+}
 
-export default async function Post({ params }: NextPage<Params>) {
+export default async function Post({ params }: PostPageParams) {
   const post = await client.fetch<Article>(postQuery, { slug: params.slug });
 
   return (
