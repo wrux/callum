@@ -3,10 +3,6 @@ import { groq } from 'next-sanity';
 import { PostTeaser } from 'components';
 import countryCodeEmoji from 'country-code-emoji';
 
-async function fetchData(slug: string) {
-  return await client.fetch<CountryWithRelatedPosts>(countryQuery, { slug });
-}
-
 export async function generateStaticParams() {
   return await getDocumentSlugs('country');
 }
@@ -18,7 +14,10 @@ interface CountryPageParams {
 }
 
 export default async function Country({ params }: CountryPageParams) {
-  const country = await fetchData(params.slug);
+  const country = await client.fetch<CountryWithRelatedPosts>(countryQuery, {
+    slug: params.slug,
+  });
+
   return (
     <div className="gap-16 px-5 mx-auto md:grid grid-cols-1/3 max-w-screen-2xl sm:px-12 md:px-16 2xl:px-5">
       <article>
