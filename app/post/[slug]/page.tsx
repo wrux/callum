@@ -8,10 +8,6 @@ import {
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
-async function fetchData(slug: string) {
-  return await client.fetch<Article>(postQuery, { slug });
-}
-
 export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }
@@ -23,7 +19,7 @@ interface PostPageParams {
 }
 
 export default async function Post({ params }: PostPageParams) {
-  const post = await fetchData(params.slug);
+  const post = await client.fetch<Article>(postQuery, { slug: params.slug });
 
   return (
     <article>

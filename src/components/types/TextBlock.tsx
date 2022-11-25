@@ -7,7 +7,7 @@ interface TextBlockProps {
 }
 
 const TextBlock: FC<TextBlockProps> = ({ content }) => (
-  <Container>
+  <Container className="my-6 md:my-8 lg:my-12">
     <PortableText value={content} />
   </Container>
 );

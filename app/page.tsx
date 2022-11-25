@@ -2,12 +2,8 @@ import { groq } from 'next-sanity';
 import { client } from 'lib/sanityClient';
 import { Intro, PostTeaser, SiteFooter } from 'components';
 
-async function fetchData() {
-  return await client.fetch<Array<Article>>(postQuery);
-}
-
 export default async function Homepage() {
-  const posts = await fetchData();
+  const posts = await client.fetch<Array<Article>>(postQuery);
 
   return (
     <>

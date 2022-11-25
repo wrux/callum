@@ -11,7 +11,7 @@ interface ImageBlockProps {
 
 const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>
   image?.asset?._ref ? (
-    <Container>
+    <Container className="my-6 md:my-8 lg:my-12">
       <figure>
         <Image
           className="w-full h-auto"
