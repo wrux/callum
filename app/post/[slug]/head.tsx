@@ -1,5 +1,5 @@
 import PageHead from 'components/PageHead';
-import { client, getDocumentMeta } from 'lib/sanityClient';
+import { getDocumentMeta } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
 type Params = {
@@ -7,30 +7,21 @@ type Params = {
 };
 
 export default async function Head({ params }: NextPage<Params>) {
-  const seo = await getDocumentMeta(params.slug);
-  const post = await client.fetch<
+  const { seo, additionalData } = await getDocumentMeta<
     Pick<Article, 'title' | 'excerpt' | 'mainImage'>
-  >(query, { slug: params.slug });
+  >(params.slug, groq`title, excerpt, mainImage`);
 
   return (
     <PageHead
       seo={seo}
       fallbacks={{
-        metaTitle: post.title,
-        metaDescription: post.excerpt,
-        sharingTitle: post.title,
-        sharingDescription: post.excerpt,
-        sharingImage: post.mainImage,
+        metaTitle: additionalData?.title,
+        metaDescription: additionalData?.excerpt,
+        sharingTitle: additionalData?.title,
+        sharingDescription: additionalData?.excerpt,
+        sharingImage: additionalData?.mainImage,
       }}
       path={`/post/${params.slug}`}
     />
   );
 }
-
-const query = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    title,
-    excerpt,
-    mainImage,
-  }
-`;
