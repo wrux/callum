@@ -6,11 +6,13 @@ const textStyles = ({ theme }) => ({
   },
   h1: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-5'),
     fontWeight: theme('fontWeight.bold'),
   },
   h2: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-4'),
     fontWeight: theme('fontWeight.bold'),
   },

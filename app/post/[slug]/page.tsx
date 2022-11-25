@@ -23,11 +23,14 @@ export default async function Post({ params }: PostPageParams) {
 
   return (
     <article>
-      <Container>
-        <h1 className="mb-12 c-h1">{post.title}</h1>
+      <Container className="mb-6 space-y-4 md:space-y-4 md:mb-10 lg:mb-16">
         {post.countries && post.countries.length > 0 && (
-          <CountryList className="mb-8" countries={post.countries} large />
+          <CountryList countries={post.countries} large />
         )}
+        <h1 className="c-h1">{post.title}</h1>
+        <p className="c-p">
+          <Date dateString={post.publishedAt} />
+        </p>
       </Container>
       <CoverImage
         className="mb-8 md:mb-16 max-w-screen-2xl"
@@ -35,11 +38,6 @@ export default async function Post({ params }: PostPageParams) {
         image={post.mainImage}
         priority
       />
-      <Container>
-        <div className="max-w-2xl mx-auto mb-6 text-lg">
-          <Date dateString={post.publishedAt} />
-        </div>
-      </Container>
       <PortableText value={post.content} />
     </article>
   );
