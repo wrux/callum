@@ -12,7 +12,19 @@ export const client = createClient({
 });
 
 export const getDocumentSlugs = async (documentType: string) =>
-  await client.fetch(
+  await client.fetch<string[]>(
     groq`*[_type == $documentType][] { "slug": slug.current }`,
     { documentType }
   );
+
+export const getDocumentMeta = async <T>(
+  slug: string,
+  additionalData: string = ''
+) => {
+  const query = groq`*[slug.current == $slug][0] { seo, ${additionalData} }`;
+  const { seo, ...data } = await client.fetch<{
+    seo: MetaData;
+    data: T;
+  }>(query, { slug });
+  return { seo, additionalData: data as T };
+};

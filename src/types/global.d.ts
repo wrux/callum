@@ -30,6 +30,14 @@ declare global {
     Article,
     '_id' | 'countries' | 'excerpt' | 'mainImage' | 'slug' | 'title'
   >;
+
+  interface MetaData {
+    metaDescription?: string;
+    metaTitle?: string;
+    sharingDescription?: string;
+    sharingImage?: SanityImageAssetDocument;
+    sharingTitle?: string;
+  }
 }
 
 export {};
