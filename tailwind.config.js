@@ -6,23 +6,33 @@ const textStyles = ({ theme }) => ({
   },
   h1: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-5'),
     fontWeight: theme('fontWeight.bold'),
   },
   h2: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-4'),
     fontWeight: theme('fontWeight.bold'),
   },
   h3: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-3'),
-    fontWeight: theme('fontWeight.normal'),
+    fontWeight: theme('fontWeight.semibold'),
   },
   h4: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-2'),
-    fontWeight: theme('fontWeight.light'),
+    fontWeight: theme('fontWeight.semibold'),
+  },
+  h5: {
+    extends: 'heading',
+    lineHeight: 1.2,
+    fontSize: theme('fontSize.step-0'),
+    fontWeight: theme('fontWeight.semibold'),
   },
   overline: {
     fontSize: theme('fontSize.step-1'),
@@ -39,18 +49,35 @@ const textStyles = ({ theme }) => ({
     fontSize: theme('fontSize.step--1'),
     fontWeight: theme('fontWeight.normal'),
   },
+  pSm: {
+    fontSize: theme('fontSize.step--2'),
+    fontWeight: theme('fontWeight.normal'),
+  },
+  emphasis: {
+    fontSize: theme('fontSize.step--2'),
+    fontWeight: theme('fontWeight.normal'),
+    fontStyle: 'italic',
+    letterSpacing: '0.025em',
+  },
 });
 
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      animation: {
+        wave: 'wave-animation 2.5s linear infinite',
+      },
       colors: {
         brand: '#ef233c',
         secondary: '#25103f',
+        wrux: '#00eacf',
       },
       letterSpacing: {
         tighter: '-.04em',
+      },
+      minHeight: {
+        most: '75vh',
       },
       gridTemplateColumns: {
         '1/3': '1fr 2fr',

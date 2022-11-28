@@ -17,7 +17,7 @@ const CountryList: FC<CountryListProps> = ({
   <div
     className={cn(
       'flex items-center',
-      large ? 'text-6xl gap-4' : 'text-4xl gap-2',
+      large ? 'text-4xl md:text-6xl gap-4' : 'text-4xl gap-2',
       className
     )}
   >

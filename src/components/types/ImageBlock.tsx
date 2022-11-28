@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import { SanityImageAssetDocument } from '@sanity/client';
-import { Container } from 'components';
+import { Section } from 'components';
 import { urlForImage } from 'lib/sanityImage';
 
 interface ImageBlockProps {
@@ -11,20 +11,26 @@ interface ImageBlockProps {
 
 const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>
   image?.asset?._ref ? (
-    <Container className="my-6 md:my-8 lg:my-12">
-      <figure>
-        <Image
-          className="w-full h-auto"
-          width={2000}
-          height={1000}
-          src={urlForImage(image).height(1000).width(2000).url()}
-          sizes="100vw"
-          // @TODO: Pull ALT text from image metadata
-          alt={caption || ''}
-        />
-        {caption && <figcaption>{caption}</figcaption>}
+    <Section>
+      <figure className="contents">
+        <div className="col-span-12 lg:col-start-3">
+          <Image
+            className="w-full h-auto"
+            width={2000}
+            height={1000}
+            src={urlForImage(image).height(1000).width(2000).url()}
+            sizes="100vw"
+            // @TODO: Pull ALT text from image metadata
+            alt={caption || ''}
+          />
+        </div>
+        {caption && (
+          <figcaption className="px-5 mt-4 md:mt-0 md:col-span-8 md:col-start-2 lg:col-span-6 lg:col-start-3 md:px-0 c-emphasis">
+            {caption}
+          </figcaption>
+        )}
       </figure>
-    </Container>
+    </Section>
   ) : null;
 
 export default ImageBlock;

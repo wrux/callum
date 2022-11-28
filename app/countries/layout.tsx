@@ -1,11 +1,3 @@
-import { SiteFooter, SiteHeader } from 'components';
+import { BaseLayout } from 'components/layouts';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <SiteHeader />
-      <main>{children}</main>
-      <SiteFooter />
-    </>
-  );
-}
+export default BaseLayout;

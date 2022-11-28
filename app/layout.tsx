@@ -1,3 +1,4 @@
+import { SiteFooter, SiteHeader } from 'components';
 import 'styles/main.css';
 
 export default function RootLayout({

@@ -1,15 +1,17 @@
 import { FC } from 'react';
 import { PortableTextBlock } from '@portabletext/types';
-import { Container, PortableText } from 'components';
+import { PortableText, Section } from 'components';
 
 interface TextBlockProps {
   content: PortableTextBlock;
 }
 
 const TextBlock: FC<TextBlockProps> = ({ content }) => (
-  <Container className="my-6 md:my-8 lg:my-12">
-    <PortableText value={content} />
-  </Container>
+  <Section>
+    <div className="px-5 md:col-span-8 md:col-start-2 lg:col-span-6 lg:col-start-3 md:px-0">
+      <PortableText value={content} />
+    </div>
+  </Section>
 );
 
 export default TextBlock;
