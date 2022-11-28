@@ -19,10 +19,10 @@ export default function CoverImage({
   return source?.asset?._ref ? (
     <Image
       className={cn('w-full h-auto', className)}
-      width={2000}
-      height={1000}
+      width={1280}
+      height={640}
       alt={`Cover Image for ${title}`}
-      src={urlForImage(source).height(1000).width(2000).url()}
+      src={urlForImage(source).height(640).width(1280).url()}
       sizes="100vw"
       priority={priority}
     />
