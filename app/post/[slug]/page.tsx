@@ -24,7 +24,7 @@ export default async function Post({ params }: PostPageParams) {
   const post = await client.fetch<Article>(postQuery, { slug: params.slug });
 
   return (
-    <article>
+    <article className="mb-8 md:mb-12 lg:mb-16">
       <Section spacing="none">
         <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16">
           {post?.countries && post?.countries.length > 0 && (

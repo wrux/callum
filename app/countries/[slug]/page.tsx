@@ -32,10 +32,7 @@ export default async function Country({ params }: CountryPageParams) {
           </div>
         </Section>
       </article>
-      <ListPosts
-        posts={country.posts}
-        title={`Latest posts in ${country.name}`}
-      />
+      <ListPosts posts={country.posts} />
     </>
   );
 }
