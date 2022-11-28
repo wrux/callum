@@ -1,15 +1,16 @@
 import { groq } from 'next-sanity';
 import { client } from 'lib/sanityClient';
 import { Intro, ListPosts } from 'components';
+import BaseLayout from './countries/layout';
 
 export default async function Homepage() {
   const posts = await client.fetch<Array<Article>>(postQuery);
 
   return (
-    <>
+    <BaseLayout>
       <Intro />
       <ListPosts posts={posts} title="Latest Posts" />
-    </>
+    </BaseLayout>
   );
 }
 
