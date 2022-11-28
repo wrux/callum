@@ -3,33 +3,49 @@ import { PortableTextBlock } from '@portabletext/types';
 import { Block } from 'sanity';
 
 declare global {
+  /**
+   * Base React types
+   */
   type PropsWithClassName<T = unknwon> = T & {
     className?: string;
   };
 
+  /**
+   * Sanity
+   */
   interface ImageWithMeta extends SanityImageAssetDocument {
     alt?: string;
   }
 
-  type Country<T> = SanityDocument<
+  /**
+   * Content type definitions
+   */
+  type Country<T = {}> = SanityDocument<
     T & {
       countryCode: string;
+      description?: string;
       name: string;
+      seo: MetaData;
       slug: string;
     }
   >;
 
+  type CountryWithPosts = Country<{ posts: Array<ArticleTeaser> }>;
+
   type CountryTeaser = Pick<Country, '_id' | 'countryCode' | 'name' | 'slug'>;
 
-  type Article = SanityDocument<{
-    content: PortableTextBlock;
-    countries: Array<CountryTeaser>;
-    excerpt?: string;
-    mainImage: ImageWithMeta;
-    publishedAt: string;
-    slug: string;
-    title: string;
-  }>;
+  type Article<T = {}> = SanityDocument<
+    T & {
+      content: PortableTextBlock;
+      countries: Array<CountryTeaser>;
+      excerpt?: string;
+      mainImage: ImageWithMeta;
+      publishedAt: string;
+      seo: MetaData;
+      slug: string;
+      title: string;
+    }
+  >;
 
   type ArticleTeaser = Pick<
     Article,
