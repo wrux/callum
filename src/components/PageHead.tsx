@@ -1,4 +1,3 @@
-import { SanityImageAssetDocument } from '@sanity/client';
 import { urlForImage } from 'lib/sanityImage';
 
 interface PageHeadProps {
@@ -31,7 +30,7 @@ export default function PageHead({
   const desc = findVar('metaDescription', meta) as string;
   const sTitle = findVar('sharingTitle', meta) as string;
   const sDesc = findVar('sharingDescription', meta) as string;
-  const sImg = findVar('sharingImage', meta) as SanityImageAssetDocument | null;
+  const sImg = findVar('sharingImage', meta) as ImageWithMeta | null;
 
   const domain = 'https://localhost:3000';
   const url = `${domain}${path}`;

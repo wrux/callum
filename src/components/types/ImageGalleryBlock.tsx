@@ -4,7 +4,6 @@ import { FC, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { JustifiedGrid } from '@egjs/react-grid';
 import FsLightbox from 'fslightbox-react';
-import { SanityImageAssetDocument } from '@sanity/client';
 import { ArrowsOut } from 'phosphor-react';
 import cn from 'clsx';
 import { Section } from 'components';
@@ -13,7 +12,7 @@ import { urlForImage } from 'lib/sanityImage';
 interface ImageGalleryBlockProps {
   images: Array<{
     caption?: string;
-    image: SanityImageAssetDocument;
+    image: ImageWithMeta;
   }>;
 }
 

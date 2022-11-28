@@ -3,11 +3,10 @@ import Link from 'next/link';
 import cn from 'clsx';
 import countryCodeEmoji from 'country-code-emoji';
 
-export type CountryListProps = {
-  className?: string;
+export type CountryListProps = PropsWithClassName<{
   countries: Array<CountryTeaser>;
   large?: boolean;
-};
+}>;
 
 const CountryList: FC<CountryListProps> = ({
   className,

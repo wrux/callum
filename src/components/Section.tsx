@@ -3,10 +3,11 @@ import cn from 'clsx';
 
 type spacing = 'sm' | 'md' | 'lg' | 'none';
 
-interface SectionProps extends PropsWithChildren {
-  className?: string;
-  spacing?: spacing;
-}
+type SectionProps = PropsWithChildren<
+  PropsWithClassName<{
+    spacing?: spacing;
+  }>
+>;
 
 const spacingValues: Record<spacing, string> = {
   sm: 'my-6 md:my-8 lg:my-12',

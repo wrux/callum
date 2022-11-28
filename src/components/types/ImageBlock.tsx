@@ -1,12 +1,11 @@
 import { FC } from 'react';
 import Image from 'next/image';
-import { SanityImageAssetDocument } from '@sanity/client';
 import { Section } from 'components';
 import { urlForImage } from 'lib/sanityImage';
 
 interface ImageBlockProps {
   caption?: string;
-  image: SanityImageAssetDocument;
+  image: ImageWithMeta;
 }
 
 const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>

@@ -1,15 +1,11 @@
 import { FC } from 'react';
 
-interface LogoProps {
-  className?: string;
-}
-
 const style = {
   height: '1em',
   width: '1.1559988309em',
 };
 
-const Logo: FC<LogoProps> = ({ className }) => (
+const Logo: FC<PropsWithClassName> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 490.451 424.266"

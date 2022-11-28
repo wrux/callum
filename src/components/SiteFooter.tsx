@@ -1,12 +1,12 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, HTMLProps } from 'react';
 import Link from 'next/link';
 import cn from 'clsx';
 import { GithubLogo, InstagramLogo, LinkedinLogo } from 'phosphor-react';
 import { Container } from 'components';
 
-const WruxLogo: FC<{ className?: string }> = ({ className }) => (
+const WruxLogo: FC<PropsWithClassName> = ({ className }) => (
   <svg
     className={className}
     width="1em"
@@ -22,33 +22,36 @@ const WruxLogo: FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-interface IconLinkProps {
-  href: string;
+interface IconLinkProps extends HTMLProps<HTMLAnchorElement> {
   icon: any;
-  label: string;
   noFollow?: boolean;
   wruxBrand?: boolean;
 }
 
 const IconLink: FC<IconLinkProps> = ({
+  className,
   href,
   icon: Icon,
   label,
   noFollow = false,
   wruxBrand = false,
+  target = '_blank',
+  ...props
 }) => (
   <a
     href={href}
     title={label}
     aria-label={label}
-    target="_blank"
+    target={target}
     rel={noFollow ? 'noreferrer nofollow' : 'noreferrer'}
     className={cn(
       'transition-colors',
       wruxBrand
         ? 'hover:text-wrux focus:text-wrux'
-        : 'hover:text-brand focus:text-brand'
+        : 'hover:text-brand focus:text-brand',
+      className
     )}
+    {...props}
   >
     <Icon className="text-step-2" />
   </a>
