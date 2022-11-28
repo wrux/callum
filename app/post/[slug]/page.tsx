@@ -27,7 +27,7 @@ export default async function Post({ params }: PostPageParams) {
     <article>
       <Section spacing="none">
         <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
-          {post.countries && post.countries.length > 0 && (
+          {post?.countries && post?.countries.length > 0 && (
             <CountryList countries={post.countries} large />
           )}
           <h1 className="c-h2">{post.title}</h1>

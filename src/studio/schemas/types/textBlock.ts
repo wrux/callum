@@ -5,7 +5,7 @@ import { previewStructuredText } from 'studio/helpers/previewStructuredText';
 const schema = defineType({
   type: 'object',
   name: 'textBlock',
-  title: 'Text Block',
+  title: 'Text',
   fields: [
     defineField({
       title: 'Content',
