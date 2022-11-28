@@ -11,9 +11,9 @@ export default async function Countries() {
       <div className="px-5 md:col-span-8 md:col-start-2 lg:col-span-6 lg:col-start-3 md:px-0">
         <div className="mb-8 space-y-4 md:mb-16 lg:mb-16">
           <h1 className="c-h1">Countries</h1>
-          <p className="c-p-lg">List of all countries mentioned in the blog.</p>
+          <p className="c-p-lg">Countries mentioned in the blog.</p>
         </div>
-        <div>
+        <div className="gap-4 columns-3">
           {countries.map((country) => (
             <h3 key={country._id} className="mb-5">
               <Link

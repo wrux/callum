@@ -3,6 +3,7 @@ export { default as CountryList } from './CountryList';
 export { default as CoverImage } from './CoverImage';
 export { default as Date } from './Date';
 export { default as Intro } from './Intro';
+export { default as ListPosts } from './ListPosts';
 export { default as Logo } from './Logo';
 export { default as PortableText } from './PortableText';
 export { default as PostTeaser } from './PostTeaser';

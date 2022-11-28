@@ -1,6 +1,6 @@
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
-import { PostTeaser } from 'components';
+import { ListPosts, Section } from 'components';
 import countryCodeEmoji from 'country-code-emoji';
 
 export async function generateStaticParams() {
@@ -19,21 +19,24 @@ export default async function Country({ params }: CountryPageParams) {
   });
 
   return (
-    <div className="gap-16 px-5 mx-auto md:grid grid-cols-1/3 max-w-screen-2xl sm:px-12 md:px-16 2xl:px-5">
+    <>
       <article>
-        {country.countryCode && (
-          <span className="c-h1" role="presentation">
-            {countryCodeEmoji(country.countryCode)}
-          </span>
-        )}
-        <h1 className="c-h1">{country.name}</h1>
+        <Section spacing="none">
+          <div className="flex flex-col col-span-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
+            {country.countryCode && (
+              <span className="c-h1" role="presentation">
+                {countryCodeEmoji(country.countryCode)}
+              </span>
+            )}
+            <h1 className="c-h1">{country.name}</h1>
+          </div>
+        </Section>
       </article>
-      <div className="grid gap-16">
-        {country.posts.map((post) => (
-          <PostTeaser key={post._id} {...post} />
-        ))}
-      </div>
-    </div>
+      <ListPosts
+        posts={country.posts}
+        title={`Latest posts in ${country.name}`}
+      />
+    </>
   );
 }
 
