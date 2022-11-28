@@ -18,7 +18,7 @@ const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>
             className="w-full h-auto"
             width={2000}
             height={1000}
-            src={urlForImage(image).height(1000).width(2000).url()}
+            src={urlForImage(image).width(1280).url()}
             sizes="100vw"
             // @TODO: Pull ALT text from image metadata
             alt={caption || ''}

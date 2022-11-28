@@ -75,7 +75,11 @@ const schema = defineType({
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{ type: 'imageBlock' }, { type: 'textBlock' }],
+      of: [
+        { type: 'imageBlock' },
+        { type: 'imageGalleryBlock' },
+        { type: 'textBlock' },
+      ],
       group: 'content',
     }),
     defineField({

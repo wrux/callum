@@ -4,7 +4,7 @@ import { Image } from 'phosphor-react';
 const schema = defineType({
   type: 'object',
   name: 'imageBlock',
-  title: 'Image Block',
+  title: 'Image',
   fields: [
     defineField({
       title: 'Image',
