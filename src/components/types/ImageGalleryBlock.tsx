@@ -10,17 +10,21 @@ import { Section } from 'components';
 import { urlForImage } from 'lib/sanityImage';
 
 interface ImageGalleryBlockProps {
-  images: Array<SanityImageAssetDocument>;
+  images: Array<{
+    caption?: string;
+    image: SanityImageAssetDocument;
+  }>;
 }
 
 const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
-  const filteredImages = images.filter((image) => image?.asset?._ref);
+  const filteredImages = images.filter(({ image }) => image?.asset?._ref);
   const [lightboxController, setLightboxController] = useState({
     toggler: false,
     slide: 1,
   });
   const imageURLs = useMemo(
-    () => filteredImages.map((image) => urlForImage(image).width(1280).url()),
+    () =>
+      filteredImages.map(({ image }) => urlForImage(image).width(1280).url()),
     [filteredImages]
   );
 
@@ -44,7 +48,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
             isCroppedSize={false}
             displayedRow={-1}
           >
-            {filteredImages.map((image, index) => (
+            {filteredImages.map(({ caption, image }, index) => (
               <button
                 key={image._id}
                 aria-label={`Open image gallery on image ${index + 1}`}
@@ -58,7 +62,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
                   src={imageURLs[index]}
                   sizes="100vw"
                   // @TODO: Pull ALT text from image metadata
-                  alt="Image gallery"
+                  alt={caption || ''}
                 />
                 <ArrowsOut className="absolute p-1 transition-opacity duration-300 bg-white rounded-md shadow-md top-4 right-4 text-step-1 group-hover:opacity-0" />
               </button>

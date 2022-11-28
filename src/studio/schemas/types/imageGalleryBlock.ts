@@ -12,25 +12,37 @@ const schema = defineType({
       type: 'array',
       of: [
         defineField({
-          title: 'Image',
-          name: 'image',
-          type: 'image',
-          validation: (rule) => rule.required(),
-          // preview: {
-          //   select: {
-          //     image: 'image',
-          //     title: 'title',
-          //   },
-          //   prepare({ image, title }) {
-          //     return {
-          //       title,
-          //       media: image,
-          //     };
-          //   },
-          // },
+          title: 'Item',
+          name: 'item',
+          type: 'object',
+          fields: [
+            defineField({
+              title: 'Image',
+              name: 'image',
+              type: 'image',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              title: 'Caption',
+              name: 'caption',
+              type: 'string',
+            }),
+          ],
+          preview: {
+            select: {
+              caption: 'caption',
+              media: 'image',
+              title: 'image.title',
+            },
+            prepare({ caption, media, title }) {
+              return {
+                title: caption || title,
+                media,
+              };
+            },
+          },
         }),
       ],
-      validation: (rule) => rule.required(),
     }),
   ],
   preview: {
