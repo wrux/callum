@@ -6,6 +6,7 @@ import { JustifiedGrid } from '@egjs/react-grid';
 import FsLightbox from 'fslightbox-react';
 import { SanityImageAssetDocument } from '@sanity/client';
 import { ArrowsOut } from 'phosphor-react';
+import cn from 'clsx';
 import { Section } from 'components';
 import { urlForImage } from 'lib/sanityImage';
 
@@ -37,7 +38,12 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
   return (
     <>
       <Section>
-        <div className="col-span-12 lg:col-start-3">
+        <div
+          className={cn(
+            'col-span-12',
+            imageURLs.length > 5 ? 'lg:col-start-0' : 'lg:col-start-3'
+          )}
+        >
           <JustifiedGrid
             gap={32}
             defaultDirection={'end'}

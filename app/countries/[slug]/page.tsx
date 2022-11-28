@@ -32,10 +32,7 @@ export default async function Country({ params }: CountryPageParams) {
           </div>
         </Section>
       </article>
-      <ListPosts
-        posts={country.posts}
-        title={`Latest posts in ${country.name}`}
-      />
+      <ListPosts posts={country.posts} />
     </>
   );
 }
@@ -48,6 +45,7 @@ const countryQuery = groq`
     "slug": slug.current,
     "posts": *[_type == "post" && references(^._id)][] {
       _id,
+      excerpt,
       title,
       mainImage,
       "slug": slug.current,

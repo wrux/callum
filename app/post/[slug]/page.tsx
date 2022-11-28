@@ -24,9 +24,9 @@ export default async function Post({ params }: PostPageParams) {
   const post = await client.fetch<Article>(postQuery, { slug: params.slug });
 
   return (
-    <article>
+    <article className="mb-8 md:mb-12 lg:mb-16">
       <Section spacing="none">
-        <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
+        <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16">
           {post?.countries && post?.countries.length > 0 && (
             <CountryList countries={post.countries} large />
           )}
@@ -34,17 +34,18 @@ export default async function Post({ params }: PostPageParams) {
           <p className="c-p-sm">
             <Date dateString={post.publishedAt} />
           </p>
-          {post.excerpt && typeof post.excerpt === 'string' && (
-            <p className="max-w-prose c-p">{post.excerpt}</p>
-          )}
         </div>
       </Section>
-      <CoverImage
-        className="mx-auto mb-8 md:mb-16 max-w-screen-2xl"
-        title={post.title}
-        image={post.mainImage}
-        priority
-      />
+      <Section spacing="none">
+        <div className="col-span-12 lg:col-span-8 lg:col-start-3">
+          <CoverImage
+            className="mx-auto mb-8 md:mb-16 max-w-screen-2xl"
+            title={post.title}
+            image={post.mainImage}
+            priority
+          />
+        </div>
+      </Section>
       <PortableText value={post.content} />
     </article>
   );
@@ -55,7 +56,6 @@ const postQuery = groq`
     _id,
     title,
     publishedAt,
-    excerpt,
     content,
     "countries": countries[] -> {
       _id,

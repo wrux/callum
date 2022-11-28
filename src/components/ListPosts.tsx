@@ -1,17 +1,21 @@
 import { FC, PropsWithChildren } from 'react';
 import { PostTeaser, Section } from 'components';
 
-const PostTeaserWrapper: FC<PropsWithChildren<{ featured?: boolean }>> = ({
+interface PostTeaserWrapperProps extends PropsWithChildren {
+  featured?: boolean;
+}
+
+const PostTeaserWrapper: FC<PostTeaserWrapperProps> = ({
   children,
   featured = false,
 }) =>
   featured ? (
     <Section>
-      <div className="col-span-12 px-5 lg:col-start-3 lg:px-0">{children}</div>
+      <div className="col-span-8 px-5 lg:col-start-3 lg:px-0">{children}</div>
     </Section>
   ) : (
     <Section>
-      <div className="px-5 pt-6 border-t border-gray-300 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0 md:pt-8 lg:pt-12">
+      <div className="px-5 pt-6 border-t border-gray-300 md:col-span-6 md:col-start-2 lg:col-start-3 md:px-0 md:pt-8 lg:pt-12">
         {children}
       </div>
     </Section>
@@ -23,7 +27,7 @@ interface ListPostsProps {
 }
 
 const ListPosts: FC<ListPostsProps> = ({ posts, title }) => (
-  <>
+  <div className="mb-8 md:mb-12 lg:mb-16">
     {title && (
       <Section>
         <div className="col-span-12 px-5 lg:col-start-3 lg:px-0">
@@ -36,7 +40,7 @@ const ListPosts: FC<ListPostsProps> = ({ posts, title }) => (
         <PostTeaser {...post} />
       </PostTeaserWrapper>
     ))}
-  </>
+  </div>
 );
 
 export default ListPosts;

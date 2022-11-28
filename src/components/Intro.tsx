@@ -8,7 +8,7 @@ const Intro: FC = () => (
   <Section spacing="none">
     <div className="flex flex-col justify-center col-span-12 px-5 py-6 mb-16 md:py-0 lg:col-start-3 md:min-h-most lg:px-0 md:mb-0">
       <p className="text-step-5">
-        <span className="inline-block animate-wave">👋</span>
+        <span className="inline-block wave animate-wave">👋🏻</span>
       </p>
       <h1 className="mb-4 c-h1">callum.co.uk</h1>
       <h2 className="max-w-2xl c-h4">

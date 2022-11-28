@@ -9,7 +9,7 @@ export default async function Homepage() {
   return (
     <BaseLayout>
       <Intro />
-      <ListPosts posts={posts} title="Latest Posts" />
+      <ListPosts posts={posts} />
     </BaseLayout>
   );
 }

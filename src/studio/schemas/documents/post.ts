@@ -78,6 +78,7 @@ const schema = defineType({
       of: [
         { type: 'imageBlock' },
         { type: 'imageGalleryBlock' },
+        { type: 'inlineImagesBlock' },
         { type: 'textBlock' },
       ],
       group: 'content',
