@@ -6,31 +6,31 @@ const textStyles = ({ theme }) => ({
   },
   h1: {
     extends: 'heading',
-    lineHeight: 1.2,
+    lineHeight: 1.1,
     fontSize: theme('fontSize.step-5'),
-    fontWeight: theme('fontWeight.bold'),
+    fontWeight: theme('fontWeight.extrabold'),
   },
   h2: {
     extends: 'heading',
-    lineHeight: 1.2,
+    lineHeight: 1.15,
     fontSize: theme('fontSize.step-4'),
     fontWeight: theme('fontWeight.bold'),
   },
   h3: {
     extends: 'heading',
-    lineHeight: 1.2,
+    lineHeight: 1.15,
     fontSize: theme('fontSize.step-3'),
-    fontWeight: theme('fontWeight.semibold'),
+    fontWeight: theme('fontWeight.bold'),
   },
   h4: {
     extends: 'heading',
-    lineHeight: 1.2,
+    lineHeight: 1.25,
     fontSize: theme('fontSize.step-2'),
-    fontWeight: theme('fontWeight.semibold'),
+    fontWeight: theme('fontWeight.medium'),
   },
   h5: {
     extends: 'heading',
-    lineHeight: 1.2,
+    lineHeight: 1.25,
     fontSize: theme('fontSize.step-0'),
     fontWeight: theme('fontWeight.semibold'),
   },
@@ -42,7 +42,7 @@ const textStyles = ({ theme }) => ({
     textTransform: 'uppercase',
   },
   pLg: {
-    fontSize: theme('fontSize.step-0'),
+    fontSize: theme('fontSize.step-1'),
     fontWeight: theme('fontWeight.normal'),
   },
   p: {
@@ -83,7 +83,7 @@ module.exports = {
         '1/3': '1fr 2fr',
       },
       fontFamily: {
-        sans: 'Inter, sans-serif',
+        sans: 'InterVariable, sans-serif',
       },
       fontSize: {
         // Fluid type: @link https://utopia.fyi/type/calculator?c=320,21,1.2,1140,24,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l

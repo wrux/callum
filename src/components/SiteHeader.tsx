@@ -33,9 +33,9 @@ const SiteHeader: FC = () => {
       }}
     >
       <Container>
-        <div className="flex items-baseline justify-between w-full gap-8 ">
-          <Link href="/" className="c-p-lg link-reverse">
-            callum.co.uk
+        <div className="flex items-baseline justify-between w-full gap-8">
+          <Link href="/" className="font-extrabold link-reverse c-p-lg">
+            callum
           </Link>
           <nav className="flex gap-4">
             <Link href="/" className="c-p link-reverse">

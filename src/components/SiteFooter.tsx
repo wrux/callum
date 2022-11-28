@@ -60,7 +60,7 @@ const SiteFooter: FC = () => {
   return (
     <footer className="py-16 text-white bg-black">
       <Container>
-        <p className="mb-8 md:mb-16 c-h4">callum.co.uk</p>
+        <p className="mb-8 font-extrabold md:mb-16 c-h4">callum</p>
         <div className="grid gap-y-16 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
           <div className="col-span-1">
             <p className="mb-6 c-h5">Navigation</p>

@@ -37,6 +37,7 @@
     "typescript": "4.9.3"
   },
   "devDependencies": {
+    "@fontsource/inter": "^4.5.14",
     "@types/fslightbox-react": "^1.4.2",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19",

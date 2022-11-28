@@ -1,3 +1,4 @@
+import '@fontsource/inter/variable.css';
 import 'styles/main.css';
 
 export default function RootLayout({

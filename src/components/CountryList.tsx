@@ -14,9 +14,9 @@ const CountryList: FC<CountryListProps> = ({
   countries,
   large = false,
 }) => (
-  <div
+  <p
     className={cn(
-      'flex items-center',
+      'flex items-center leading-none',
       large ? 'text-4xl md:text-6xl gap-4' : 'text-4xl gap-2',
       className
     )}
@@ -37,7 +37,7 @@ const CountryList: FC<CountryListProps> = ({
         )}
       </Link>
     ))}
-  </div>
+  </p>
 );
 
 export default CountryList;
