@@ -34,11 +34,10 @@ export default async function Post({ params }: PostPageParams) {
           <p className="c-p-sm">
             <Date dateString={post.publishedAt} />
           </p>
-          {post.excerpt && <p className="max-w-prose c-p">{post.excerpt}</p>}
         </div>
       </Section>
       <Section spacing="none">
-        <div className="col-span-8 col-start-3">
+        <div className="col-span-12 lg:col-span-8 lg:col-start-3">
           <CoverImage
             className="mx-auto mb-8 md:mb-16 max-w-screen-2xl"
             title={post.title}
@@ -57,7 +56,6 @@ const postQuery = groq`
     _id,
     title,
     publishedAt,
-    excerpt,
     content,
     "countries": countries[] -> {
       _id,

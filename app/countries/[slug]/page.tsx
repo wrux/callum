@@ -48,6 +48,7 @@ const countryQuery = groq`
     "slug": slug.current,
     "posts": *[_type == "post" && references(^._id)][] {
       _id,
+      excerpt,
       title,
       mainImage,
       "slug": slug.current,
