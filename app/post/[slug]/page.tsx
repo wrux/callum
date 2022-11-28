@@ -30,12 +30,12 @@ export default async function Post({ params }: PostPageParams) {
           {post.countries && post.countries.length > 0 && (
             <CountryList countries={post.countries} large />
           )}
-          <h1 className="c-h1">{post.title}</h1>
-          <p className="c-p">
+          <h1 className="c-h2">{post.title}</h1>
+          <p className="c-p-sm">
             <Date dateString={post.publishedAt} />
           </p>
           {post.excerpt && typeof post.excerpt === 'string' && (
-            <p className="max-w-prose">{post.excerpt}</p>
+            <p className="max-w-prose c-p">{post.excerpt}</p>
           )}
         </div>
       </Section>

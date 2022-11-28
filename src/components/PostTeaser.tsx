@@ -13,7 +13,7 @@ export default function PostTeaser({
       {countries && countries.length > 0 && (
         <CountryList countries={countries} />
       )}
-      <h2 className="mb-2 c-h2 group-hover/teaser:text-primary">{title}</h2>
+      <h2 className="mb-2 c-h4 group-hover/teaser:text-primary">{title}</h2>
       <CoverImage title={title} image={mainImage} />
       {/* Previously `excerpt` was a portable text type so prevent erorr: */}
       {excerpt && typeof excerpt === 'string' && (

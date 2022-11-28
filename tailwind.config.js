@@ -18,16 +18,19 @@ const textStyles = ({ theme }) => ({
   },
   h3: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-3'),
     fontWeight: theme('fontWeight.semibold'),
   },
   h4: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-2'),
     fontWeight: theme('fontWeight.semibold'),
   },
   h5: {
     extends: 'heading',
+    lineHeight: 1.2,
     fontSize: theme('fontSize.step-0'),
     fontWeight: theme('fontWeight.semibold'),
   },
@@ -49,6 +52,12 @@ const textStyles = ({ theme }) => ({
   pSm: {
     fontSize: theme('fontSize.step--2'),
     fontWeight: theme('fontWeight.normal'),
+  },
+  emphasis: {
+    fontSize: theme('fontSize.step--2'),
+    fontWeight: theme('fontWeight.normal'),
+    fontStyle: 'italic',
+    letterSpacing: '0.025em',
   },
 });
 

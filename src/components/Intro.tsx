@@ -6,7 +6,7 @@ import { Section } from 'components';
 
 const Intro: FC = () => (
   <Section spacing="none">
-    <div className="flex flex-col justify-center col-span-12 px-5 mb-16 lg:col-start-3 md:min-h-most lg:px-0 md:mb-0">
+    <div className="flex flex-col justify-center col-span-12 px-5 py-6 mb-16 md:py-0 lg:col-start-3 md:min-h-most lg:px-0 md:mb-0">
       <p className="text-step-5">
         <span className="inline-block animate-wave">👋</span>
       </p>

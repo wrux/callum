@@ -118,7 +118,7 @@ const SiteFooter: FC = () => {
               , fork the project and take whatever you like.
             </p>
           </aside>
-          <div className="col-span-full">
+          <div className="col-span-2 lg:col-span-4">
             <p className="mb-4 c-p-sm">
               Copyright &copy;{' '}
               <a
