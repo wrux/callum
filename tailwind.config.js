@@ -19,12 +19,17 @@ const textStyles = ({ theme }) => ({
   h3: {
     extends: 'heading',
     fontSize: theme('fontSize.step-3'),
-    fontWeight: theme('fontWeight.normal'),
+    fontWeight: theme('fontWeight.semibold'),
   },
   h4: {
     extends: 'heading',
     fontSize: theme('fontSize.step-2'),
-    fontWeight: theme('fontWeight.light'),
+    fontWeight: theme('fontWeight.semibold'),
+  },
+  h5: {
+    extends: 'heading',
+    fontSize: theme('fontSize.step-0'),
+    fontWeight: theme('fontWeight.semibold'),
   },
   overline: {
     fontSize: theme('fontSize.step-1'),
@@ -41,6 +46,10 @@ const textStyles = ({ theme }) => ({
     fontSize: theme('fontSize.step--1'),
     fontWeight: theme('fontWeight.normal'),
   },
+  pSm: {
+    fontSize: theme('fontSize.step--2'),
+    fontWeight: theme('fontWeight.normal'),
+  },
 });
 
 module.exports = {
@@ -50,6 +59,7 @@ module.exports = {
       colors: {
         brand: '#ef233c',
         secondary: '#25103f',
+        wrux: '#00eacf',
       },
       letterSpacing: {
         tighter: '-.04em',

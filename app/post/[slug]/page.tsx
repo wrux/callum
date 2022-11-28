@@ -8,6 +8,8 @@ import {
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }
@@ -23,7 +25,7 @@ export default async function Post({ params }: PostPageParams) {
 
   return (
     <article>
-      <Container className="mb-6 space-y-4 md:space-y-4 md:mb-10 lg:mb-16">
+      <Container className="py-6 space-y-4 md:space-y-4 md:pt-10 lg:py-16">
         {post.countries && post.countries.length > 0 && (
           <CountryList countries={post.countries} large />
         )}
