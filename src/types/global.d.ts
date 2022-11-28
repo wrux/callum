@@ -3,28 +3,33 @@ import { PortableTextBlock } from '@portabletext/types';
 import { Block } from 'sanity';
 
 declare global {
-  interface Country extends SanityDocument {
-    countryCode: string;
-    name: string;
-    slug: string;
+  type PropsWithClassName<T = unknwon> = T & {
+    className?: string;
+  };
+
+  interface ImageWithMeta extends SanityImageAssetDocument {
+    alt?: string;
   }
+
+  type Country<T> = SanityDocument<
+    T & {
+      countryCode: string;
+      name: string;
+      slug: string;
+    }
+  >;
 
   type CountryTeaser = Pick<Country, '_id' | 'countryCode' | 'name' | 'slug'>;
 
-  interface CountryWithRelatedPosts extends Country {
-    posts: Array<ArticleTeaser>;
-  }
-
-  interface Article extends SanityDocument {
-    _id: string;
+  type Article = SanityDocument<{
+    content: PortableTextBlock;
     countries: Array<CountryTeaser>;
     excerpt?: string;
-    content: PortableTextBlock;
-    mainImage: SanityImageAssetDocument;
+    mainImage: ImageWithMeta;
     publishedAt: string;
     slug: string;
     title: string;
-  }
+  }>;
 
   type ArticleTeaser = Pick<
     Article,
@@ -35,7 +40,7 @@ declare global {
     metaDescription?: string;
     metaTitle?: string;
     sharingDescription?: string;
-    sharingImage?: SanityImageAssetDocument;
+    sharingImage?: ImageWithMeta;
     sharingTitle?: string;
   }
 }

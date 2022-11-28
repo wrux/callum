@@ -1,11 +1,10 @@
 import { FC, PropsWithChildren } from 'react';
 import cn from 'clsx';
 
-interface ContainerProps extends PropsWithChildren {
-  className?: string;
-}
-
-const Container: FC<ContainerProps> = ({ children, className }) => (
+const Container: FC<PropsWithChildren<PropsWithClassName>> = ({
+  children,
+  className,
+}) => (
   <div className={cn('container mx-auto px-5 lg:px-0', className)}>
     {children}
   </div>

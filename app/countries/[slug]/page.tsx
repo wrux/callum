@@ -14,7 +14,11 @@ interface CountryPageParams {
 }
 
 export default async function Country({ params }: CountryPageParams) {
-  const country = await client.fetch<CountryWithRelatedPosts>(countryQuery, {
+  const country = await client.fetch<
+    Country<{
+      posts: Array<ArticleTeaser>;
+    }>
+  >(countryQuery, {
     slug: params.slug,
   });
 

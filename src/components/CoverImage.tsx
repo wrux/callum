@@ -1,14 +1,12 @@
 import Image from 'next/image';
 import cn from 'clsx';
-import { SanityImageAssetDocument } from '@sanity/client';
 import { urlForImage } from 'lib/sanityImage';
 
-interface CoverImageProps {
-  className?: string;
+type CoverImageProps = PropsWithClassName<{
   title: string;
-  image: SanityImageAssetDocument;
+  image: ImageWithMeta;
   priority?: boolean;
-}
+}>;
 
 export default function CoverImage({
   className,
