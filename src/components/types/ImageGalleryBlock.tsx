@@ -7,6 +7,7 @@ import FsLightbox from 'fslightbox-react';
 import { SanityImageAssetDocument } from '@sanity/client';
 import { Section } from 'components';
 import { urlForImage } from 'lib/sanityImage';
+import { ArrowsOut } from 'phosphor-react';
 
 interface ImageGalleryBlockProps {
   images: Array<SanityImageAssetDocument>;
@@ -47,7 +48,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
               <button
                 key={image._id}
                 aria-label={`Open image gallery on image ${index + 1}`}
-                className="overflow-hidden cursor-pointer group"
+                className="relative overflow-hidden cursor-pointer group"
                 onClick={() => openLightboxOnSlide(index + 1)}
               >
                 <Image
@@ -59,6 +60,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
                   // @TODO: Pull ALT text from image metadata
                   alt="Image gallery"
                 />
+                <ArrowsOut className="absolute p-1 transition-opacity duration-300 bg-white rounded-md shadow-md top-4 right-4 text-step-1 group-hover:opacity-0" />
               </button>
             ))}
           </JustifiedGrid>
