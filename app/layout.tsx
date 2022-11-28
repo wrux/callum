@@ -1,3 +1,4 @@
+import { SiteFooter, SiteHeader } from 'components';
 import 'styles/main.css';
 
 export default function RootLayout({
@@ -7,7 +8,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

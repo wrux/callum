@@ -27,13 +27,13 @@ const SiteHeader: FC = () => {
 
   return (
     <header
-      className="sticky top-0 py-2 transition-transform duration-500 bg-white bg-opacity-80 backdrop-blur-lg"
+      className="sticky top-0 z-50 py-2 transition-transform duration-500 bg-white bg-opacity-80 backdrop-blur-lg"
       style={{
         transform: `translateY(${show ? '0%' : '-100%'})`,
       }}
     >
       <Container>
-        <div className="flex items-baseline justify-between w-full gap-8 md:justify-start">
+        <div className="flex items-baseline justify-between w-full gap-8 ">
           <Link href="/" className="c-p-lg link-reverse">
             callum.co.uk
           </Link>

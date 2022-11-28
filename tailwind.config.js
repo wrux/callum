@@ -56,6 +56,9 @@ module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      animation: {
+        wave: 'wave-animation 2.5s linear infinite',
+      },
       colors: {
         brand: '#ef233c',
         secondary: '#25103f',
@@ -63,6 +66,9 @@ module.exports = {
       },
       letterSpacing: {
         tighter: '-.04em',
+      },
+      minHeight: {
+        most: '75vh',
       },
       gridTemplateColumns: {
         '1/3': '1fr 2fr',

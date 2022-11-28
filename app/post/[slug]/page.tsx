@@ -1,9 +1,9 @@
 import {
-  Container,
   CountryList,
   CoverImage,
   Date,
   PortableText,
+  Section,
 } from 'components';
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
@@ -25,17 +25,22 @@ export default async function Post({ params }: PostPageParams) {
 
   return (
     <article>
-      <Container className="py-6 space-y-4 md:space-y-4 md:pt-10 lg:py-16">
-        {post.countries && post.countries.length > 0 && (
-          <CountryList countries={post.countries} large />
-        )}
-        <h1 className="c-h1">{post.title}</h1>
-        <p className="c-p">
-          <Date dateString={post.publishedAt} />
-        </p>
-      </Container>
+      <Section spacing="none" className="relative">
+        <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:relative lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
+          {post.countries && post.countries.length > 0 && (
+            <CountryList countries={post.countries} large />
+          )}
+          <h1 className="c-h1">{post.title}</h1>
+          <p className="c-p">
+            <Date dateString={post.publishedAt} />
+          </p>
+          {post.excerpt && typeof post.excerpt === 'string' && (
+            <p className="max-w-prose">{post.excerpt}</p>
+          )}
+        </div>
+      </Section>
       <CoverImage
-        className="mb-8 md:mb-16 max-w-screen-2xl"
+        className="mx-auto mb-8 md:mb-16 max-w-screen-2xl"
         title={post.title}
         image={post.mainImage}
         priority

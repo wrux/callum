@@ -1,25 +1,40 @@
+import { FC, PropsWithChildren } from 'react';
 import { groq } from 'next-sanity';
 import { client } from 'lib/sanityClient';
-import { Intro, PostTeaser, SiteFooter } from 'components';
+import { Intro, PostTeaser, Section } from 'components';
+
+const PostTeaserWrapper: FC<PropsWithChildren<{ featured?: boolean }>> = ({
+  children,
+  featured = false,
+}) =>
+  featured ? (
+    <Section>
+      <div className="col-span-12 px-5 lg:col-start-3 lg:px-0">{children}</div>
+    </Section>
+  ) : (
+    <Section>
+      <div className="px-5 pt-6 border-t border-gray-300 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0 md:pt-8 lg:pt-12">
+        {children}
+      </div>
+    </Section>
+  );
 
 export default async function Homepage() {
   const posts = await client.fetch<Array<Article>>(postQuery);
 
   return (
     <>
-      <div className="gap-16 px-5 mx-auto md:grid grid-cols-1/3 max-w-screen-2xl sm:px-12 md:px-16 2xl:px-5">
-        <div className="relative">
-          <div className="md:sticky md:top-24 md:mb-48">
-            <Intro />
-          </div>
+      <Intro />
+      <Section>
+        <div className="col-span-12 px-5 lg:col-start-3 lg:px-0">
+          <h2 className="mb-8 c-h3">Latest Posts</h2>
         </div>
-        <div className="grid gap-4 md:gap-8 md:py-16">
-          {posts.map((post) => (
-            <PostTeaser key={post._id} {...post} />
-          ))}
-        </div>
-      </div>
-      <SiteFooter />
+      </Section>
+      {posts.map((post, index) => (
+        <PostTeaserWrapper key={post._id} featured={index === 0}>
+          <PostTeaser {...post} />
+        </PostTeaserWrapper>
+      ))}
     </>
   );
 }
