@@ -4,7 +4,6 @@
 
 @layer utilities {
   .link {
-    font-weight: bold;
     text-decoration: underline;
     text-underline-position: under;
     transition: all 200ms ease-in-out;
@@ -17,7 +16,6 @@
   }
 
   .link-reverse {
-    font-weight: bold;
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-position: under;

@@ -26,11 +26,11 @@ export default async function Post({ params }: PostPageParams) {
   return (
     <article className="mb-8 md:mb-12 lg:mb-16">
       <Section spacing="none">
-        <div className="flex flex-col col-span-8 gap-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16">
+        <div className="flex flex-col col-span-8 gap-2 px-5 py-8 lg:col-start-3 lg:px-0 md:pt-16">
+          <h1 className="mb-6 c-h1">{post.title}</h1>
           {post?.countries && post?.countries.length > 0 && (
-            <CountryList countries={post.countries} large />
+            <CountryList countries={post.countries} />
           )}
-          <h1 className="c-h2">{post.title}</h1>
           <p className="c-p-sm">
             <Date dateString={post.publishedAt} />
           </p>
