@@ -1,8 +1,9 @@
 @layer utilities {
   .link {
+    @apply transition-colors;
+
     text-decoration: underline;
     text-underline-position: under;
-    transition: all 200ms ease-in-out;
   }
 
   .link:hover,
