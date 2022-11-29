@@ -15,7 +15,7 @@ const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>
         <div className="col-span-12 lg:col-start-3">
           <Image
             className="w-full h-auto"
-            width={2000}
+            width={1280}
             height={1000}
             src={urlForImage(image).width(1280).url()}
             sizes="100vw"

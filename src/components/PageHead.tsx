@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { urlForImage } from 'lib/sanityImage';
 
 interface PageHeadProps {
@@ -14,25 +15,21 @@ const defaultSeo: MetaData = {
     'My travel blog from many Countries all around the world.',
 };
 
-function findVar(key: keyof MetaData, vars: MetaData[]) {
-  const found = vars.find((meta) => meta?.[key]);
-  return found?.[key] || null;
-}
+const findVar = <T extends keyof MetaData>(
+  key: T,
+  vars: MetaData[]
+): MetaData[T] => vars.find((meta) => meta?.[key])?.[key];
 
-export default function PageHead({
-  fallbacks = {},
-  path,
-  seo = {},
-}: PageHeadProps) {
+const PageHead: FC<PageHeadProps> = ({ fallbacks = {}, path, seo = {} }) => {
   const meta = [seo, fallbacks, defaultSeo];
 
-  const title = findVar('metaTitle', meta) as string;
-  const desc = findVar('metaDescription', meta) as string;
-  const sTitle = findVar('sharingTitle', meta) as string;
-  const sDesc = findVar('sharingDescription', meta) as string;
-  const sImg = findVar('sharingImage', meta) as ImageWithMeta | null;
+  const title = findVar('metaTitle', meta);
+  const desc = findVar('metaDescription', meta);
+  const sTitle = findVar('sharingTitle', meta);
+  const sDesc = findVar('sharingDescription', meta);
+  const sImg = findVar('sharingImage', meta);
 
-  const domain = 'https://localhost:3000';
+  const domain = process.env.NEXT_PUBLIC_VERCEL_URL || 'https://localhost:3000';
   const url = `${domain}${path}`;
 
   return (
@@ -66,4 +63,6 @@ export default function PageHead({
       )}
     </>
   );
-}
+};
+
+export default PageHead;

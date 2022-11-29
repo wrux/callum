@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import Image from 'next/image';
 import cn from 'clsx';
 import { urlForImage } from 'lib/sanityImage';
@@ -8,13 +9,13 @@ type CoverImageProps = PropsWithClassName<{
   priority?: boolean;
 }>;
 
-export default function CoverImage({
+const CoverImage: FC<CoverImageProps> = ({
   className,
   title,
   image: source,
   priority,
-}: CoverImageProps) {
-  return source?.asset?._ref ? (
+}) =>
+  source?.asset?._ref ? (
     <Image
       className={cn('w-full h-auto', className)}
       width={2000}
@@ -30,4 +31,5 @@ export default function CoverImage({
       style={{ paddingTop: '50%', backgroundColor: '#ddd' }}
     />
   );
-}
+
+export default CoverImage;
