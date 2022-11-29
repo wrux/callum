@@ -17,14 +17,14 @@ export const getDocumentSlugs = async (documentType: string) =>
     { documentType }
   );
 
-export const getDocumentMeta = async <T>(
+export const getDocumentMeta = async <T extends object>(
   slug: string,
   additionalData: string = ''
-) => {
+): Promise<{
+  seo: MetaData;
+  additionalData: T;
+}> => {
   const query = groq`*[slug.current == $slug][0] { seo, ${additionalData} }`;
-  const { seo, ...data } = await client.fetch<{
-    seo: MetaData;
-    data: T;
-  }>(query, { slug });
-  return { seo, additionalData: data as T };
+  const { seo, ...data } = await client.fetch(query, { slug });
+  return { seo, additionalData: data };
 };

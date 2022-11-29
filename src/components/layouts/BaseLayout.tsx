@@ -1,15 +1,12 @@
 import { SiteFooter, SiteHeader } from 'components';
+import { FC, PropsWithChildren } from 'react';
 
-export default function BaseLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <SiteHeader />
-      <main>{children}</main>
-      <SiteFooter />
-    </>
-  );
-}
+const BaseLayout: FC<PropsWithChildren> = ({ children }) => (
+  <>
+    <SiteHeader />
+    <main>{children}</main>
+    <SiteFooter />
+  </>
+);
+
+export default BaseLayout;

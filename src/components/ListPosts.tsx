@@ -1,14 +1,11 @@
 import { FC, PropsWithChildren } from 'react';
 import { PostTeaser, Section } from 'components';
 
-interface PostTeaserWrapperProps extends PropsWithChildren {
-  featured?: boolean;
-}
-
-const PostTeaserWrapper: FC<PostTeaserWrapperProps> = ({
-  children,
-  featured = false,
-}) =>
+const PostTeaserWrapper: FC<
+  PropsWithChildren<{
+    featured?: boolean;
+  }>
+> = ({ children, featured = false }) =>
   featured ? (
     <Section>
       <div className="col-span-8 px-5 lg:col-start-3 lg:px-0">{children}</div>
