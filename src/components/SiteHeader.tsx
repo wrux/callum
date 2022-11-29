@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Container } from 'components';
+import { Container, Wordmark } from 'components';
 
 const SiteHeader: FC = () => {
   const [show, setShow] = useState(true);
@@ -34,8 +34,8 @@ const SiteHeader: FC = () => {
     >
       <Container>
         <div className="flex items-baseline justify-between w-full gap-8">
-          <Link href="/" className="font-extrabold link-reverse c-p-lg">
-            callum
+          <Link href="/" className="link-reverse">
+            <Wordmark size={3} />
           </Link>
           <nav className="flex gap-4">
             <Link href="/" className="c-p link-reverse">

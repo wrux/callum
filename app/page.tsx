@@ -7,7 +7,7 @@ export default async function Homepage() {
   const posts = await client.fetch<Array<Article>>(postQuery);
 
   return (
-    <BaseLayout>
+    <BaseLayout hideSiteHeader>
       <Intro />
       <ListPosts posts={posts} />
     </BaseLayout>

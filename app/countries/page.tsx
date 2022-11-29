@@ -13,12 +13,12 @@ export default async function Countries() {
           <h1 className="c-h1">Countries</h1>
           <p className="c-p-lg">Countries mentioned in the blog.</p>
         </div>
-        <div className="gap-4 md:columns-2 lg:columns-3">
+        <div className="gap-2">
           {countries.map((country) => (
             <h3 key={country._id} className="mb-5">
               <Link
                 href={`/countries/${country.slug}`}
-                className="mb-3 text-3xl leading-snug link"
+                className="mb-3 text-3xl leading-snug link-reverse"
                 rel="bookmark"
               >
                 {country.name}

@@ -10,3 +10,4 @@ export { default as PostTeaser } from './PostTeaser';
 export { default as Section } from './Section';
 export { default as SiteFooter } from './SiteFooter';
 export { default as SiteHeader } from './SiteHeader';
+export { default as Wordmark } from './Wordmark';

@@ -4,7 +4,7 @@ import { FC, HTMLProps } from 'react';
 import Link from 'next/link';
 import cn from 'clsx';
 import { GithubLogo, InstagramLogo, LinkedinLogo } from 'phosphor-react';
-import { Container } from 'components';
+import { Container, Wordmark } from 'components';
 
 const WruxLogo: FC<PropsWithClassName> = ({ className }) => (
   <svg
@@ -63,7 +63,9 @@ const SiteFooter: FC = () => {
   return (
     <footer className="py-16 text-white bg-black">
       <Container>
-        <p className="mb-8 font-extrabold md:mb-16 c-h4">callum</p>
+        <p className="mb-8 md:mb-16">
+          <Wordmark size={3} />
+        </p>
         <div className="grid gap-y-16 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
           <div className="col-span-1">
             <p className="mb-6 c-h5">Navigation</p>

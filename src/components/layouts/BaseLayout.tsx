@@ -1,9 +1,16 @@
 import { SiteFooter, SiteHeader } from 'components';
 import { FC, PropsWithChildren } from 'react';
 
-const BaseLayout: FC<PropsWithChildren> = ({ children }) => (
+type BaseLayoutProps = PropsWithChildren<{
+  hideSiteHeader?: boolean;
+}>;
+
+const BaseLayout: FC<BaseLayoutProps> = ({
+  children,
+  hideSiteHeader = false,
+}) => (
   <>
-    <SiteHeader />
+    {!hideSiteHeader && <SiteHeader />}
     <main>{children}</main>
     <SiteFooter />
   </>
