@@ -5,6 +5,7 @@ import {
   projectUsersWidget,
   projectInfoWidget,
 } from '@sanity/dashboard';
+import { media } from 'sanity-plugin-media';
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { schemaTypes } from './schemas';
 import { dataset, projectId } from './config';
@@ -27,6 +28,7 @@ export default defineConfig({
         projectUsersWidget(),
       ],
     }),
+    media(),
     deskTool(),
   ],
   schema: {
