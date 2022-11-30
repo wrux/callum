@@ -1,11 +1,17 @@
 import { defineType, defineField } from 'sanity';
 import { countryCodeEmoji } from 'country-code-emoji';
 import countryListAlpha2 from './countryList';
+import { GlobeHemisphereWest } from 'phosphor-react';
 
 const schema = defineType({
   name: 'country',
   type: 'document',
   title: 'Country',
+  icon: () => (
+    <>
+      <GlobeHemisphereWest style={{ fontSize: '2rem', lineHeight: '1' }} />
+    </>
+  ),
   groups: [
     {
       name: 'content',

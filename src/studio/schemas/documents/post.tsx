@@ -1,9 +1,15 @@
+import { NewspaperClipping } from 'phosphor-react';
 import { defineType, defineField } from 'sanity';
 
 const schema = defineType({
   name: 'post',
   type: 'document',
   title: 'Post',
+  icon: () => (
+    <>
+      <NewspaperClipping style={{ fontSize: '2rem', lineHeight: '1' }} />
+    </>
+  ),
   groups: [
     {
       name: 'content',
@@ -62,13 +68,6 @@ const schema = defineType({
       name: 'excerpt',
       type: 'text',
       title: 'Excerpt',
-      group: 'content',
-    }),
-    // TODO: Remove once no longer needed...
-    defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
       group: 'content',
     }),
     defineField({

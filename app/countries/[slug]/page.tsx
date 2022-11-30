@@ -48,7 +48,7 @@ const countryQuery = groq`
     countryCode,
     name,
     "slug": slug.current,
-    "posts": *[_type == "post" && references(^._id)][] {
+    "posts": *[_type == "post" && references(^._id)]|order(publishedAt desc, _updatedAt desc)[] {
       _id,
       excerpt,
       title,
