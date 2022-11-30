@@ -10,6 +10,7 @@ import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list
 import { schemaTypes } from './schemas';
 import { dataset, projectId } from './config';
 import structure from './structure';
+import analyticsWidget from './widgets/analyticsWidget';
 
 export default defineConfig({
   basePath: '/studio',
@@ -29,6 +30,10 @@ export default defineConfig({
           layout: { width: 'small' },
         }),
         projectUsersWidget(),
+        analyticsWidget({
+          auth: process.env.NEXT_PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
+          domain: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || '',
+        }),
       ],
     }),
     media(),
