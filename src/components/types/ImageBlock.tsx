@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import { Section } from 'components';
-import { urlForImage } from 'lib/sanityImage';
+import { getImageProps } from 'lib/sanityImage';
 
 interface ImageBlockProps {
   caption?: string;
@@ -9,18 +9,15 @@ interface ImageBlockProps {
 }
 
 const ImageBlock: FC<ImageBlockProps> = ({ caption, image }) =>
-  image?.asset?._ref ? (
+  image?.asset ? (
     <Section>
       <figure className="contents">
         <div className="col-span-12 lg:col-start-3">
           <Image
             className="w-full h-auto"
-            width={1280}
-            height={1000}
-            src={urlForImage(image).width(1280).url()}
+            {...getImageProps(image, 1280)}
+            alt={image.asset?.alt || caption}
             sizes="100vw"
-            // @TODO: Pull ALT text from image metadata
-            alt={caption || ''}
           />
         </div>
         {caption && (

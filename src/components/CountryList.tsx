@@ -16,7 +16,7 @@ const CountryList: FC<CountryListProps> = ({
   <p
     className={cn(
       'flex items-center leading-none',
-      large ? 'text-4xl md:text-6xl gap-4' : 'text-4xl gap-2',
+      large ? 'gap-4' : 'gap-2',
       className
     )}
   >
@@ -28,11 +28,14 @@ const CountryList: FC<CountryListProps> = ({
         aria-label={`View all posts in ${country.name}`}
       >
         {country.countryCode ? (
-          <span role="presentation">
+          <span
+            className={large ? 'text-step-3' : 'text-step-1'}
+            role="presentation"
+          >
             {countryCodeEmoji(country.countryCode)}
           </span>
         ) : (
-          country.name
+          <span className="c-p-sm">{country.name}</span>
         )}
       </Link>
     ))}

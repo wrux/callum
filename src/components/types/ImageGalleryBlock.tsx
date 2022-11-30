@@ -7,7 +7,7 @@ import FsLightbox from 'fslightbox-react';
 import { ArrowsOut } from 'phosphor-react';
 import cn from 'clsx';
 import { Section } from 'components';
-import { urlForImage } from 'lib/sanityImage';
+import { getImageProps } from 'lib/sanityImage';
 
 interface ImageGalleryBlockProps {
   images: Array<{
@@ -17,14 +17,13 @@ interface ImageGalleryBlockProps {
 }
 
 const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
-  const filteredImages = images.filter(({ image }) => image?.asset?._ref);
+  const filteredImages = images.filter(({ image }) => image?.asset);
   const [lightboxController, setLightboxController] = useState({
     toggler: false,
     slide: 1,
   });
-  const imageURLs = useMemo(
-    () =>
-      filteredImages.map(({ image }) => urlForImage(image).width(1280).url()),
+  const imageData = useMemo(
+    () => filteredImages.map(({ image }) => getImageProps(image, 1280)),
     [filteredImages]
   );
 
@@ -40,7 +39,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
         <div
           className={cn(
             'col-span-12',
-            imageURLs.length > 5 ? 'lg:col-start-0' : 'lg:col-start-3'
+            imageData.length > 5 ? 'lg:col-start-0' : 'lg:col-start-3'
           )}
         >
           <JustifiedGrid
@@ -62,12 +61,9 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
               >
                 <Image
                   className="object-cover w-full h-auto transition-transform duration-300 ease-out hover:scale-105"
-                  width={2000}
-                  height={1000}
-                  src={imageURLs[index]}
+                  {...imageData[index]}
+                  alt={image.asset.alt || caption || ''}
                   sizes="100vw"
-                  // @TODO: Pull ALT text from image metadata
-                  alt={caption || ''}
                 />
                 <ArrowsOut className="absolute p-1 transition-opacity duration-300 bg-white rounded-md shadow-md top-4 right-4 text-step-1 group-hover:opacity-0" />
               </button>
@@ -77,7 +73,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
       </Section>
       <FsLightbox
         toggler={lightboxController.toggler}
-        sources={imageURLs}
+        sources={imageData.map(({ src }) => src as string)}
         slide={lightboxController.slide}
       />
     </>

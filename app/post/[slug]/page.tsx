@@ -5,6 +5,7 @@ import {
   PortableText,
   Section,
 } from 'components';
+import { imageFragment } from 'lib/fragments';
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
@@ -29,7 +30,7 @@ export default async function Post({ params }: PostPageParams) {
         <div className="flex flex-col col-span-8 gap-2 px-5 py-8 lg:col-start-3 lg:px-0 md:pt-16">
           <h1 className="mb-6 c-h1">{post.title}</h1>
           {post?.countries && post?.countries.length > 0 && (
-            <CountryList countries={post.countries} />
+            <CountryList countries={post.countries} large />
           )}
           <p className="c-p-sm">
             <Date dateString={post.publishedAt} />
@@ -38,12 +39,7 @@ export default async function Post({ params }: PostPageParams) {
       </Section>
       <Section spacing="none">
         <div className="col-span-12 lg:col-span-8 lg:col-start-3">
-          <CoverImage
-            className="mx-auto mb-8 md:mb-16 max-w-screen-2xl"
-            title={post.title}
-            image={post.mainImage}
-            priority
-          />
+          <CoverImage title={post.title} image={post.mainImage} priority />
         </div>
       </Section>
       <PortableText value={post.content} />
@@ -56,7 +52,19 @@ const postQuery = groq`
     _id,
     title,
     publishedAt,
-    content,
+    content[] {
+      ...,
+      _type == "imageBlock" => {
+        image { ${imageFragment} },
+      },
+      _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
+        images[] {
+          _key,
+          caption,
+          image { ${imageFragment} }
+        },
+      },
+    },
     "countries": countries[] -> {
       _id,
       countryCode,
@@ -64,6 +72,6 @@ const postQuery = groq`
       "slug": slug.current,
     },
     "slug": slug.current,
-    mainImage,
+    mainImage { ${imageFragment} },
   }
 `;
