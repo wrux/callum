@@ -10,7 +10,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>{children}</body>
-
       <Script
         src="/stats/js/script.js"
         strategy="afterInteractive"
