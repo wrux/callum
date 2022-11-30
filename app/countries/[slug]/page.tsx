@@ -2,6 +2,7 @@ import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 import { ListPosts, Section } from 'components';
 import countryCodeEmoji from 'country-code-emoji';
+import { imageFragment } from 'lib/fragments';
 
 export async function generateStaticParams() {
   return await getDocumentSlugs('country');
@@ -47,7 +48,7 @@ const countryQuery = groq`
       _id,
       excerpt,
       title,
-      mainImage,
+      mainImage { ${imageFragment} },
       "slug": slug.current,
     },
   }

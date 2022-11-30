@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Image from 'next/image';
 import cn from 'clsx';
-import { urlForImage } from 'lib/sanityImage';
+import { getImageProps } from 'lib/sanityImage';
 
 type CoverImageProps = PropsWithClassName<{
   title: string;
@@ -15,13 +15,11 @@ const CoverImage: FC<CoverImageProps> = ({
   image: source,
   priority,
 }) =>
-  source?.asset?._ref ? (
+  source?.asset ? (
     <Image
       className={cn('w-full h-auto', className)}
-      width={2000}
-      height={1125}
-      alt={`Cover Image for ${title}`}
-      src={urlForImage(source).height(1125).width(2000).url()}
+      {...getImageProps(source, 1024, 576)}
+      alt={source.asset?.alt || `Cover Image for ${title}`}
       sizes="100vw"
       priority={priority}
     />

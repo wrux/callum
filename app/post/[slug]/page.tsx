@@ -5,6 +5,7 @@ import {
   PortableText,
   Section,
 } from 'components';
+import { imageFragment } from 'lib/fragments';
 import { client, getDocumentSlugs } from 'lib/sanityClient';
 import { groq } from 'next-sanity';
 
@@ -56,7 +57,19 @@ const postQuery = groq`
     _id,
     title,
     publishedAt,
-    content,
+    content[] {
+      ...,
+      _type == "imageBlock" => {
+        image { ${imageFragment} },
+      },
+      _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
+        images[] {
+          _key,
+          caption,
+          image { ${imageFragment} }
+        },
+      },
+    },
     "countries": countries[] -> {
       _id,
       countryCode,
@@ -64,6 +77,6 @@ const postQuery = groq`
       "slug": slug.current,
     },
     "slug": slug.current,
-    mainImage,
+    mainImage { ${imageFragment} },
   }
 `;
