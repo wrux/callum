@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Development server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./node_modules/.bin/next dev"
+    }
+  ]
+}
