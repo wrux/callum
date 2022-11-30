@@ -4,6 +4,10 @@ import { ListPosts, Section } from 'components';
 import countryCodeEmoji from 'country-code-emoji';
 import { imageFragment } from 'lib/fragments';
 
+export const revalidate = 300;
+
+export const dynamic = 'force-static';
+
 export async function generateStaticParams() {
   return await getDocumentSlugs('country');
 }
