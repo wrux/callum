@@ -2,10 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/next dev",
       "name": "Development server",
+      "type": "node-terminal",
       "request": "launch",
-      "type": "node-terminal"
+      "command": "./node_modules/.bin/next dev"
+    },
+    {
+      "name": "Launch Application",
+      "type": "node",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "port": 9229
     }
   ]
 }
