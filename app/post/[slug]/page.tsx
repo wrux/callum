@@ -11,6 +11,8 @@ import { groq } from 'next-sanity';
 
 export const revalidate = 300;
 
+export const dynamic = 'force-static';
+
 export async function generateStaticParams() {
   return await getDocumentSlugs('post');
 }

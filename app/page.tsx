@@ -4,6 +4,10 @@ import { Intro, ListPosts } from 'components';
 import BaseLayout from './countries/layout';
 import { imageFragment } from 'lib/fragments';
 
+export const revalidate = 300;
+
+export const dynamic = 'force-static';
+
 export default async function Homepage() {
   const posts = await client.fetch<Array<Article>>(postQuery);
 
