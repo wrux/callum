@@ -1,5 +1,5 @@
-import '@fontsource/inter/variable.css';
 import Script from 'next/script';
+import '@fontsource/inter/variable.css';
 import 'styles/main.css';
 
 export default function RootLayout({
