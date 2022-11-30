@@ -43,7 +43,7 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
   return (
     <WidgetFrame>
       <iframe
-        plausible-embed
+        plausible-embed="true"
         src={iframeUrl.toString()}
         loading="lazy"
         style={{
@@ -56,12 +56,12 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
   );
 };
 
-type analyticsWidetConfig = PlausibleWidgetConfig & {
+type plausibleWidgetConfig = PlausibleWidgetConfig & {
   layout?: LayoutConfig;
 };
 
-export default function analyticsWidget(
-  config: analyticsWidetConfig
+export function plausibleWidget(
+  config: plausibleWidgetConfig
 ): DashboardWidget {
   return {
     name: 'analytics-widget',
