@@ -1,9 +1,15 @@
+import { NewspaperClipping } from 'phosphor-react';
 import { defineType, defineField } from 'sanity';
 
 const schema = defineType({
   name: 'post',
   type: 'document',
   title: 'Post',
+  icon: () => (
+    <>
+      <NewspaperClipping style={{ fontSize: '2rem', lineHeight: '1' }} />
+    </>
+  ),
   groups: [
     {
       name: 'content',
