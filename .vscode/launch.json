@@ -6,13 +6,6 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "./node_modules/.bin/next dev"
-    },
-    {
-      "name": "Launch Application",
-      "type": "node",
-      "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
-      "port": 9229
     }
   ]
 }
