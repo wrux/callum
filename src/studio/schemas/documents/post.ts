@@ -64,13 +64,6 @@ const schema = defineType({
       title: 'Excerpt',
       group: 'content',
     }),
-    // TODO: Remove once no longer needed...
-    defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
-      group: 'content',
-    }),
     defineField({
       name: 'content',
       title: 'Content',
