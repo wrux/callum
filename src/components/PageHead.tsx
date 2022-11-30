@@ -37,6 +37,13 @@ const PageHead: FC<PageHeadProps> = ({ fallbacks = {}, path, seo = {} }) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+      <script
+        defer
+        data-api="/stats/api/event"
+        data-domain="callum.co.uk"
+        src="/stats/js/script.js"
+      ></script>
+
       <title>{`${title} | Callum.co.uk`}</title>
       <meta name="description" content={desc} />
 
