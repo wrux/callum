@@ -23,7 +23,8 @@ const Wordmark: FC<WordmarkProps> = ({ className, size = 0 }) => (
       className
     )}
   >
-    callum<span style={{ fontSize: '0.5em' }}>.co.uk</span>
+    callum
+    {/* <span style={{ fontSize: '0.5em' }}>.co.uk</span> */}
   </span>
 );
 

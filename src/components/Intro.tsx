@@ -13,7 +13,7 @@ const Intro: FC = () => (
         <h1 className="mb-4">
           <Wordmark size={6} />
         </h1>
-        <h2 className="max-w-2xl c-h4">
+        <h2 className="max-w-2xl c-p-lg">
           My travel blog from many{' '}
           <Link href="/countries" className="link">
             countries
