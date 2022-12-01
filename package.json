@@ -17,6 +17,7 @@
     "@sanity/dashboard": "^3.0.0-v3-studio.8",
     "@sanity/image-url": "^1.0.1",
     "@sanity/ui": "^1.0.0-beta.32",
+    "@sanity/vision": "^3.0.0-rc.3",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",

@@ -11,6 +11,7 @@ import { schemaTypes } from './schemas';
 import { dataset, projectId } from './config';
 import structure from './structure';
 import { plausibleWidget } from './widgets';
+import { visionTool } from '@sanity/vision';
 
 export default defineConfig({
   basePath: '/studio',
@@ -40,6 +41,7 @@ export default defineConfig({
     deskTool({
       structure,
     }),
+    visionTool(),
   ],
   schema: {
     types: schemaTypes,
