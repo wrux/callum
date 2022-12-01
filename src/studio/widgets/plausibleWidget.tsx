@@ -45,6 +45,8 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
       <iframe
         name="Plausible analytics dasbboard"
         plausible-embed="true"
+        scrolling="no"
+        frameBorder="0"
         src={iframeUrl.toString()}
         loading="lazy"
         style={{
@@ -53,6 +55,7 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
           height: '100rem',
         }}
       />
+      <script async src="https://plausible.io/js/embed.host.js"></script>
     </WidgetFrame>
   );
 };
