@@ -3,6 +3,7 @@ import { groq } from 'next-sanity';
 import { ListPosts, Section } from 'components';
 import countryCodeEmoji from 'country-code-emoji';
 import { imageFragment } from 'lib/fragments';
+import { FadeIn } from 'components/animations';
 
 export const revalidate = 300;
 
@@ -26,16 +27,18 @@ export default async function Country({ params }: CountryPageParams) {
   return (
     <>
       <article>
-        <Section spacing="none">
-          <div className="flex flex-col col-span-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
-            {country.countryCode && (
-              <span className="c-h1" role="presentation">
-                {countryCodeEmoji(country.countryCode)}
-              </span>
-            )}
-            <h1 className="c-h1">{country.name}</h1>
-          </div>
-        </Section>
+        <FadeIn delay={0.25} duration={0.75}>
+          <Section spacing="none">
+            <div className="flex flex-col col-span-8 px-5 py-8 lg:col-start-3 lg:px-0 md:py-16 lg:py-24">
+              {country.countryCode && (
+                <span className="c-h1" role="presentation">
+                  {countryCodeEmoji(country.countryCode)}
+                </span>
+              )}
+              <h1 className="c-h1">{country.name}</h1>
+            </div>
+          </Section>
+        </FadeIn>
       </article>
       <ListPosts posts={country.posts} />
     </>

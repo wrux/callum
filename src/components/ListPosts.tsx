@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import { PostTeaser, Section } from 'components';
+import { FadeIn, FadeInOnScroll } from './animations';
 
 const PostTeaserWrapper: FC<
   PropsWithChildren<{
@@ -8,12 +9,14 @@ const PostTeaserWrapper: FC<
 > = ({ children, featured = false }) =>
   featured ? (
     <Section>
-      <div className="col-span-8 px-5 lg:col-start-3 lg:px-0">{children}</div>
+      <div className="col-span-8 px-5 lg:col-start-3 lg:px-0">
+        <FadeIn>{children}</FadeIn>
+      </div>
     </Section>
   ) : (
     <Section>
       <div className="px-5 pt-6 border-t border-gray-300 md:col-span-6 md:col-start-2 lg:col-start-3 md:px-0 md:pt-8 lg:pt-12">
-        {children}
+        <FadeInOnScroll>{children}</FadeInOnScroll>
       </div>
     </Section>
   );
