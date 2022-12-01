@@ -78,7 +78,7 @@ const SiteFooter: FC = () => {
               </Link>
             </nav>
           </div>
-          <aside className="col-span-1">
+          <div className="col-span-1">
             <p className="mb-6 c-h5">Links</p>
             <nav aria-label="External links" className="flex gap-2">
               <IconLink
@@ -107,8 +107,8 @@ const SiteFooter: FC = () => {
                 noFollow
               />
             </nav>
-          </aside>
-          <aside className="col-span-2">
+          </div>
+          <div className="col-span-2">
             <p className="mb-6 c-h5">Like this website?</p>
             <p className="c-p">
               If you like this website,{' '}
@@ -122,7 +122,7 @@ const SiteFooter: FC = () => {
               </a>
               , fork the project and take whatever you like.
             </p>
-          </aside>
+          </div>
           <div className="col-span-2 lg:col-span-4">
             <p className="mb-4 c-p-sm">
               Copyright &copy;{' '}
