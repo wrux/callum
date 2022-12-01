@@ -6,13 +6,15 @@ import {
 } from '@sanity/dashboard';
 import { Box, Text, useTheme } from '@sanity/ui';
 
+const widgetTitle = 'Plausible Analytics';
+
 type PlausibleWidgetConfig = {
   auth: string;
   domain: string;
 };
 
 const WidgetFrame: FC<PropsWithChildren> = ({ children }) => (
-  <DashboardWidgetContainer header="Plausible analytics dasbboard">
+  <DashboardWidgetContainer header={widgetTitle}>
     <Box padding={3}>{children}</Box>
   </DashboardWidgetContainer>
 );
@@ -42,19 +44,23 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
 
   return (
     <WidgetFrame>
-      <iframe
-        name="Plausible analytics dasbboard"
-        plausible-embed="true"
-        scrolling="no"
-        frameBorder="0"
-        src={iframeUrl.toString()}
-        loading="lazy"
-        style={{
-          width: '1px',
-          minWidth: '100%',
-          height: '100rem',
-        }}
-      />
+      <div style={{ overflow: 'hidden' }}>
+        <div style={{ marginTop: '-2.5rem ' }}>
+          <iframe
+            name={widgetTitle}
+            plausible-embed="true"
+            scrolling="no"
+            frameBorder="0"
+            src={iframeUrl.toString()}
+            loading="lazy"
+            style={{
+              width: '1px',
+              minWidth: '100%',
+              height: '100rem',
+            }}
+          />
+        </div>
+      </div>
       <script async src="https://plausible.io/js/embed.host.js"></script>
     </WidgetFrame>
   );
