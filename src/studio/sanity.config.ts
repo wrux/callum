@@ -10,6 +10,8 @@ import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list
 import { schemaTypes } from './schemas';
 import { dataset, projectId } from './config';
 import structure from './structure';
+import { plausibleWidget } from './widgets';
+import { fathomWidget } from './widgets/fathomWidget';
 
 export default defineConfig({
   basePath: '/studio',
@@ -29,6 +31,15 @@ export default defineConfig({
           layout: { width: 'small' },
         }),
         projectUsersWidget(),
+        plausibleWidget({
+          auth: process.env.NEXT_PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
+          domain: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || '',
+        }),
+        fathomWidget({
+          siteID: 'HIFDIEQG',
+          domain: 'wrux.com',
+          password: 'test',
+        }),
       ],
     }),
     media(),
