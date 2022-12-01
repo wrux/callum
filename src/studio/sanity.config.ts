@@ -28,7 +28,7 @@ export default defineConfig({
           layout: { width: 'medium' },
         }),
         projectInfoWidget({
-          layout: { width: 'small' },
+          layout: { width: 'medium' },
         }),
         projectUsersWidget(),
         plausibleWidget({
