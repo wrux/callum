@@ -12,7 +12,7 @@ type PlausibleWidgetConfig = {
 };
 
 const WidgetFrame: FC<PropsWithChildren> = ({ children }) => (
-  <DashboardWidgetContainer header="Plausible Analytics">
+  <DashboardWidgetContainer header="Plausible analytics dasbboard">
     <Box padding={3}>{children}</Box>
   </DashboardWidgetContainer>
 );
@@ -43,6 +43,7 @@ const Widget = ({ auth, domain }: PlausibleWidgetConfig) => {
   return (
     <WidgetFrame>
       <iframe
+        name="Plausible analytics dasbboard"
         plausible-embed="true"
         src={iframeUrl.toString()}
         loading="lazy"
