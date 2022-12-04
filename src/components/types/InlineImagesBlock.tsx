@@ -1,5 +1,3 @@
-'use client';
-
 import { FC } from 'react';
 import Image from 'next/image';
 import { Section } from 'components';
@@ -17,7 +15,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
 
   return (
     <Section>
-      <div className="flex col-span-12 gap-8 md:gap-12 lg:col-start-3">
+      <div className="flex flex-col items-center col-span-12 gap-8 sm:flex-row md:gap-12 lg:col-start-3">
         {filteredImages.map(({ caption, image }) => (
           <Image
             key={image._id}

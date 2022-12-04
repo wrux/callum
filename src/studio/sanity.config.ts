@@ -40,6 +40,8 @@ export default defineConfig({
     media(),
     deskTool({
       structure,
+      name: 'content',
+      title: 'Content',
     }),
     visionTool(),
   ],
