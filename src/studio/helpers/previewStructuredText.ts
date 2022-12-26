@@ -1,6 +1,8 @@
-import { Block } from 'sanity';
+import { PortableTextTextBlock } from 'sanity';
 
-export function previewStructuredText(content: Block[]): string | null {
+export function previewStructuredText(
+  content: PortableTextTextBlock[]
+): string | null {
   const firstBlock = content.find((block) => block._type === 'block');
   return (
     firstBlock?.children
