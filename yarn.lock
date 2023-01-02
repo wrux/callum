@@ -399,10 +399,10 @@
   resolved "https://registry.yarnpkg.com/@egjs/component/-/component-3.0.3.tgz#805dee17d299513abfde8a68a4cd932bb7d4bca9"
   integrity sha512-Pnwxw9mDTvz+j4md6ZlRTpM7jgYoOKlcmjfDgE9okhaAGTqTH0Rl2vIXHOHok5yqYVFR5QXbO31t4x93gavOPQ==
 
-"@egjs/grid@~1.11.1":
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/@egjs/grid/-/grid-1.11.1.tgz#f082ea0745b2ec12fe59045f0f5611ee7a8a82c6"
-  integrity sha512-/UkSeapVLh4eF3obxaJkgg30yYQPCl8Ugua7vTTHkSljgidwZQKweTvgY57gUnAhHWj12KoR65FxfJ9Qq9tyXQ==
+"@egjs/grid@~1.11.2":
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/@egjs/grid/-/grid-1.11.2.tgz#cd7d5c3bf02f8623c0afa4706bd25bd4c7b10d34"
+  integrity sha512-wV/tpNBhaJp5cHFaBcDep8Dbc72Jh8IFdmf2nP/L4EA669vewZgqJXfrONVyzdaQR7Welo0areEAA4dt+0Zqsw==
   dependencies:
     "@egjs/children-differ" "^1.0.1"
     "@egjs/component" "^3.0.0"
@@ -420,12 +420,12 @@
   resolved "https://registry.yarnpkg.com/@egjs/list-differ/-/list-differ-1.0.0.tgz#2277aff52e3e4bd9318d5c30ffc3ba3b6216f05e"
   integrity sha512-HsbMKc0ZAQH+EUeCmI/2PvTYSybmkaWwakU8QGDYYgMVIg9BQ5sM0A0Nnombjxo2+JzXHxmH+jw//yGX+y6GYw==
 
-"@egjs/react-grid@^1.12.1":
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/@egjs/react-grid/-/react-grid-1.12.1.tgz#ba719b5a7ff5e4a8331bd255f1a0f9600f887a62"
-  integrity sha512-FCJoedeEFtij5sTTZO6iIrAzYNLLCtCeb2CDjGS8eFVV0s9YYFhVgFQV9J1JA41ltIs0VJBFlb8NJK4pX6xphA==
+"@egjs/react-grid@^1.12.2":
+  version "1.12.2"
+  resolved "https://registry.yarnpkg.com/@egjs/react-grid/-/react-grid-1.12.2.tgz#d1f54dd45915903142be8bf8b0c74bdf69a0b833"
+  integrity sha512-QLsvAZnl053WaoC1kq3cLFKBFi762CfG5cDMU5/9lAWkq79gwbzZGn0kmEwu9rjYOeb27Yu5FTUpA77hqKHU5A==
   dependencies:
-    "@egjs/grid" "~1.11.1"
+    "@egjs/grid" "~1.11.2"
 
 "@emotion/babel-plugin@^11.10.5":
   version "11.10.5"
