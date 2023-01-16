@@ -4500,10 +4500,10 @@ next-sanity@^3.1.9:
     "@sanity/webhook" "^2.0.0"
     groq "^2.33.2"
 
-next-sitemap@^3.1.43:
-  version "3.1.43"
-  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-3.1.43.tgz#f29ce7de7a7ea5cce95b36512cf06b8d30606abf"
-  integrity sha512-TshDAP69OjHwvszedQ/jBvOjzqy7Gm9NU3ZIP30X3e1qXsNVOVF5uzi9kQOI6v0uBG08QUOk9wKNSIk3zI/wjQ==
+next-sitemap@^3.1.45:
+  version "3.1.45"
+  resolved "https://registry.yarnpkg.com/next-sitemap/-/next-sitemap-3.1.45.tgz#3ac9a18d2f9c13da27267ea9c257da8eac237a59"
+  integrity sha512-8vyvWC8KT8RIEUL9Vfiae9yGuIIiJ1IpepzbFtwZx43BaKsoi/Zk9OlmPKuQouVY726xwN7uLZPtgl2l2U+9Ug==
   dependencies:
     "@corex/deepmerge" "^4.0.29"
     minimist "^1.2.7"
