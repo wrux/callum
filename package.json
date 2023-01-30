@@ -23,7 +23,7 @@
     "@types/react-dom": "18.0.10",
     "clsx": "^1.2.1",
     "country-code-emoji": "^2.3.0",
-    "eslint": "8.31.0",
+    "eslint": "8.33.0",
     "eslint-config-next": "13.1.1",
     "framer-motion": "^8.0.2",
     "fslightbox-react": "^1.6.2-2",
