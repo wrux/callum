@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@egjs/react-grid": "^1.12.2",
+    "@egjs/react-grid": "^1.13.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@portabletext/react": "^2.0.0",
