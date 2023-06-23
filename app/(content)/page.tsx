@@ -1,8 +1,7 @@
 import { groq } from 'next-sanity';
-import { client } from 'lib/sanityClient';
-import { Intro, ListPosts } from 'components';
-import BaseLayout from './countries/layout';
-import { imageFragment } from 'lib/fragments';
+import { Intro, ListPosts } from '~/components';
+import { client } from '~/sanity/lib/client';
+import { imageFragment } from '~/lib/fragments';
 
 export const revalidate = 300;
 
@@ -12,10 +11,10 @@ export default async function Homepage() {
   const posts = await client.fetch<Array<Article>>(postQuery);
 
   return (
-    <BaseLayout hideSiteHeader>
+    <>
       <Intro />
       <ListPosts posts={posts} />
-    </BaseLayout>
+    </>
   );
 }
 

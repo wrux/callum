@@ -1,6 +1,6 @@
 import Script from 'next/script';
-import '@fontsource/inter/variable.css';
-import 'styles/main.css';
+// import '@fontsource/inter/variable.css';
+import '~/styles/main.css';
 
 export default function RootLayout({
   children,
@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <body>{children}</body>
       <Script
         src="/stats/js/script.js"

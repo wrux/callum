@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { groq } from 'next-sanity';
-import { client } from 'lib/sanityClient';
-import { Section } from 'components';
-import { FadeIn } from 'components/animations';
+import { client } from '~/sanity/lib/client';
+import { Section } from '~/components';
+import { FadeIn } from '~/components/animations';
 
 export const revalidate = 300;
 

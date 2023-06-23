@@ -1,5 +1,5 @@
 import createImageUrlBuilder from '@sanity/image-url';
-import { dataset, projectId } from 'lib/sanityClient';
+import { dataset, projectId } from '~/lib/sanityClient';
 import { ImageProps } from 'next/image';
 
 const imageBuilder = createImageUrlBuilder({ projectId, dataset });

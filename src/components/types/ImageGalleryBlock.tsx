@@ -6,8 +6,8 @@ import { JustifiedGrid } from '@egjs/react-grid';
 import FsLightbox from 'fslightbox-react';
 import { ArrowsOut } from 'phosphor-react';
 import cn from 'clsx';
-import { Section } from 'components';
-import { getImageProps } from 'lib/sanityImage';
+import { Section } from '~/components';
+import { getImageProps } from '~/lib/sanityImage';
 
 interface ImageGalleryBlockProps {
   images: Array<{

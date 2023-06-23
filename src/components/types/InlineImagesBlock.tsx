@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Image from 'next/image';
-import { Section } from 'components';
-import { getImageProps } from 'lib/sanityImage';
+import { Section } from '~/components';
+import { getImageProps } from '~/lib/sanityImage';
 
 interface ImageGalleryBlockProps {
   images: Array<{

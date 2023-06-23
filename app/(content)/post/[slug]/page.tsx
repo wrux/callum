@@ -7,9 +7,9 @@ import {
   Date,
   PortableText,
   Section,
-} from 'components';
-import { imageFragment } from 'lib/fragments';
-import { client, getDocumentSlugs } from 'lib/sanityClient';
+} from '~/components';
+import { imageFragment } from '~/lib/fragments';
+import { client, getDocumentSlugs } from '~/sanity/lib/client';
 
 export const revalidate = 300;
 
