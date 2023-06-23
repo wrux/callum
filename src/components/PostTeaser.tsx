@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import { FC } from 'react';
 
-import { CountryList, CoverImage } from '~/components';
+import { CountryList, CoverImage, Link } from '~/components';
 
 const PostTeaser: FC<ArticleTeaser> = ({
   countries = [],
@@ -10,18 +9,29 @@ const PostTeaser: FC<ArticleTeaser> = ({
   mainImage,
   slug,
 }) => (
-  <article className="flex flex-col gap-4 link-overlay group/teaser">
-    {countries && countries.length > 0 && <CountryList countries={countries} />}
-    <h2 className="mb-2 c-h3 group-hover/teaser:text-primary">{title}</h2>
-    <CoverImage title={title} image={mainImage} />
+  <article className="relative flex flex-col gap-4 group">
+    {countries && countries.length > 0 && (
+      <CountryList className="relative z-10" countries={countries} />
+    )}
+    <h2 className="relative mb-2 transition-colors c-h3 group-hover:text-brand">
+      {title}
+    </h2>
+    <div className="overflow-hidden">
+      <CoverImage
+        title={title}
+        image={mainImage}
+        className="transition-transform duration-300 group-hover:scale-105"
+      />
+    </div>
     {/* Previously `excerpt` was a portable text type so prevent erorr: */}
     {excerpt && typeof excerpt === 'string' && (
       <p className="c-p max-w-prose">{excerpt}</p>
     )}
     <Link
-      className="c-p link link-overlay__link"
+      className="c-p"
       href={`/post/${slug}`}
       aria-label={`Continue reading: ${title}`}
+      intent="overlay"
     >
       Continue Reading
     </Link>

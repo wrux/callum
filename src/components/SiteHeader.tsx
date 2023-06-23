@@ -1,9 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 
-import { Container, Wordmark } from '~/components';
+import { Container, Link, Wordmark } from '~/components';
 
 const SiteHeader: FC = () => {
   const [show, setShow] = useState(true);
@@ -35,14 +34,14 @@ const SiteHeader: FC = () => {
     >
       <Container>
         <div className="flex items-baseline justify-between w-full gap-8">
-          <Link href="/" className="link-reverse">
+          <Link href="/" variant="reverse">
             <Wordmark size={3} />
           </Link>
           <nav className="flex gap-4">
-            <Link href="/" className="c-p link-reverse">
+            <Link href="/" className="c-p" variant="reverse">
               Home
             </Link>
-            <Link href="/countries" className="c-p link-reverse">
+            <Link href="/countries" className="c-p" variant="reverse">
               Countries
             </Link>
           </nav>

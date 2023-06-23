@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import { FC } from 'react';
 
-import { Section, Wordmark } from '~/components';
+import { Link, Section, Wordmark } from '~/components';
 
 import { FadeIn } from './animations';
 
@@ -18,11 +17,8 @@ const Intro: FC = () => (
           <Wordmark size={6} />
         </h1>
         <h2 className="max-w-2xl c-p-lg">
-          My travel blog from many{' '}
-          <Link href="/countries" className="link">
-            countries
-          </Link>{' '}
-          all around the world.
+          My travel blog from many <Link href="/countries">countries</Link> all
+          around the world.
         </h2>
       </div>
     </Section>
