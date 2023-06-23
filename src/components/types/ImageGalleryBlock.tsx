@@ -1,11 +1,12 @@
 'use client';
 
-import { FC, useMemo, useState } from 'react';
-import Image from 'next/image';
 import { JustifiedGrid } from '@egjs/react-grid';
-import FsLightbox from 'fslightbox-react';
-import { ArrowsOut } from 'phosphor-react';
 import cn from 'clsx';
+import FsLightbox from 'fslightbox-react';
+import Image from 'next/image';
+import { ArrowsOut } from 'phosphor-react';
+import { FC, useMemo, useState } from 'react';
+
 import { Section } from '~/components';
 import { getImageProps } from '~/lib/sanityImage';
 

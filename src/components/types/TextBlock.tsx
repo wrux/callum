@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import { PortableTextBlock } from '@portabletext/types';
+import { FC } from 'react';
+
 import { PortableText, Section } from '~/components';
 
 interface TextBlockProps {

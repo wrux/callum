@@ -7,10 +7,10 @@ import {
 } from '@sanity/dashboard';
 import { media } from 'sanity-plugin-media';
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
-// import { schemaTypes } from './schemas';
-// import { dataset, projectId } from './config';
-// import structure from './structure';
-// import { plausibleWidget } from './widgets';
+import { schemaTypes } from '~/sanity/schemas';
+import { dataset, projectId } from '~/sanity/env';
+import structure from '~/sanity/structure';
+import { plausibleWidget } from '~/sanity/widgets';
 import { visionTool } from '@sanity/vision';
 
 export default defineConfig({

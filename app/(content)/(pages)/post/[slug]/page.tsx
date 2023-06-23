@@ -1,6 +1,7 @@
 import { groq } from 'next-sanity';
-import { BlogPosting } from 'schema-dts';
 import { JsonLd } from 'react-schemaorg';
+import { BlogPosting } from 'schema-dts';
+
 import {
   CountryList,
   CoverImage,

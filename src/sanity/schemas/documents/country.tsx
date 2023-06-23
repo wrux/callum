@@ -1,7 +1,8 @@
-import { defineType, defineField } from 'sanity';
 import { countryCodeEmoji } from 'country-code-emoji';
-import countryListAlpha2 from './countryList';
 import { GlobeHemisphereWest } from 'phosphor-react';
+import { defineField, defineType } from 'sanity';
+
+import countryListAlpha2 from './countryList';
 
 const schema = defineType({
   name: 'country',

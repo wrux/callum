@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren } from 'react';
 import {
   DashboardWidget,
   DashboardWidgetContainer,
   LayoutConfig,
 } from '@sanity/dashboard';
 import { Box, Text, useTheme } from '@sanity/ui';
+import { FC, PropsWithChildren } from 'react';
 
 const widgetTitle = 'Plausible Analytics';
 

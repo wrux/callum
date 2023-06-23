@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import cn from 'clsx';
+import { FC } from 'react';
 
 const sizes = [
   'inherit',

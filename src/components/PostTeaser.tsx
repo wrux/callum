@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import Link from 'next/link';
+import { FC } from 'react';
+
 import { CountryList, CoverImage } from '~/components';
 
 const PostTeaser: FC<ArticleTeaser> = ({

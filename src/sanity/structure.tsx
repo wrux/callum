@@ -1,5 +1,5 @@
-import { StructureBuilder } from 'sanity/desk';
 import { GlobeHemisphereWest, NewspaperClipping } from 'phosphor-react';
+import { StructureBuilder } from 'sanity/desk';
 
 const structure = (S: StructureBuilder) =>
   S.list()

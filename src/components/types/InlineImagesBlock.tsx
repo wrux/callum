@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import Image from 'next/image';
+import { FC } from 'react';
+
 import { Section } from '~/components';
 import { getImageProps } from '~/lib/sanityImage';
 

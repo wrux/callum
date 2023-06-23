@@ -1,7 +1,8 @@
 'use client';
 
-import { FC, PropsWithChildren, useEffect, useRef } from 'react';
 import { motion, useAnimation, Variants } from 'framer-motion';
+import { FC, PropsWithChildren, useEffect, useRef } from 'react';
+
 import useIntersectionObserver from '~/hooks/useIntersectionObserver';
 
 const variants: Variants = {

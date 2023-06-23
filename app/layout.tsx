@@ -1,7 +1,7 @@
-import Script from 'next/script';
-import { Inter } from 'next/font/google';
-
 import '~/styles/main.css';
+
+import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
 const sans = Inter({
   variable: '--font-sans',

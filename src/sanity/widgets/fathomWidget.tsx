@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import {
   DashboardWidget,
   DashboardWidgetContainer,
   LayoutConfig,
 } from '@sanity/dashboard';
 import { Box, Text } from '@sanity/ui';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 
 type FathomWidgetConfig = {
   domain: string;

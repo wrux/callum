@@ -1,6 +1,7 @@
-import { defineField, defineType } from 'sanity';
 import { Article } from 'phosphor-react';
-import { previewStructuredText } from 'studio/helpers/previewStructuredText';
+import { defineField, defineType } from 'sanity';
+
+import { previewStructuredText } from '~/sanity/helpers/previewStructuredText';
 
 const schema = defineType({
   type: 'object',

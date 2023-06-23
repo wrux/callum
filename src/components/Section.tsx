@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from 'react';
 import cn from 'clsx';
+import { FC, PropsWithChildren } from 'react';
 
 type spacing = 'sm' | 'md' | 'lg' | 'none';
 

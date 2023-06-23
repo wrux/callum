@@ -1,7 +1,8 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { FC, useEffect, useState } from 'react';
+
 import { Container, Wordmark } from '~/components';
 
 const SiteHeader: FC = () => {

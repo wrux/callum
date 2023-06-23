@@ -1,9 +1,10 @@
-import { client, getDocumentSlugs } from '~/sanity/lib/client';
-import { groq } from 'next-sanity';
 import countryCodeEmoji from 'country-code-emoji';
+import { groq } from 'next-sanity';
+
 import { ListPosts, Section } from '~/components';
-import { imageFragment } from '~/lib/fragments';
 import { FadeIn } from '~/components/animations';
+import { imageFragment } from '~/lib/fragments';
+import { client, getDocumentSlugs } from '~/sanity/lib/client';
 
 export const revalidate = 300;
 

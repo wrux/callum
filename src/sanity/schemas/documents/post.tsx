@@ -1,5 +1,5 @@
 import { NewspaperClipping } from 'phosphor-react';
-import { defineType, defineField } from 'sanity';
+import { defineField, defineType } from 'sanity';
 
 const schema = defineType({
   name: 'post',

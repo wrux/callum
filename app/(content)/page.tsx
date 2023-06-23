@@ -1,7 +1,8 @@
 import { groq } from 'next-sanity';
+
 import { Intro, ListPosts } from '~/components';
-import { client } from '~/sanity/lib/client';
 import { imageFragment } from '~/lib/fragments';
+import { client } from '~/sanity/lib/client';
 
 export const revalidate = 300;
 

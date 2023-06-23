@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity';
 import { Image } from 'phosphor-react';
+import { defineField, defineType } from 'sanity';
 
 const schema = defineType({
   type: 'object',

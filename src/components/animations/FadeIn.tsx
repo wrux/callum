@@ -1,7 +1,7 @@
 'use client';
 
-import { FC, PropsWithChildren } from 'react';
 import { motion } from 'framer-motion';
+import { FC, PropsWithChildren } from 'react';
 
 type FadeInProps = PropsWithChildren<{
   delay?: number;

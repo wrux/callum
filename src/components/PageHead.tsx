@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { urlForImage } from '~/lib/sanityImage';
 
 interface PageHeadProps {
