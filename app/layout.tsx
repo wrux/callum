@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-GB" className={`${sans.variable}`} suppressHydrationWarning>
+      <head>
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+      </head>
       <body>{children}</body>
       {env === 'production' && (
         <Script
