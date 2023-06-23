@@ -10,7 +10,9 @@ const Intro: FC = () => (
     <Section spacing="md">
       <div className="flex flex-col justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0">
         <p className="text-step-5">
-          <span className="inline-block wave animate-wave">👋🏻</span>
+          <span className="inline-block origin-[70% 70%] leading-none animate-wave">
+            👋🏻
+          </span>
         </p>
         <h1 className="mb-4">
           <Wordmark size={6} />
