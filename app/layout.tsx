@@ -3,6 +3,8 @@ import '~/styles/main.css';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 
+const env = process.env.NODE_ENV || 'dev';
+
 const sans = Inter({
   variable: '--font-sans',
   subsets: ['latin'],
@@ -17,12 +19,14 @@ export default function RootLayout({
   return (
     <html lang="en-GB" className={`${sans.variable}`} suppressHydrationWarning>
       <body>{children}</body>
-      <Script
-        src="/stats/js/script.js"
-        strategy="afterInteractive"
-        data-api="/stats/api/event"
-        data-domain="callum.co.uk"
-      />
+      {env === 'production' && (
+        <Script
+          src="/stats/js/script.js"
+          strategy="afterInteractive"
+          data-api="/stats/api/event"
+          data-domain="callum.co.uk"
+        />
+      )}
     </html>
   );
 }
