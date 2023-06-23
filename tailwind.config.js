@@ -1,3 +1,5 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
 
 const textStyles = ({ theme }) => ({
@@ -95,6 +97,9 @@ module.exports = {
         'step-3': 'clamp(2.27rem, calc(2.01rem + 1.29vw), 2.93rem)',
         'step-4': 'clamp(2.72rem, calc(2.36rem + 1.83vw), 3.66rem)',
         'step-5': 'clamp(3.27rem, calc(2.75rem + 2.56vw), 4.58rem)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
       textStyles,
     },
