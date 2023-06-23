@@ -1,8 +1,9 @@
-import { FC } from 'react';
 import { PortableText } from '@portabletext/react';
 import { PortableTextBlock } from '@portabletext/types';
-import block from 'components/block';
-import types from 'components/types';
+import { FC } from 'react';
+
+import block from '~/components/block';
+import types from '~/components/types';
 
 const components = {
   block,

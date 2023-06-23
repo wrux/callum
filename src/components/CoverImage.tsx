@@ -1,7 +1,8 @@
-import { FC } from 'react';
-import Image from 'next/image';
 import cn from 'clsx';
-import { getImageProps } from 'lib/sanityImage';
+import Image from 'next/image';
+import { FC } from 'react';
+
+import { getImageProps } from '~/lib/sanityImage';
 
 type CoverImageProps = PropsWithClassName<{
   title: string;

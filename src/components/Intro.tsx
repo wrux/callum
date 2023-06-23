@@ -1,6 +1,8 @@
-import { FC } from 'react';
 import Link from 'next/link';
-import { Section, Wordmark } from 'components';
+import { FC } from 'react';
+
+import { Section, Wordmark } from '~/components';
+
 import { FadeIn } from './animations';
 
 const Intro: FC = () => (

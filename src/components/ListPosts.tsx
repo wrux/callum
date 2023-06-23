@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
-import { PostTeaser, Section } from 'components';
-import { FadeIn, FadeInOnScroll } from './animations';
+
+import { PostTeaser, Section } from '~/components';
+import { FadeIn, FadeInOnScroll } from '~/components/animations';
 
 const PostTeaserWrapper: FC<
   PropsWithChildren<{

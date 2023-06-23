@@ -1,5 +1,5 @@
-import { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
 import { PortableTextBlock } from '@portabletext/types';
+import { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
 import { Block } from 'sanity';
 
 declare global {

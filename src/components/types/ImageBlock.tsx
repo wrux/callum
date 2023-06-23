@@ -1,7 +1,8 @@
-import { FC } from 'react';
 import Image from 'next/image';
-import { Section } from 'components';
-import { getImageProps } from 'lib/sanityImage';
+import { FC } from 'react';
+
+import { Section } from '~/components';
+import { getImageProps } from '~/lib/sanityImage';
 
 interface ImageBlockProps {
   caption?: string;

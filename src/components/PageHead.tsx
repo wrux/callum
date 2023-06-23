@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { urlForImage } from 'lib/sanityImage';
+
+import { urlForImage } from '~/lib/sanityImage';
 
 interface PageHeadProps {
   fallbacks?: MetaData;

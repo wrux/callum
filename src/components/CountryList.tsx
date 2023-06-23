@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import Link from 'next/link';
 import cn from 'clsx';
 import countryCodeEmoji from 'country-code-emoji';
+import Link from 'next/link';
+import { FC } from 'react';
 
 export type CountryListProps = PropsWithClassName<{
   countries: Array<CountryTeaser>;

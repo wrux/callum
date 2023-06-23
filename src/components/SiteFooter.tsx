@@ -1,10 +1,11 @@
 'use client';
 
-import { FC, HTMLProps } from 'react';
-import Link from 'next/link';
 import cn from 'clsx';
+import Link from 'next/link';
 import { GithubLogo, InstagramLogo, LinkedinLogo } from 'phosphor-react';
-import { Container, Wordmark } from 'components';
+import { FC, HTMLProps } from 'react';
+
+import { Container, Wordmark } from '~/components';
 
 const WruxLogo: FC<PropsWithClassName> = ({ className }) => (
   <svg
