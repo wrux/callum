@@ -1,29 +1,31 @@
-import cn from 'clsx';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { FC, PropsWithChildren } from 'react';
 
-type spacing = 'sm' | 'md' | 'lg' | 'none';
+import { cn } from '~/lib/utilities';
 
-type SectionProps = PropsWithChildren<
-  PropsWithClassName<{
-    spacing?: spacing;
-  }>
->;
+export type SectionVariantProps = VariantProps<typeof sectionVariants>;
 
-const spacingValues: Record<spacing, string> = {
-  sm: 'my-6 md:my-8 lg:my-12',
-  md: 'my-8 md:my-12 lg:my-16',
-  lg: 'my-12 md:my-24 lg:my-32',
-  none: '',
-};
+const sectionVariants = cva(
+  ['mx-auto', 'md:grid', 'md:grid-cols-12', 'gap-4', 'max-w-screen-2xl'],
+  {
+    variants: {
+      spacing: {
+        sm: ['my-6', 'md:my-8', 'lg:my-12'],
+        md: ['my-8', 'md:my-12', 'lg:my-16'],
+        lg: ['my-12', 'md:my-24', 'lg:my-32'],
+        none: [],
+      },
+    },
+    defaultVariants: {
+      spacing: 'sm',
+    },
+  }
+);
 
-const Section: FC<SectionProps> = ({ children, className, spacing = 'sm' }) => (
-  <section
-    className={cn(
-      'mx-auto md:grid md:grid-cols-12 gap-4 max-w-screen-2xl',
-      spacingValues[spacing],
-      className
-    )}
-  >
+const Section: FC<
+  PropsWithChildren<PropsWithClassName<SectionVariantProps>>
+> = ({ children, className, spacing }) => (
+  <section className={cn(sectionVariants({ spacing }), className)}>
     {children}
   </section>
 );

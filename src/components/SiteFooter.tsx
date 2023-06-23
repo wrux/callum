@@ -1,11 +1,10 @@
 'use client';
 
 import cn from 'clsx';
-import Link from 'next/link';
 import { GithubLogo, InstagramLogo, LinkedinLogo } from 'phosphor-react';
 import { FC, HTMLProps } from 'react';
 
-import { Container, Wordmark } from '~/components';
+import { Container, Link, Wordmark } from '~/components';
 
 const WruxLogo: FC<PropsWithClassName> = ({ className }) => (
   <svg
@@ -71,10 +70,10 @@ const SiteFooter: FC = () => {
           <div className="col-span-1">
             <p className="mb-6 c-h5">Navigation</p>
             <nav className="flex flex-col gap-2" aria-label="Footer navigation">
-              <Link href="/" className="c-p link-reverse">
+              <Link href="/" className="c-p" variant="reverse">
                 Home
               </Link>
-              <Link href="/countries" className="c-p link-reverse">
+              <Link href="/countries" className="c-p" variant="reverse">
                 Countries
               </Link>
             </nav>

@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import { groq } from 'next-sanity';
 
-import { Section } from '~/components';
+import { Link, Section } from '~/components';
 import { FadeIn } from '~/components/animations';
 import { client } from '~/sanity/lib/client';
 
@@ -27,7 +26,8 @@ export default async function Countries() {
               <h3 key={country._id} className="mb-5">
                 <Link
                   href={`/countries/${country.slug}`}
-                  className="mb-3 text-3xl leading-snug link-reverse"
+                  className="mb-3 text-3xl leading-snug"
+                  variant="reverse"
                   rel="bookmark"
                 >
                   {country.name}
