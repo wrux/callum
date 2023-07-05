@@ -27,7 +27,7 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "country-code-emoji": "^2.3.0",
-    "framer-motion": "^10.12.16",
+    "framer-motion": "^10.12.18",
     "fslightbox-react": "^1.7.6",
     "next": "13.4.7",
     "next-sanity": "^5.0.2",
