@@ -15,7 +15,7 @@ export const readToken = process.env.SANITY_API_READ_TOKEN;
 
 export const previewSecretDocumentId: `${string}.${string}` = 'preview.secret';
 
-export const useCdn = false;
+export const useCdn = true;
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {

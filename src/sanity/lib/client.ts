@@ -1,4 +1,5 @@
-import { createClient, groq } from 'next-sanity';
+import { createClient } from '@sanity/client';
+import { groq } from 'next-sanity';
 
 import { apiVersion, dataset, projectId, useCdn } from '../env';
 
