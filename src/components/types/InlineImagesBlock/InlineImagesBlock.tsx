@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import { FC } from 'react';
 
 import { Section } from '~/components';
-import { getImageProps } from '~/lib/sanityImage';
+
+import { InlineImagesImage } from './InlineImagesImage';
 
 interface ImageGalleryBlockProps {
   images: Array<{
@@ -18,13 +18,7 @@ const ImageGalleryBlock: FC<ImageGalleryBlockProps> = ({ images = [] }) => {
     <Section>
       <div className="flex flex-col items-center col-span-12 gap-8 sm:flex-row md:gap-12 lg:col-start-3">
         {filteredImages.map(({ caption, image }) => (
-          <Image
-            key={image._id}
-            className="object-cover w-full h-auto"
-            {...getImageProps(image, 680)}
-            alt={image.asset.alt || caption || ''}
-            sizes="100vw"
-          />
+          <InlineImagesImage key={image.id} caption={caption} image={image} />
         ))}
       </div>
     </Section>
