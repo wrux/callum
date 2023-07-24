@@ -29,7 +29,7 @@
     "country-code-emoji": "^2.3.0",
     "framer-motion": "^10.12.21",
     "fslightbox-react": "^1.7.6",
-    "next": "13.4.10",
+    "next": "13.4.12",
     "next-sanity": "^5.1.2",
     "next-sitemap": "^4.1.8",
     "phosphor-react": "^1.4.1",
