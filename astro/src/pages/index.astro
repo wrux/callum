@@ -1,5 +1,5 @@
 ---
-import { ArticleTeaser, CountryList } from '../components';
+import { ArticleTeaser, Wordmark } from '../components';
 import { BaseLayout } from '../layouts';
 
 const postQuery = `
@@ -38,15 +38,6 @@ interface Post {
 
 const client = useSanityClient();
 const posts = await client.fetch<Post[]>(postQuery);
-
-const countries = await client.fetch<Country[]>(
-  `*[_type == "country"] {
-    _id,
-    countryCode,
-    name,
-    "slug": slug.current,
-  }`,
-);
 ---
 
 <BaseLayout
@@ -54,14 +45,34 @@ const countries = await client.fetch<Country[]>(
   description="Lorem ipsum dolor sit amet"
   image="/blog-placeholder-about.jpg"
 >
-  <div class="container">
-    <CountryList countries={countries} />
-
-    <div class="prose my-8">
-      <h1 transition:name={`page-title`}>Latest Articles</h1>
+  <section>
+    <div
+      class="container min-h-most flex flex-col justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
+    >
+      <p class="text-step-5">
+        <span class="inline-block origin-[70% 70%] leading-none animate-wave">
+          👋🏻
+        </span>
+      </p>
+      <div class="prose">
+        <h1 class="mb-4">
+          <Wordmark size={6} />
+        </h1>
+        <h2 class="m-0">
+          My travel blog from many <a href="/countries">countries</a> all around
+          the world.
+        </h2>
+      </div>
     </div>
+  </section>
+
+  <section class="container">
+    <div class="prose my-8">
+      <h2 transition:name={`page-title`}>Latest Articles</h2>
+    </div>
+
     <div class="space-y-6">
       {posts.map((post) => <ArticleTeaser {...post} />)}
     </div>
-  </div>
+  </section>
 </BaseLayout>

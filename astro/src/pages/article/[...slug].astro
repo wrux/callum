@@ -25,8 +25,16 @@ export async function getStaticPaths() {
   }));
 }
 
+interface Country {
+  _id: string;
+  countryCode: string;
+  name: string;
+  slug: string;
+}
+
 interface Post {
   _id: string;
+  countries: Country[];
   excerpt: string;
   publishedAt: string;
   slug: string;
@@ -38,7 +46,7 @@ type Props = Post;
 const post = Astro.props;
 ---
 
-<BaseLayout>
+<BaseLayout activeCountries={post.countries.map(({ _id }) => _id)}>
   <div class="container">
     <article>
       <div class="max-w-prose">
@@ -48,12 +56,6 @@ const post = Astro.props;
         >
           {post.title}
         </h1>
-        <div
-          class="prose lg:prose-lg"
-          transition:name={`article_title_${post.excerpt}`}
-        >
-          <p>{post.excerpt}</p>
-        </div>
       </div>
     </article>
   </div>

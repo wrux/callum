@@ -1,37 +1,51 @@
 ---
+import { useSanityClient } from '@sanity/astro';
+import { Wordmark } from '.';
+
 interface Country {
   _id: string;
   countryCode: string;
   name: string;
   slug: string;
-  posts: Post[];
-}
-
-interface Post {
-  _id: string;
-  excerpt: string;
-  publishedAt: string;
-  slug: string;
-  title: string;
 }
 
 interface Props {
-  countries: Country[];
+  activeCountries?: string[];
 }
 
-const { countries } = Astro.props;
+const client = useSanityClient();
+const countries = await client.fetch<Country[]>(
+  `*[_type == "country"]|order(name asc) {
+    _id,
+    countryCode,
+    name,
+    "slug": slug.current,
+  }`,
+);
+
+const { activeCountries = [] } = Astro.props;
 ---
 
-<nav class="flex flex-wrap gap-4 my-8 max-w-prose">
-  {
-    countries.map((country) => (
-      <a
-        class="inline-block text-xl"
-        href={`/country/${country.slug}`}
-        transition:name={`country_link_${country._id}`}
-      >
-        {country.name}
-      </a>
-    ))
-  }
-</nav>
+<header class="flex items-center gap-12 bg-gray-100 py-2x px-8 overflow-x-auto">
+  <a href="/">
+    <Wordmark size={1} />
+  </a>
+  <nav class="flex items-center gap-4 overflow-x-auto">
+    {
+      countries.map((country) => (
+        <a
+          class="inline-block whitespace-nowrap text-sm underline-offset-4"
+          class:list={[
+            activeCountries.includes(country._id)
+              ? 'underline order-1'
+              : 'order-2',
+          ]}
+          href={`/country/${country.slug}`}
+          transition:name={`country_link_${country._id}`}
+        >
+          {country.name}
+        </a>
+      ))
+    }
+  </nav>
+</header>
