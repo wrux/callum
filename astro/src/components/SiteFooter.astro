@@ -1,0 +1,78 @@
+---
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  navigation: Array<{
+    label: string;
+    href: string;
+  }>;
+}
+
+const { navigation } = Astro.props;
+
+const thisYear = new Date().getFullYear();
+---
+
+<footer class="py-16 text-white bg-black">
+  <div class="container">
+    <p class="mb-8 md:mb-16">
+      <Wordmark size={3} />
+    </p>
+
+    <div class="grid gap-y-16 gap-x-4 md:grid-cols-2 lg:grid-cols-4">
+      <div class="col-span-1">
+        <p class="mb-6 prose-h5">Navigation</p>
+        <nav class="flex flex-col gap-2" aria-label="Footer navigation">
+          {
+            navigation.map((link) => (
+              <li>
+                <a class="prose-p" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </nav>
+      </div>
+
+      <div class="col-span-1">
+        <p class="mb-6 prose-h5">Links</p>
+        <nav aria-label="External links" class="flex gap-2">
+          WRUX, IG, Github, Linkedin
+        </nav>
+      </div>
+
+      <div class="col-span-2">
+        <p class="mb-6 prose-h5">Like this website?</p>
+        <p class="prose-p">
+          If you like this website,{' '}
+          <a
+            href="https://github.com/wrux/bloke"
+            target="_blank"
+            class="link"
+            rel="noreferrer nofollow"
+          >
+            view the source code
+          </a>
+           , fork the project and take whatever you like.
+        </p>
+      </div>
+
+      <div class="col-span-2 lg:col-span-4">
+        <p class="mb-4 prose-p-sm">
+          Copyright &copy;{' '}
+          <a
+            href="https://wrux.com"
+            target="_blank"
+            class="link"
+            aria-label="View my professional profile at wrux.com"
+            rel="noreferrer"
+          >
+            Callum Bonnyman
+          </a>{' '}
+          {thisYear}.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

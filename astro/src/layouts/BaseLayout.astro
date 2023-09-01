@@ -1,0 +1,21 @@
+---
+import '@fontsource-variable/inter';
+import { SiteFooter, SiteHeader } from '../components';
+
+const navigation = [
+  { href: '/', label: 'Home' },
+  { href: '/countries', label: 'Countries' },
+];
+---
+
+<html lang="en">
+  <head> </head>
+
+  <body>
+    <SiteHeader navigation={navigation} />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter navigation={navigation} />
+  </body>
+</html>

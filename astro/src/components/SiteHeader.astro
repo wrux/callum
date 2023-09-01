@@ -1,0 +1,53 @@
+---
+import { Wordmark } from '../components';
+
+interface Props {
+  navigation: Array<{
+    label: string;
+    href: string;
+  }>;
+}
+
+const { navigation } = Astro.props;
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 py-2 transition-transform duration-500 bg-white bg-opacity-80 backdrop-blur-lg"
+>
+  <div class="container flex items-baseline justify-between w-full gap-8">
+    <a href="/">
+      <Wordmark size={3} />
+    </a>
+    <nav>
+      <ul class="flex gap-4">
+        {
+          navigation.map((link) => (
+            <li>
+              <a class="prose-p" href={link.href}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const siteHeader = document.getElementById('site-header');
+  if (siteHeader) {
+    let oldValue = 0;
+    let newValue = 0;
+    const handleVisibility = () => {
+      newValue = window.scrollY;
+      siteHeader?.classList.toggle(
+        '-translate-y-full',
+        !(window.scrollY < 500 || oldValue - newValue > 0),
+      );
+      oldValue = newValue;
+    };
+    window.addEventListener('scroll', handleVisibility, { passive: true });
+  }
+</script>
