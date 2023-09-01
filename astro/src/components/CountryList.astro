@@ -1,0 +1,37 @@
+---
+interface Country {
+  _id: string;
+  countryCode: string;
+  name: string;
+  slug: string;
+  posts: Post[];
+}
+
+interface Post {
+  _id: string;
+  excerpt: string;
+  publishedAt: string;
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  countries: Country[];
+}
+
+const { countries } = Astro.props;
+---
+
+<nav class="flex flex-wrap gap-4 my-8 max-w-prose">
+  {
+    countries.map((country) => (
+      <a
+        class="inline-block text-xl"
+        href={`/country/${country.slug}`}
+        transition:name={`country_link_${country._id}`}
+      >
+        {country.name}
+      </a>
+    ))
+  }
+</nav>

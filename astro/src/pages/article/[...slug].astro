@@ -1,0 +1,60 @@
+---
+import { useSanityClient } from '@sanity/astro';
+import { BaseLayout } from '../../layouts';
+
+export async function getStaticPaths() {
+  const client = useSanityClient();
+  const posts = await client.fetch<Post[]>(
+    `*[_type == "post"] {
+			_id,
+			title,
+			publishedAt,
+			excerpt,
+			"countries": countries[] -> {
+				_id,
+				countryCode,
+				name,
+				"slug": slug.current,
+			},
+			"slug": slug.current,
+		}`,
+  );
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+interface Post {
+  _id: string;
+  excerpt: string;
+  publishedAt: string;
+  slug: string;
+  title: string;
+}
+
+type Props = Post;
+
+const post = Astro.props;
+---
+
+<BaseLayout>
+  <div class="container">
+    <article>
+      <div class="max-w-prose">
+        <h1
+          class="text-4xl font-semibold"
+          transition:name={`article_title_${post._id}`}
+        >
+          {post.title}
+        </h1>
+        <div
+          class="prose lg:prose-lg"
+          transition:name={`article_title_${post.excerpt}`}
+        >
+          <p>{post.excerpt}</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

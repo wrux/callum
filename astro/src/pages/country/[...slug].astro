@@ -1,0 +1,67 @@
+---
+import { useSanityClient } from '@sanity/astro';
+import { ArticleTeaser, CountryList } from '../../components';
+import { BaseLayout } from '../../layouts';
+
+export async function getStaticPaths() {
+  const client = useSanityClient();
+  const countries = await client.fetch<Country[]>(
+    `*[_type == "country"] {
+			_id,
+      countryCode,
+      name,
+      "slug": slug.current,
+      "posts": *[_type == "post" && references(^._id)]|order(publishedAt desc, _updatedAt desc)[] {
+        _id,
+        excerpt,
+        title,
+        "slug": slug.current,
+      },
+		}`,
+  );
+  return countries.map((country) => ({
+    params: { slug: country.slug },
+    props: {
+      country,
+      allCountries: countries,
+    },
+  }));
+}
+
+interface Country {
+  _id: string;
+  countryCode: string;
+  name: string;
+  slug: string;
+  posts: Post[];
+}
+
+interface Post {
+  _id: string;
+  excerpt: string;
+  publishedAt: string;
+  slug: string;
+  title: string;
+}
+
+type Props = {
+  allCountries: Country[];
+  country: Country;
+};
+
+const { allCountries, country } = Astro.props;
+---
+
+<BaseLayout>
+  <div class="container">
+    <CountryList countries={allCountries} />
+    <article>
+      <div class="prose my-8">
+        <h1 transition:name={`page-title`}>
+          {country.name}
+        </h1>
+      </div>
+      {country.posts.map((post) => <ArticleTeaser {...post} />)}
+    </article>
+  </div>
+</BaseLayout>
