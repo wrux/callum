@@ -8,6 +8,9 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://callum.co.uk',
+  image: {
+    domains: ['cdn.sanity.io'],
+  },
   integrations: [
     mdx(),
     sitemap(),

@@ -1,11 +1,12 @@
 ---
 import { useSanityClient } from '@sanity/astro';
-import { ArticleTeaser } from '../../components';
+import { ArticleTeaser, PageTitle, Section } from '../../components';
 import { BaseLayout } from '../../layouts';
+import { imageFragment } from '../../sanity/fragments';
 
 export async function getStaticPaths() {
   const client = useSanityClient();
-  const countries = await client.fetch<Country[]>(
+  const countries = await client.fetch<CountryWithPosts[]>(
     `*[_type == "country"] {
 			_id,
       countryCode,
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
         _id,
         excerpt,
         title,
+        ${imageFragment('mainImage')},
         "slug": slug.current,
       },
 		}`,
@@ -25,38 +27,20 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Country {
-  _id: string;
-  countryCode: string;
-  name: string;
-  slug: string;
-  posts: Post[];
-}
-
-interface Post {
-  _id: string;
-  excerpt: string;
-  publishedAt: string;
-  slug: string;
-  title: string;
-}
-
-type Props = Country;
+type Props = CountryWithPosts;
 
 const country = Astro.props;
 ---
 
 <BaseLayout activeCountries={[country._id]}>
-  <div class="container">
-    <article>
-      <div class="prose my-8">
-        <h1 transition:name={`page-title`}>
-          Posts in {country.name}
-        </h1>
-      </div>
-      <div class="space-y-6">
+  <Section spacing="md">
+    <div class="px-5 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0">
+      <PageTitle className="mb-16">
+        Posts in {country.name}
+      </PageTitle>
+      <div class="space-y-12">
         {country.posts.map((post) => <ArticleTeaser {...post} />)}
       </div>
-    </article>
-  </div>
+    </div>
+  </Section>
 </BaseLayout>

@@ -1,0 +1,22 @@
+---
+import SanityImage from '../SanityImage.astro';
+import Section from '../Section.astro';
+
+const { images } = Astro.props.node;
+---
+
+<Section data-block="inline-images">
+  <div
+    class="flex flex-col items-center col-span-12 gap-8 sm:flex-row md:gap-12 lg:col-start-3"
+  >
+    {
+      images.map(({ caption, image }) => (
+        <SanityImage
+          image={image}
+          alt={image.asset.alt || caption || ''}
+          sizes="100vw"
+        />
+      ))
+    }
+  </div>
+</Section>

@@ -1,24 +1,46 @@
 ---
-type Props = {
+import { SanityImage } from '.';
+
+export type Props = {
   _id: string;
   excerpt: string;
   publishedAt: string;
+  mainImage: any;
   slug: string;
   title: string;
 };
 
-const { _id, excerpt, slug, title } = Astro.props;
+const { _id, excerpt, mainImage, slug, title } = Astro.props;
 ---
 
-<article>
-  <div class="max-w-prose">
-    <h2 class="text-4xl font-semibold" transition:name={`article_title_${_id}`}>
-      <a href={`/article/${slug}`}>
-        {title}
-      </a>
-    </h2>
-    <div class="prose lg:prose-lg" transition:name={`article_title_${excerpt}`}>
-      <p>{excerpt}</p>
+<article class="flex flex-col md:flex-row gap-x-16 gap-y-8 fade-in-up">
+  {
+    mainImage && (
+      <figure>
+        <SanityImage
+          image={mainImage}
+          width="600"
+          transition:name={`article_cover_${_id}`}
+        />
+        {mainImage?.alt && <figcaption>{mainImage.alt}</figcaption>}
+      </figure>
+    )
+  }
+  <div>
+    <div class="max-w-prose">
+      <h2 class="text-5xl font-semibold mb-8">
+        <a href={`/article/${slug}`}>
+          {title}
+        </a>
+      </h2>
+      {
+        excerpt && (
+          <div class="prose lg:prose-lg mb-6">
+            <p>{excerpt}</p>
+          </div>
+        )
+      }
+      <a class="link" href={`/article/${slug}`}> Read full article</a>
     </div>
   </div>
 </article>

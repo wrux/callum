@@ -1,61 +1,90 @@
 ---
 import { useSanityClient } from '@sanity/astro';
 import { BaseLayout } from '../../layouts';
+import { PortableText, SanityImage } from '../../components';
+import { imageFragment } from '../../sanity/fragments';
+import groq from 'groq';
 
 export async function getStaticPaths() {
   const client = useSanityClient();
-  const posts = await client.fetch<Post[]>(
-    `*[_type == "post"] {
-			_id,
-			title,
-			publishedAt,
-			excerpt,
-			"countries": countries[] -> {
-				_id,
-				countryCode,
-				name,
-				"slug": slug.current,
-			},
-			"slug": slug.current,
-		}`,
-  );
+  const posts = await client.fetch<Article[]>(groq`
+    *[_type == "post"] {
+      _id,
+      title,
+      publishedAt,
+      excerpt,
+      content[] {
+        ...,
+        _type == "imageBlock" => {
+          ${imageFragment('image')},
+        },
+        _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
+          images[] {
+            _key,
+            caption,
+            ${imageFragment('image')},
+          },
+        },
+      },
+      "countries": countries[] -> {
+        _id,
+        countryCode,
+        name,
+        "slug": slug.current,
+      },
+      ${imageFragment('mainImage')},
+      "slug": slug.current,
+    }
+  `);
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
   }));
 }
 
-interface Country {
-  _id: string;
-  countryCode: string;
-  name: string;
-  slug: string;
-}
-
-interface Post {
-  _id: string;
-  countries: Country[];
-  excerpt: string;
-  publishedAt: string;
-  slug: string;
-  title: string;
-}
-
-type Props = Post;
+type Props = Article;
 
 const post = Astro.props;
+
 ---
 
 <BaseLayout activeCountries={post.countries.map(({ _id }) => _id)}>
-  <div class="container">
+  <div class="container max-w-screen-2xl my-8 md:my-12 lg:my-16">
     <article>
-      <div class="max-w-prose">
-        <h1
-          class="text-4xl font-semibold"
-          transition:name={`article_title_${post._id}`}
-        >
-          {post.title}
-        </h1>
+      <div class="flex flex-col md:flex-row gap-x-16 gap-y-8">
+        {
+          post.mainImage && (
+            <figure class="w-1/2" transition:name={`article_image_${post._id}`}>
+              <SanityImage
+                image={post.mainImage}
+                width="1280"
+                transition:name={`article_cover_${post._id}`}
+              />
+              {post.mainImage?.alt && (
+                <figcaption>{post.mainImage.alt}</figcaption>
+              )}
+            </figure>
+          )
+        }
+        <div class="w-1/2 space-y-6">
+          <h2 class="text-5xl font-semibold mb-8">
+            {post.title}
+          </h2>
+          {
+            post?.excerpt && (
+              <div
+                class="prose-xl max-w-prose"
+                transition:name={`article_excerpt_${post._id}`}
+              >
+                <p>{post.excerpt}</p>
+              </div>
+            )
+          }
+        </div>
+      </div>
+
+      <div class="mt-8 lg:mt-16">
+        <PortableText value={post.content} />
       </div>
     </article>
   </div>

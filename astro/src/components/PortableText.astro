@@ -1,0 +1,27 @@
+---
+import { PortableText as PortableTextInternal } from 'astro-portabletext';
+import { mergeComponents } from 'astro-portabletext/utils';
+import ImageBlock from './blocks/ImageBlock.astro';
+import ImageGalleryBlock from './blocks/ImageGalleryBlock.astro';
+import InlineImagesBlock from './blocks/InlineImagesBlock.astro';
+import TextBlock from './blocks/TextBlock.astro';
+
+type PortableTextProps = Parameters<typeof PortableTextInternal>[0];
+
+export type Props = Pick<PortableTextProps, 'value' | 'components'>;
+
+const { value, components: overrideComponents = {} } = Astro.props;
+
+const customComponents = {
+  type: {
+    imageBlock: ImageBlock,
+    imageGalleryBlock: ImageGalleryBlock,
+    inlineImagesBlock: InlineImagesBlock,
+    textBlock: TextBlock,
+  },
+};
+
+const components = mergeComponents(customComponents, overrideComponents);
+---
+
+<PortableTextInternal value={value} components={components} />

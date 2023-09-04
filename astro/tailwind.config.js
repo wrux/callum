@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      // padding: {
-      //   DEFAULT: '1rem',
-      //   sm: '2rem',
-      //   lg: '4rem',
-      // },
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+      },
       // mx-auto px-5 lg:px-0
     },
     extend: {

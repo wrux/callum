@@ -1,0 +1,15 @@
+.link {
+  @apply text-step--1 transition-colors;
+
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-position: under;
+
+  &:hover,
+  &:focus {
+    @apply text-brand;
+
+    text-decoration-color: currentColor;
+  }
+}

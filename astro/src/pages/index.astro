@@ -1,6 +1,14 @@
 ---
-import { ArticleTeaser, Wordmark } from '../components';
+import type { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
+import { ArticleTeaser, PageTitle, Section, Wordmark } from '../components';
 import { BaseLayout } from '../layouts';
+
+const countriesQuery = `*[_type == "country"]|order(name asc) {
+  _id,
+  countryCode,
+  name,
+  "slug": slug.current,
+}`;
 
 const postQuery = `
   *[_type == "post"] | order(publishedAt desc, _updatedAt desc) {
@@ -14,29 +22,28 @@ const postQuery = `
       name,
       "slug": slug.current,
     },
+    ${imageFragment('mainImage')},
     "slug": slug.current,
   }
 `;
 
 import { useSanityClient } from '@sanity/astro';
+import { imageFragment } from '../sanity/fragments';
 
-interface Country {
-  _id: string;
-  countryCode: string;
-  name: string;
-  slug: string;
-  posts: Post[];
+interface ImageWithMeta extends SanityImageAssetDocument {
+  alt?: string;
 }
 
-interface Post {
-  _id: string;
+interface Post extends SanityDocument {
   excerpt: string;
   publishedAt: string;
+  mainImage: ImageWithMeta;
   slug: string;
   title: string;
 }
 
 const client = useSanityClient();
+const countries = await client.fetch<Country[]>(countriesQuery);
 const posts = await client.fetch<Post[]>(postQuery);
 ---
 
@@ -45,9 +52,9 @@ const posts = await client.fetch<Post[]>(postQuery);
   description="Lorem ipsum dolor sit amet"
   image="/blog-placeholder-about.jpg"
 >
-  <section>
+  <Section spacing="md">
     <div
-      class="container min-h-most flex flex-col justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
+      class="flex flex-col justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
     >
       <p class="text-step-5">
         <span class="inline-block origin-[70% 70%] leading-none animate-wave">
@@ -55,24 +62,35 @@ const posts = await client.fetch<Post[]>(postQuery);
         </span>
       </p>
       <div class="prose">
-        <h1 class="mb-4">
+        <h1 class="mb-8">
           <Wordmark size={6} />
         </h1>
-        <h2 class="m-0">
-          My travel blog from many <a href="/countries">countries</a> all around
-          the world.
+        <h2 class="mt-0 mb-4">
+          My travel blog from many countries all around the world.
         </h2>
+        <nav class="flex flex-wrap items-center gap-4 overflow-x-auto">
+          {
+            countries.map((country) => (
+              <a
+                class="inline-block text-sm underline-offset-4"
+                href={`/country/${country.slug}`}
+                transition:name={`country_link_${country._id}`}
+              >
+                {country.name}
+              </a>
+            ))
+          }
+        </nav>
       </div>
     </div>
-  </section>
+  </Section>
 
-  <section class="container">
-    <div class="prose my-8">
-      <h2 transition:name={`page-title`}>Latest Articles</h2>
+  <Section spacing="md">
+    <div class="px-5 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0">
+      <PageTitle as="h2" className="mb-16">Latest Articles</PageTitle>
+      <div class="space-y-12">
+        {posts.map((post) => <ArticleTeaser {...post} />)}
+      </div>
     </div>
-
-    <div class="space-y-6">
-      {posts.map((post) => <ArticleTeaser {...post} />)}
-    </div>
-  </section>
+  </Section>
 </BaseLayout>

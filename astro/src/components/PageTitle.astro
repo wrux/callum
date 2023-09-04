@@ -1,0 +1,14 @@
+---
+export type Props = {
+  as?: string;
+  className?: string | string[];
+};
+
+const { as: As = 'h1', className } = Astro.props;
+---
+
+<div class:list={['class="prose lg:prose-lg prose-headings:mt-0"', className]}>
+  <As>
+    <slot />
+  </As>
+</div>

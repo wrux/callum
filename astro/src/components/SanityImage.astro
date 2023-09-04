@@ -1,0 +1,27 @@
+---
+import imageUrlBuilder from '@sanity/image-url';
+import { useSanityClient } from '@sanity/astro';
+import SanityPicture from 'astro-sanity-picture';
+
+const client = useSanityClient();
+const imageBuilder = imageUrlBuilder(client);
+
+// const imageBuilder = imageUrlBuilder(client)
+//   .fit('max')
+//   .auto('format');
+
+const { aspectRatio = '16:9', image, ...props } = Astro.props;
+---
+
+<SanityPicture
+  src={image}
+  imageUrlBuilder={imageBuilder}
+  sizes="(min-width: 768px) 50vw, 100vw"
+  img={{
+    alt: image?.alt || '',
+    title: image?.alt,
+    class: 'h-auto object-cover bg-gray-100',
+    style: { aspectRatio },
+  }}
+  {...props}
+/>
