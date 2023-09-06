@@ -2,9 +2,9 @@ name: ESLint
 
 on:
   push:
-    branches: ['main']
+    branches: [main]
   pull_request:
-    branches: ['main']
+    branches: [main]
 
 jobs:
   build:
@@ -14,12 +14,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: |
-          echo "NPMRC"
-          cat ~/.npmrc
-          echo "@wrux:registry=https://npm.pkg.github.com
-          npm.pkg.github.com/:_authToken=${{ secrets.NPM_PAT }}" > ~/.npmrc
-          echo "UPDATED NPMRC"
-          cat ~/.npmrc
-      - run: npm ci
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm run lint
