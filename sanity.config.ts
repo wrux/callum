@@ -1,17 +1,18 @@
-import { defineConfig } from 'sanity';
-import { deskTool } from 'sanity/desk';
 import {
   dashboardTool,
-  projectUsersWidget,
   projectInfoWidget,
+  projectUsersWidget,
 } from '@sanity/dashboard';
-import { media } from 'sanity-plugin-media';
-import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
-import { schemaTypes } from '~/sanity/schemas';
-import { dataset, projectId } from '~/sanity/env';
-import structure from '~/sanity/structure';
-import { plausibleWidget } from '~/sanity/widgets';
 import { visionTool } from '@sanity/vision';
+import { plausibleWidget } from '@wrux/sanity-analytics-dashboard-widgets';
+import { defineConfig } from 'sanity';
+import { deskTool } from 'sanity/desk';
+import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
+import { media } from 'sanity-plugin-media';
+
+import { dataset, projectId } from '~/sanity/env';
+import { schemaTypes } from '~/sanity/schemas';
+import structure from '~/sanity/structure';
 
 export default defineConfig({
   basePath: '/studio',
