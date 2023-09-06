@@ -14,8 +14,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          always-auth: true
-          registry-url: https://npm.pkg.github.com
+      - name: Setup .npmrc
+        run: |
+          echo "@wrux:registry=https://npm.pkg.github.com
+          npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
