@@ -12,18 +12,18 @@ const { activeCountries = [] } = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-50 px-5 bg-brand-black bg-opacity-10 backdrop-blur-lg drop-shadow-sm"
+  class="sticky top-0 z-50 pl-5 bg-white dark:bg-brand-black bg-opacity-50 backdrop-blur-lg drop-shadow-sm"
   transition:name="site-header"
 >
   <div class="flex items-center gap-5 overflow-x-auto max-w-screen-2xl mx-auto">
     <a href="/">
       <Wordmark size={1} />
     </a>
-    <nav class="flex items-center gap-2 overflow-x-auto py-4">
+    <nav class="flex items-center gap-2 overflow-x-auto py-4 pr-5">
       {
         countries.map((country) => (
           <a
-            class="inline-block py-2 px-3 rounded-full whitespace-nowrap text-sm underline-offset-4 leading-none"
+            class="inline-block py-2 px-3 rounded-full whitespace-nowrap text-sm underline decoration-transparent underline-offset-4 leading-none hover:decoration-current focus:decoration-current transition-colors"
             class:list={[
               activeCountries.includes(country._id)
                 ? 'bg-black text-white dark:bg-white dark:text-black order-1'

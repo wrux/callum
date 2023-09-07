@@ -7,15 +7,17 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
   Astro.props;
 ---
 
-<article class="flex flex-col md:flex-row gap-8 fade-in-up link-box">
+<article class="flex flex-col md:flex-row gap-8 fade-in-up link-box group">
   {
     mainImage && (
       <figure>
-        <SanityImage
-          image={mainImage}
-          width="600"
-          transition:name={`article_cover_${_id}`}
-        />
+        <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-70">
+          <SanityImage
+            image={mainImage}
+            width="600"
+            transition:name={`article_cover_${_id}`}
+          />
+        </div>
         {mainImage?.alt && (
           <figcaption class="mt-1 text-step--2 italic">
             {mainImage.alt}
@@ -38,7 +40,9 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
           </p>
         )
       }
-      <h2 class="text-5xl font-semibold mb-8">
+      <h2
+        class="text-5xl font-semibold mb-8 group-hover:text-brand-medium transition-colors duration-300"
+      >
         {title}
       </h2>
       {
