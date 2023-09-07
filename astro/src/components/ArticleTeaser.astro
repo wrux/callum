@@ -5,12 +5,15 @@ export type Props = {
   _id: string;
   excerpt: string;
   publishedAt: string;
+  imageCount?: number;
   mainImage: any;
+  readingTime?: number;
   slug: string;
   title: string;
 };
 
-const { _id, excerpt, mainImage, slug, title } = Astro.props;
+const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
+  Astro.props;
 ---
 
 <article class="flex flex-col md:flex-row gap-8 fade-in-up link-box">
@@ -32,6 +35,18 @@ const { _id, excerpt, mainImage, slug, title } = Astro.props;
   }
   <div>
     <div class="max-w-prose">
+      {
+        (imageCount || readingTime) && (
+          <p class="mb-2 text-step--2 text-gray-500 dark:text-gray-400">
+            {[
+              readingTime && `${readingTime} minute read`,
+              imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
+            ]
+              .filter(Boolean)
+              .join(' and ')}
+          </p>
+        )
+      }
       <h2 class="text-5xl font-semibold mb-8">
         {title}
       </h2>

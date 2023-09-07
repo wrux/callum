@@ -33,6 +33,24 @@ export async function getStaticPaths() {
         "slug": slug.current,
       },
       ${imageFragment('mainImage')},
+      "imageCount": math::sum(
+        content[] {
+          "count": 0,
+          _type == "imageBlock" => {
+            "count": 1,
+          },
+          _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
+            "count": length(images[]),
+          },
+        }.count
+      ),
+      // Assumes 5 characters as mean word length
+      // https://ux.stackexchange.com/questions/22520/how-long-does-it-take-to-read-x-number-of-characters
+      // Words per minute: 180
+      "readingTime": round(
+        length(pt::text(content[].content))
+        / 5 / 180
+      ),
       "slug": slug.current,
     }
   `);
@@ -67,20 +85,35 @@ const post = Astro.props;
         }
       </div>
       <div class="md:col-span-6 py-8 md:px-8 lg:p-12 xl:p-16 space-y-6">
-        <DateTime date={post.publishedAt} />
+        {
+          (post?.imageCount || post?.readingTime) && (
+            <p class="mb-2 text-step--2 text-gray-500 dark:text-gray-400">
+              {[
+                post?.readingTime && `${post.readingTime} minute read`,
+                post?.imageCount &&
+                  `${post.imageCount} image${post.imageCount > 1 ? 's' : ''}`,
+              ]
+                .filter(Boolean)
+                .join(' and ')}
+            </p>
+          )
+        }
         <h2 class="text-5xl font-semibold mb-8">
           {post.title}
         </h2>
         {
           post?.excerpt && (
             <div
-              class="prose-xl max-w-[40ch] dark:prose-invert"
+              class="prose-xl dark:prose-invert"
               transition:name={`article_excerpt_${post._id}`}
             >
               <p>{post.excerpt}</p>
             </div>
           )
         }
+        <p class="text-step--2 leading-none">
+          Posted on <DateTime date={post.publishedAt} />
+        </p>
       </div>
     </Section>
 
