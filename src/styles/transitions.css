@@ -4,17 +4,20 @@
   animation-name: fadeInUp;
   animation-fill-mode: both;
   animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 10% 60%;
-  transform-origin: top left;
+  animation-range: entry 50% contain 50%;
 }
 
 @keyframes fadeInUp {
-  from {
+  0% {
     opacity: 0;
     transform: translateY(10rem);
   }
 
-  to {
+  50% {
+    opacity: 0.25;
+  }
+
+  100% {
     opacity: 1;
     transform: translateY(0px);
   }
@@ -33,7 +36,7 @@
 @keyframes scaleInUp {
   0% {
     opacity: 0;
-    transform: translateY(100px) scale(0.95);
+    transform: translateY(10rem) scale(0.95);
   }
 
   25% {
@@ -42,6 +45,6 @@
 
   100% {
     opacity: 1;
-    transform: translateY(0px) scale(1);
+    transform: translateY(0rem) scale(1);
   }
 }
