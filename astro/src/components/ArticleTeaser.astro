@@ -13,7 +13,7 @@ export type Props = {
 const { _id, excerpt, mainImage, slug, title } = Astro.props;
 ---
 
-<article class="flex flex-col md:flex-row gap-x-16 gap-y-8 fade-in-up">
+<article class="flex flex-col md:flex-row gap-8 fade-in-up link-box">
   {
     mainImage && (
       <figure>
@@ -22,25 +22,34 @@ const { _id, excerpt, mainImage, slug, title } = Astro.props;
           width="600"
           transition:name={`article_cover_${_id}`}
         />
-        {mainImage?.alt && <figcaption>{mainImage.alt}</figcaption>}
+        {mainImage?.alt && (
+          <figcaption class="mt-1 text-step--2 italic">
+            {mainImage.alt}
+          </figcaption>
+        )}
       </figure>
     )
   }
   <div>
     <div class="max-w-prose">
       <h2 class="text-5xl font-semibold mb-8">
-        <a href={`/article/${slug}`}>
-          {title}
-        </a>
+        {title}
       </h2>
       {
         excerpt && (
-          <div class="prose lg:prose-lg mb-6">
+          <div class="prose lg:prose-lg dark:prose-invert mb-6">
             <p>{excerpt}</p>
           </div>
         )
       }
-      <a class="link" href={`/article/${slug}`}> Read full article</a>
+      <a
+        class="link link-overlay"
+        href={`/article/${slug}`}
+        title={`Read full article: ${title}`}
+        aria-label={`Read full article: ${title}`}
+      >
+        Read full article
+      </a>
     </div>
   </div>
 </article>

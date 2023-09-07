@@ -26,18 +26,16 @@ const navigation = [
 ];
 ---
 
-<html class="flex flex-col h-full" lang="en" transition:animate="none">
+<html lang="en" transition:animate="none">
   <head>
     <ViewTransitions />
     <BaseHead description={description} title={title} image={image} />
   </head>
 
-  <body class="flex flex-col h-full">
-    <header class="w-full">
-      <slot name="header">
-        <SiteHeader activeCountries={activeCountries} />
-      </slot>
-    </header>
+  <body class="bg-white text-brand-black dark:bg-brand-black dark:text-white">
+    <slot name="header">
+      <SiteHeader activeCountries={activeCountries} />
+    </slot>
     <main class="mb-16 flex-1 md:mb-24 lg:mb-32" transition:animate="fade">
       <slot />
     </main>

@@ -18,8 +18,12 @@ module.exports = {
         wave: 'wave 2.5s linear infinite',
       },
       colors: {
-        brand: '#ef233c',
-        secondary: '#25103f',
+        brand: {
+          black: 'rgb(4, 13, 18)',
+          dark: 'rgb(24, 61, 61)',
+          medium: 'rgb(92, 131, 116)',
+          light: 'rgb(147, 177, 166)',
+        },
         wrux: '#00eacf',
       },
       fontFamily: {

@@ -72,7 +72,7 @@ const post = Astro.props;
           {
             post?.excerpt && (
               <div
-                class="prose-xl max-w-prose"
+                class="prose-xl max-w-prose dark:prose-invert"
                 transition:name={`article_excerpt_${post._id}`}
               >
                 <p>{post.excerpt}</p>

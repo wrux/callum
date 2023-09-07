@@ -53,7 +53,7 @@ const posts = await client.fetch<Post[]>(postQuery);
   image="/blog-placeholder-about.jpg"
 >
   <Section spacing="md" slot="header">
-    <div
+    <header
       class="flex flex-col justify-center min-h-most col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
     >
       <p class="text-step-5">
@@ -61,18 +61,18 @@ const posts = await client.fetch<Post[]>(postQuery);
           👋🏻
         </span>
       </p>
-      <div class="prose">
+      <div class="prose dark:prose-invert">
         <h1 class="mb-8">
           <Wordmark size={6} />
         </h1>
         <h2 class="mt-0 mb-4">
           My travel blog from many countries all around the world.
         </h2>
-        <nav class="flex flex-wrap items-center gap-4 overflow-x-auto">
+        <nav class="flex flex-wrap items-center gap-y-6 gap-x-4">
           {
             countries.map((country) => (
               <a
-                class="inline-block text-sm underline-offset-4"
+                class="text-step--1 leading-none link"
                 href={`/country/${country.slug}`}
                 transition:name={`country_link_${country._id}`}
               >
@@ -82,7 +82,7 @@ const posts = await client.fetch<Post[]>(postQuery);
           }
         </nav>
       </div>
-    </div>
+    </header>
   </Section>
 
   <Section spacing="md">
