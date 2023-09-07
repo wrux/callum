@@ -1,16 +1,7 @@
 ---
 import { SanityImage } from '.';
 
-export type Props = {
-  _id: string;
-  excerpt: string;
-  publishedAt: string;
-  imageCount?: number;
-  mainImage: any;
-  readingTime?: number;
-  slug: string;
-  title: string;
-};
+export type Props = ArticleTeaser;
 
 const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
   Astro.props;

@@ -1,68 +1,10 @@
 ---
-import type { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
 import { ArticleTeaser, PageTitle, Section, Wordmark } from '../components';
 import { BaseLayout } from '../layouts';
+import { getCountryList, getLatestPosts } from '../sanity/queries';
 
-const countriesQuery = `*[_type == "country"]|order(name asc) {
-  _id,
-  countryCode,
-  name,
-  "slug": slug.current,
-}`;
-
-const postQuery = `
-  *[_type == "post"] | order(publishedAt desc, _updatedAt desc) {
-    _id,
-    title,
-    publishedAt,
-    excerpt,
-    "countries": countries[] -> {
-      _id,
-      countryCode,
-      name,
-      "slug": slug.current,
-    },
-    ${imageFragment('mainImage')},
-    "imageCount": math::sum(
-      content[] {
-        "count": 0,
-        _type == "imageBlock" => {
-          "count": 1,
-        },
-        _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
-          "count": length(images[]),
-        },
-      }.count
-    ),
-    // Assumes 5 characters as mean word length
-    // https://ux.stackexchange.com/questions/22520/how-long-does-it-take-to-read-x-number-of-characters
-    // Words per minute: 180
-    "readingTime": round(
-      length(pt::text(content[].content))
-      / 5 / 180
-    ),
-    "slug": slug.current,
-  }
-`;
-
-import { useSanityClient } from '@sanity/astro';
-import { imageFragment } from '../sanity/fragments';
-
-interface ImageWithMeta extends SanityImageAssetDocument {
-  alt?: string;
-}
-
-interface Post extends SanityDocument {
-  excerpt: string;
-  publishedAt: string;
-  mainImage: ImageWithMeta;
-  slug: string;
-  title: string;
-}
-
-const client = useSanityClient();
-const countries = await client.fetch<Country[]>(countriesQuery);
-const posts = await client.fetch<Post[]>(postQuery);
+const countries = await getCountryList();
+const posts = await getLatestPosts();
 ---
 
 <BaseLayout

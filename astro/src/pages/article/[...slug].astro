@@ -1,59 +1,10 @@
 ---
-import { useSanityClient } from '@sanity/astro';
 import { BaseLayout } from '../../layouts';
 import { DateTime, PortableText, SanityImage, Section } from '../../components';
-import { imageFragment } from '../../sanity/fragments';
-import groq from 'groq';
+import { getPosts } from '../../sanity/queries';
 
 export async function getStaticPaths() {
-  const client = useSanityClient();
-  const posts = await client.fetch<Article[]>(groq`
-    *[_type == "post"] {
-      _id,
-      title,
-      publishedAt,
-      excerpt,
-      content[] {
-        ...,
-        _type == "imageBlock" => {
-          ${imageFragment('image')},
-        },
-        _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
-          images[] {
-            _key,
-            caption,
-            ${imageFragment('image')},
-          },
-        },
-      },
-      "countries": countries[] -> {
-        _id,
-        countryCode,
-        name,
-        "slug": slug.current,
-      },
-      ${imageFragment('mainImage')},
-      "imageCount": math::sum(
-        content[] {
-          "count": 0,
-          _type == "imageBlock" => {
-            "count": 1,
-          },
-          _type in ["imageGalleryBlock", "inlineImagesBlock"] => {
-            "count": length(images[]),
-          },
-        }.count
-      ),
-      // Assumes 5 characters as mean word length
-      // https://ux.stackexchange.com/questions/22520/how-long-does-it-take-to-read-x-number-of-characters
-      // Words per minute: 180
-      "readingTime": round(
-        length(pt::text(content[].content))
-        / 5 / 180
-      ),
-      "slug": slug.current,
-    }
-  `);
+  const posts = await getPosts();
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,

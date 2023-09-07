@@ -1,27 +1,12 @@
 ---
-import { useSanityClient } from '@sanity/astro';
 import { Wordmark } from '../components';
-
-interface Country {
-  _id: string;
-  countryCode: string;
-  name: string;
-  slug: string;
-}
+import { getCountryList } from '../sanity/queries';
 
 interface Props {
   activeCountries?: string[];
 }
 
-const client = useSanityClient();
-const countries = await client.fetch<Country[]>(
-  `*[_type == "country"]|order(name asc) {
-    _id,
-    countryCode,
-    name,
-    "slug": slug.current,
-  }`,
-);
+const countries = await getCountryList();
 
 const { activeCountries = [] } = Astro.props;
 ---
