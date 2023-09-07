@@ -1,7 +1,7 @@
 ---
 import { useSanityClient } from '@sanity/astro';
 import { BaseLayout } from '../../layouts';
-import { PortableText, SanityImage } from '../../components';
+import { DateTime, PortableText, SanityImage, Section } from '../../components';
 import { imageFragment } from '../../sanity/fragments';
 import groq from 'groq';
 
@@ -48,12 +48,12 @@ const post = Astro.props;
 ---
 
 <BaseLayout activeCountries={post.countries.map(({ _id }) => _id)}>
-  <div class="container max-w-screen-2xl my-8 md:my-12 lg:my-16">
-    <article>
-      <div class="flex flex-col md:flex-row gap-x-16 gap-y-8">
+  <article>
+    <Section spacing="none">
+      <div class="md:col-span-6 md:px-0">
         {
           post.mainImage && (
-            <figure class="w-1/2" transition:name={`article_image_${post._id}`}>
+            <figure transition:name={`article_image_${post._id}`}>
               <SanityImage
                 image={post.mainImage}
                 width="1280"
@@ -65,26 +65,27 @@ const post = Astro.props;
             </figure>
           )
         }
-        <div class="w-1/2 space-y-6">
-          <h2 class="text-5xl font-semibold mb-8">
-            {post.title}
-          </h2>
-          {
-            post?.excerpt && (
-              <div
-                class="prose-xl max-w-prose dark:prose-invert"
-                transition:name={`article_excerpt_${post._id}`}
-              >
-                <p>{post.excerpt}</p>
-              </div>
-            )
-          }
-        </div>
       </div>
+      <div class="md:col-span-6 py-8 md:px-8 lg:p-12 xl:p-16 space-y-6">
+        <DateTime date={post.publishedAt} />
+        <h2 class="text-5xl font-semibold mb-8">
+          {post.title}
+        </h2>
+        {
+          post?.excerpt && (
+            <div
+              class="prose-xl max-w-[40ch] dark:prose-invert"
+              transition:name={`article_excerpt_${post._id}`}
+            >
+              <p>{post.excerpt}</p>
+            </div>
+          )
+        }
+      </div>
+    </Section>
 
-      <div class="mt-8 lg:mt-16">
-        <PortableText value={post.content} />
-      </div>
-    </article>
-  </div>
+    <div class="mt-8 lg:mt-16">
+      <PortableText value={post.content} />
+    </div>
+  </article>
 </BaseLayout>

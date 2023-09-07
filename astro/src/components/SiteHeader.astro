@@ -27,28 +27,30 @@ const { activeCountries = [] } = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-50 flex items-center gap-5 px-5 overflow-x-auto transition-transform duration-500 bg-brand-black bg-opacity-10 backdrop-blur-lg drop-shadow-sm"
+  class="sticky top-0 z-50 px-5 bg-brand-black bg-opacity-10 backdrop-blur-lg drop-shadow-sm"
   transition:name="site-header"
 >
-  <a href="/">
-    <Wordmark size={1} />
-  </a>
-  <nav class="flex items-center gap-2 overflow-x-auto py-4">
-    {
-      countries.map((country) => (
-        <a
-          class="inline-block py-2 px-3 rounded-full whitespace-nowrap text-sm underline-offset-4 leading-none"
-          class:list={[
-            activeCountries.includes(country._id)
-              ? 'bg-black text-white dark:bg-white dark:text-black order-1'
-              : 'bg-gray-100 dark:bg-brand-black order-2',
-          ]}
-          href={`/country/${country.slug}`}
-          transition:name={`country-nav_${country._id}`}
-        >
-          {country.name}
-        </a>
-      ))
-    }
-  </nav>
+  <div class="flex items-center gap-5 overflow-x-auto max-w-screen-2xl mx-auto">
+    <a href="/">
+      <Wordmark size={1} />
+    </a>
+    <nav class="flex items-center gap-2 overflow-x-auto py-4">
+      {
+        countries.map((country) => (
+          <a
+            class="inline-block py-2 px-3 rounded-full whitespace-nowrap text-sm underline-offset-4 leading-none"
+            class:list={[
+              activeCountries.includes(country._id)
+                ? 'bg-black text-white dark:bg-white dark:text-black order-1'
+                : 'bg-gray-100 dark:bg-brand-black order-2',
+            ]}
+            href={`/country/${country.slug}`}
+            transition:name={`country-nav_${country._id}`}
+          >
+            {country.name}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
 </header>

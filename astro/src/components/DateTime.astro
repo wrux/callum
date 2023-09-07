@@ -1,0 +1,16 @@
+---
+export type Props = {
+  date: string;
+};
+
+const { date } = Astro.props;
+
+const dateObject = new Date(date);
+const dateIso = dateObject.toISOString();
+const dateString = dateObject.toLocaleDateString();
+---
+
+<time
+  class="text-step--2 leading-none tracking-wider font-semibold"
+  datetime={dateIso}>{dateString}</time
+>

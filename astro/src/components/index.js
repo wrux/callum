@@ -1,6 +1,7 @@
 export { default as ArticleTeaser } from './ArticleTeaser.astro';
 export { default as BaseHead } from './BaseHead.astro';
 export { default as CountryList } from './CountryList.astro';
+export { default as DateTime } from './DateTime.astro';
 export { default as PageTitle } from './PageTitle.astro';
 export { default as PortableText } from './PortableText.astro';
 export { default as SanityImage } from './SanityImage.astro';
