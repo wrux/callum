@@ -26,7 +26,7 @@ const countries = await client.fetch<Country[]>(
 const { activeCountries = [] } = Astro.props;
 ---
 
-<header
+<div
   class="sticky top-0 z-50 flex items-center gap-5 px-5 overflow-x-auto transition-transform duration-500 bg-white bg-opacity-70 backdrop-blur-lg drop-shadow-sm border-b border-gray-200"
   transition:name="site-header"
 >
@@ -51,4 +51,4 @@ const { activeCountries = [] } = Astro.props;
       ))
     }
   </nav>
-</header>
+</div>

@@ -48,12 +48,11 @@ const posts = await client.fetch<Post[]>(postQuery);
 ---
 
 <BaseLayout
-  hideHeader={true}
   title="About Me"
   description="Lorem ipsum dolor sit amet"
   image="/blog-placeholder-about.jpg"
 >
-  <Section spacing="md">
+  <Section spacing="md" slot="header">
     <div
       class="flex flex-col justify-center min-h-most col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
     >
