@@ -1,4 +1,14 @@
 {
+  "plugins": ["prettier-plugin-astro"],
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ],
+  "tailwindFunctions": ["cva"],
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
