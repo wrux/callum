@@ -1,6 +1,5 @@
 {
   "name": "callum",
-  "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -8,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint --ext .js,ts,.astro src",
+    "lint": "eslint 'src/**/*.{js,ts,astro}'",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
@@ -36,6 +35,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^6.6.0",
+    "astro-eslint-parser": "^0.15.0",
     "eslint": "^8.48.0",
     "eslint-plugin-astro": "^0.29.0",
     "eslint-plugin-jsx-a11y": "^6.7.1"

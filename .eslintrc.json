@@ -1,5 +1,6 @@
 {
-  "extends": ["plugin:astro/recommended"],
+  "extends": ["plugin:astro/recommended", "plugin:astro/jsx-a11y-recommended"],
+  "root": true,
   "overrides": [
     {
       "files": ["*.astro"],
