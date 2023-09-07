@@ -8,6 +8,7 @@ import '../styles/transitions.css';
 
 interface Props {
   activeCountries?: string[];
+  hideHeader?: boolean;
   title?: string;
   description?: string;
   image?: string;
@@ -16,6 +17,7 @@ interface Props {
 const {
   activeCountries = [],
   title,
+  hideHeader = false,
   description,
   image = '/blog-placeholder-1.jpg',
 } = Astro.props;
@@ -26,15 +28,15 @@ const navigation = [
 ];
 ---
 
-<html lang="en">
+<html class="flex flex-col h-full" lang="en" transition:animate="none">
   <head>
     <ViewTransitions />
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead description={description} title={title} image={image} />
   </head>
 
-  <body>
-    <SiteHeader activeCountries={activeCountries} />
-    <main class="mb-16 md:mb-24 lg:mb-32">
+  <body class="flex flex-col h-full">
+    {!hideHeader && <SiteHeader activeCountries={activeCountries} />}
+    <main class="mb-16 flex-1 md:mb-24 lg:mb-32" transition:animate="fade">
       <slot />
     </main>
     <SiteFooter navigation={navigation} />

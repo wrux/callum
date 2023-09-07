@@ -48,13 +48,14 @@ const posts = await client.fetch<Post[]>(postQuery);
 ---
 
 <BaseLayout
+  hideHeader={true}
   title="About Me"
   description="Lorem ipsum dolor sit amet"
   image="/blog-placeholder-about.jpg"
 >
   <Section spacing="md">
     <div
-      class="flex flex-col justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
+      class="flex flex-col justify-center min-h-most col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
     >
       <p class="text-step-5">
         <span class="inline-block origin-[70% 70%] leading-none animate-wave">
@@ -87,7 +88,7 @@ const posts = await client.fetch<Post[]>(postQuery);
 
   <Section spacing="md">
     <div class="px-5 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0">
-      <PageTitle as="h2" className="mb-16">Latest Articles</PageTitle>
+      <PageTitle as="h2" className="mb-4 lg:mb-16">Latest Articles</PageTitle>
       <div class="space-y-12">
         {posts.map((post) => <ArticleTeaser {...post} />)}
       </div>

@@ -45,7 +45,6 @@ export async function getStaticPaths() {
 type Props = Article;
 
 const post = Astro.props;
-
 ---
 
 <BaseLayout activeCountries={post.countries.map(({ _id }) => _id)}>
@@ -61,7 +60,7 @@ const post = Astro.props;
                 transition:name={`article_cover_${post._id}`}
               />
               {post.mainImage?.alt && (
-                <figcaption>{post.mainImage.alt}</figcaption>
+                <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
               )}
             </figure>
           )

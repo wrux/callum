@@ -7,7 +7,7 @@ export type Props = {
 const { as: As = 'h1', className } = Astro.props;
 ---
 
-<div class:list={['class="prose lg:prose-lg prose-headings:mt-0"', className]}>
+<div class:list={['prose lg:prose-lg prose-headings:mt-0', className]}>
   <As>
     <slot />
   </As>

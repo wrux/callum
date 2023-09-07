@@ -27,12 +27,13 @@ const { activeCountries = [] } = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-50 flex items-center gap-12 py-4 px-8 overflow-x-auto transition-transform duration-500 bg-white bg-opacity-70 backdrop-blur-lg drop-shadow-sm border-b border-gray-200"
+  class="sticky top-0 z-50 flex items-center gap-5 px-5 overflow-x-auto transition-transform duration-500 bg-white bg-opacity-70 backdrop-blur-lg drop-shadow-sm border-b border-gray-200"
+  transition:name="site-header"
 >
   <a href="/">
     <Wordmark size={1} />
   </a>
-  <nav class="flex items-center gap-2 overflow-x-auto">
+  <nav class="flex items-center gap-2 overflow-x-auto py-4">
     {
       countries.map((country) => (
         <a
