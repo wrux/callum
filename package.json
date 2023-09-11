@@ -45,7 +45,7 @@
     "styled-components": "^5.3.11",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-typography": "^3.1.0",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "devDependencies": {
     "@types/fslightbox-react": "^1.7.3",
