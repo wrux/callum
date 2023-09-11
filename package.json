@@ -32,7 +32,7 @@
     "fslightbox-react": "^1.7.6",
     "next": "13.4.13",
     "next-sanity": "^5.1.2",
-    "next-sitemap": "^4.2.2",
+    "next-sitemap": "^4.2.3",
     "phosphor-react": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
