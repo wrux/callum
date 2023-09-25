@@ -50,7 +50,7 @@
   "devDependencies": {
     "@types/fslightbox-react": "^1.7.3",
     "autoprefixer": "^10.4.14",
-    "eslint": "^8.47.0",
+    "eslint": "^8.50.0",
     "eslint-config-next": "13.4.13",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "postcss": "^8.4.27",
