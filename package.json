@@ -21,7 +21,7 @@
     "@sanity/icons": "^2.4.1",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.14.4",
-    "@types/node": "20.4.8",
+    "@types/node": "20.8.0",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "@wrux/sanity-analytics-dashboard-widgets": "^0.1.1",
