@@ -29,7 +29,7 @@ const post = Astro.props;
         <div class="max-w-prose mx-auto text-center py-8 mb:py-12 lg:py-16">
           {
             (post?.imageCount || post?.readingTime) && (
-              <Text display="muted" size="sm">
+              <Text display="muted" size="sm" class:list="mb-2 lg:mb-4">
                 {[
                   post?.readingTime && `${post.readingTime} minute read`,
                   post?.imageCount &&

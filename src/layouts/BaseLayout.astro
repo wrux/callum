@@ -28,7 +28,7 @@ const thisYear = new Date().getFullYear();
   <body class="bg-white text-brand-black dark:bg-brand-black dark:text-white">
     <slot name="header">
       <header
-        class="sticky top-0 z-50 flex items-center justify-center p-2 bg-white/50 dark:bg-black/50 backdrop-blur-lg drop-shadow-sm"
+        class="sticky top-0 z-50 flex items-center justify-center p-2 bg-white/50 dark:bg-black/50 backdrop-blur-lg"
         transition:name="site-header"
       >
         <a href="/" aria-label="Go to the homepage">
@@ -41,7 +41,7 @@ const thisYear = new Date().getFullYear();
       <slot />
     </main>
 
-    <footer class="bg-gray-900 py-8 md:py-12 lg:py-16">
+    <footer class="bg-gray-100 dark:bg-gray-900 py-8 md:py-12 lg:py-16">
       <div class="container max-w-5xl space-y-8 md:space-y-16">
         <img class="h-32 w-auto mx-auto" src="/logo.png" />
 
