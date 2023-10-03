@@ -42,11 +42,11 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
     <Heading
       as="h2"
       size="h2"
-      class:list="mb-8 group-hover:text-brand-medium transition-colors duration-300"
+      class:list="mb-4 md:mb-8 group-hover:text-brand-medium transition-colors duration-300"
     >
       {title}
     </Heading>
-    {excerpt && <Text class:list="mb-2 md:mb-6 line-clamp-4">{excerpt}</Text>}
+    {excerpt && <Text class:list="mb-6 line-clamp-4">{excerpt}</Text>}
     <Text size="sm">
       <a
         class="link link-overlay"
