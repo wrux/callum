@@ -6,41 +6,36 @@ const { images } = Astro.props.node;
 ---
 
 <Section data-block="image-gallery">
-  <div
-    class:list={[
-      'col-span-12',
-      images.length > 5 ? 'lg:col-start-0' : 'lg:col-start-3',
-    ]}
-  >
-    <div data-image-gallery-block>
-      {
-        images.map(({ caption, image }) => (
-          <SanityImage
-            image={image}
-            alt={image.asset.alt || caption || ''}
-            sizes="100vw"
-          />
-        ))
-      }
-    </div>
+  <div data-image-gallery-block>
+    {
+      images.map(({ caption, image }) => (
+        <SanityImage
+          image={image}
+          alt={image.asset.alt || caption || ''}
+          sizes="100vw"
+        />
+      ))
+    }
   </div>
 </Section>
 
 <script>
   import { JustifiedGrid } from '@egjs/grid';
 
-  document
-    .querySelectorAll<HTMLElement>(`[data-image-gallery-block]`)
-    .forEach((container) => {
-      const grid = new JustifiedGrid(container, {
-        defaultDirection: 'end',
-        gap: 32,
-        rowRange: 0,
-        columnRange: [1, 3],
-        sizeRange: [200, 1280],
-        isCroppedSize: false,
-        displayedRow: -1,
+  document.addEventListener('DOMContentLoaded', () => {
+    document
+      .querySelectorAll<HTMLElement>(`[data-image-gallery-block]`)
+      .forEach((container) => {
+        const grid = new JustifiedGrid(container, {
+          defaultDirection: 'end',
+          gap: 32,
+          rowRange: 0,
+          columnRange: [1, 3],
+          sizeRange: [200, 1280],
+          isCroppedSize: false,
+          displayedRow: -1,
+        });
+        grid.renderItems();
       });
-      grid.renderItems();
-    });
+  });
 </script>

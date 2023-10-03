@@ -1,5 +1,5 @@
 ---
-import { SanityImage } from '.';
+import { Heading, SanityImage, Text } from '~/components';
 
 export type Props = ArticleTeaser;
 
@@ -10,7 +10,7 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
 <article class="fade-in-up flex flex-col md:flex-row gap-8 link-box group">
   {
     mainImage && (
-      <figure>
+      <figure class="flex-1">
         <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-70">
           <SanityImage
             image={mainImage}
@@ -19,39 +19,35 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
           />
         </div>
         {mainImage?.alt && (
-          <figcaption class="mt-1 text-step--2 italic">
+          <Text as="figcaption" size="sm" class:list="mt-1 italic">
             {mainImage.alt}
-          </figcaption>
+          </Text>
         )}
       </figure>
     )
   }
-  <div>
-    <div class="max-w-prose">
-      {
-        (imageCount || readingTime) && (
-          <p class="mb-2 text-step--2 text-gray-500 dark:text-gray-400">
-            {[
-              readingTime && `${readingTime} minute read`,
-              imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
-            ]
-              .filter(Boolean)
-              .join(' and ')}
-          </p>
-        )
-      }
-      <h2
-        class="text-5xl font-semibold mb-8 group-hover:text-brand-medium transition-colors duration-300"
-      >
-        {title}
-      </h2>
-      {
-        excerpt && (
-          <div class="prose lg:prose-lg dark:prose-invert mb-6">
-            <p>{excerpt}</p>
-          </div>
-        )
-      }
+  <div class="flex-1 md:py-8">
+    {
+      (imageCount || readingTime) && (
+        <Text display="muted" size="sm" class:list="mb-2">
+          {[
+            readingTime && `${readingTime} minute read`,
+            imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
+          ]
+            .filter(Boolean)
+            .join(' and ')}
+        </Text>
+      )
+    }
+    <Heading
+      as="h2"
+      size="h2"
+      class:list="mb-8 group-hover:text-brand-medium transition-colors duration-300"
+    >
+      {title}
+    </Heading>
+    {excerpt && <Text class:list="mb-2 md:mb-6 line-clamp-4">{excerpt}</Text>}
+    <Text size="sm">
       <a
         class="link link-overlay"
         href={`/article/${slug}`}
@@ -60,6 +56,6 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
       >
         Read full article
       </a>
-    </div>
+    </Text>
   </div>
 </article>

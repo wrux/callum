@@ -1,20 +1,19 @@
 ---
 import SanityImage from '../SanityImage.astro';
+import Text from '../Text.astro';
 import Section from '../Section.astro';
 
 const { caption, image } = Astro.props.node;
 ---
 
-<Section data-block="image" gap="xs">
-  <figure class="contents scale-in-up">
-    <div class="col-span-12 lg:col-start-3">
-      <SanityImage image={image} />
-    </div>
+<Section data-block="image">
+  <figure class="fade-in-up">
+    <SanityImage image={image} class:list="w-full" />
     {
       caption && (
-        <figcaption class="px-5 md:col-span-8 md:col-start-2 lg:col-span-6 lg:col-start-3 md:px-0 text-step--2 italic">
+        <Text as="figcaption" class:list="italic">
           {caption}
-        </figcaption>
+        </Text>
       )
     }
   </figure>

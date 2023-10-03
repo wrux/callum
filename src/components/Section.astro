@@ -1,37 +1,30 @@
 ---
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const sectionVariants = cva(
-  ['mx-auto', 'md:grid', 'md:grid-cols-12', 'max-w-screen-2xl'],
-  {
-    variants: {
-      gap: {
-        xs: 'gap-1',
-        sm: 'gap-2',
-        default: 'gap-4',
-        lg: 'gap-8',
-        xl: 'gap-12',
-        '2xl': 'gap-16',
-      },
-      spacing: {
-        sm: ['my-6', 'md:my-8', 'lg:my-12'],
-        md: ['my-8', 'md:my-12', 'lg:my-16'],
-        lg: ['my-12', 'md:my-24', 'lg:my-32'],
-        none: [],
-      },
+const sectionVariants = cva(['container'], {
+  variants: {
+    spacing: {
+      sm: ['my-6', 'md:my-8', 'lg:my-12'],
+      md: ['my-8', 'md:my-12', 'lg:my-16'],
+      lg: ['my-12', 'md:my-24', 'lg:my-32'],
+      none: [],
     },
-    defaultVariants: {
-      gap: 'default',
-      spacing: 'sm',
+    width: {
+      default: 'max-w-screen-xl',
+      lg: 'max-w-screen-2xl',
     },
   },
-);
+  defaultVariants: {
+    spacing: 'sm',
+    width: 'default',
+  },
+});
 
 export type Props = VariantProps<typeof sectionVariants>;
 
-const { gap, spacing, ...props } = Astro.props;
+const { spacing, width, ...props } = Astro.props;
 ---
 
-<section class:list={sectionVariants({ gap, spacing })} {...props}>
+<section class:list={sectionVariants({ spacing, width })} {...props}>
   <slot />
 </section>

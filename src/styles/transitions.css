@@ -4,7 +4,7 @@
   animation-name: fadeInUp;
   animation-fill-mode: both;
   animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 50% contain 50%;
+  animation-range: entry 30% contain 50%;
 }
 
 @keyframes fadeInUp {

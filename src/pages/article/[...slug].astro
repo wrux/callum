@@ -1,6 +1,12 @@
 ---
 import { BaseLayout } from '../../layouts';
-import { DateTime, PortableText, SanityImage, Section } from '../../components';
+import {
+  DateTime,
+  Heading,
+  PortableText,
+  SanityImage,
+  Text,
+} from '../../components';
 import { getPosts } from '../../sanity/queries';
 
 export async function getStaticPaths() {
@@ -11,15 +17,45 @@ export async function getStaticPaths() {
   }));
 }
 
-type Props = Article;
+export type Props = Article;
 
 const post = Astro.props;
 ---
 
-<BaseLayout activeCountries={post.countries.map(({ _id }) => _id)}>
+<BaseLayout>
   <article>
-    <Section spacing="none">
-      <div class="md:col-span-6 md:px-0">
+    <section class="mb-8 mb:mb-12 lg:mb-16">
+      <div class="container">
+        <div class="max-w-prose mx-auto text-center py-8 mb:py-12 lg:py-16">
+          {
+            (post?.imageCount || post?.readingTime) && (
+              <Text display="muted" size="sm">
+                {[
+                  post?.readingTime && `${post.readingTime} minute read`,
+                  post?.imageCount &&
+                    `${post.imageCount} image${post.imageCount > 1 ? 's' : ''}`,
+                ]
+                  .filter(Boolean)
+                  .join(' and ')}
+              </Text>
+            )
+          }
+          <Heading as="h1" size="h1" class:list="mb-4">
+            {post.title}
+          </Heading>
+          {
+            post?.excerpt && (
+              <Text size="lg" class:list="mb-8">
+                {post.excerpt}
+              </Text>
+            )
+          }
+          <Text display="muted" size="sm">
+            Posted on <DateTime date={post.publishedAt} />
+          </Text>
+        </div>
+      </div>
+      <div class="container max-w-screen-2xl">
         {
           post.mainImage && (
             <figure transition:name={`article_image_${post._id}`}>
@@ -35,41 +71,8 @@ const post = Astro.props;
           )
         }
       </div>
-      <div class="md:col-span-6 py-8 md:px-8 lg:p-12 xl:p-16 space-y-6 px-5">
-        {
-          (post?.imageCount || post?.readingTime) && (
-            <p class="mb-2 text-step--2 text-gray-500 dark:text-gray-400">
-              {[
-                post?.readingTime && `${post.readingTime} minute read`,
-                post?.imageCount &&
-                  `${post.imageCount} image${post.imageCount > 1 ? 's' : ''}`,
-              ]
-                .filter(Boolean)
-                .join(' and ')}
-            </p>
-          )
-        }
-        <h2 class="text-5xl font-semibold mb-8">
-          {post.title}
-        </h2>
-        {
-          post?.excerpt && (
-            <div
-              class="prose-xl dark:prose-invert"
-              transition:name={`article_excerpt_${post._id}`}
-            >
-              <p>{post.excerpt}</p>
-            </div>
-          )
-        }
-        <p class="text-step--2 leading-none">
-          Posted on <DateTime date={post.publishedAt} />
-        </p>
-      </div>
-    </Section>
+    </section>
 
-    <div class="mt-8 lg:mt-16">
-      <PortableText value={post.content} />
-    </div>
+    <PortableText value={post.content} />
   </article>
 </BaseLayout>

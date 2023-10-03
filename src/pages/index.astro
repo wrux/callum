@@ -1,9 +1,8 @@
 ---
-import { ArticleTeaser, PageTitle, Section, Wordmark } from '../components';
-import { BaseLayout } from '../layouts';
-import { getCountryList, getLatestPosts } from '../sanity/queries';
+import { ArticleTeaser, Heading, Section, Text } from '~/components';
+import { getLatestPosts } from '~/sanity/queries';
+import { BaseLayout } from '~/layouts';
 
-const countries = await getCountryList();
 const posts = await getLatestPosts();
 ---
 
@@ -14,40 +13,24 @@ const posts = await getLatestPosts();
 >
   <Section spacing="md" slot="header">
     <header
-      class="flex flex-col justify-center min-h-most col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0"
+      class="flex flex-col items-center justify-center col-span-12 px-5 py-6 mb-16 lg:col-start-3 lg:px-0 md:mb-0 text-center"
     >
-      <p class="text-step-5">
-        <span class="inline-block origin-[70% 70%] leading-none animate-wave">
-          👋🏻
-        </span>
-      </p>
-      <div class="prose dark:prose-invert">
-        <h1 class="mb-8">
-          <Wordmark size={6} />
-        </h1>
-        <h2 class="mt-0 mb-4">
-          My travel blog from many countries all around the world.
-        </h2>
-        <nav class="flex flex-wrap items-center gap-y-6 gap-x-4">
-          {
-            countries.map((country) => (
-              <a
-                class="text-step--1 leading-none link"
-                href={`/country/${country.slug}`}
-                transition:name={`country_link_${country._id}`}
-              >
-                {country.name}
-              </a>
-            ))
-          }
-        </nav>
+      <img class="h-64 w-auto mb-6 aspect-square" src="/intro.jpg" />
+      <div class="max-w-prose mx-auto">
+        <Heading as="h1" size="h1" class:list="mb-10">
+          Discovering offbeat travel destinations worldwide through my travel
+          blog.
+        </Heading>
+        <Text size="lg">
+          Check out my most recent blog posts below, and be sure to follow me on
+          social media!
+        </Text>
       </div>
     </header>
   </Section>
 
   <Section spacing="md">
     <div class="px-5 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0">
-      <PageTitle as="h2" className="mb-4 lg:mb-16">Latest Articles</PageTitle>
       <div class="space-y-12">
         {posts.map((post) => <ArticleTeaser {...post} />)}
       </div>

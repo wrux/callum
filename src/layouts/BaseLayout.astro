@@ -1,29 +1,22 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import { BaseHead, SiteFooter, SiteHeader } from '../components';
+import { BaseHead, SiteHeader } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
 import '../styles/transitions.css';
+import Heading from '../components/Heading.astro';
+import Text from '../components/Text.astro';
 
 interface Props {
-  activeCountries?: string[];
   title?: string;
   description?: string;
   image?: string;
 }
 
-const {
-  activeCountries = [],
-  title,
-  description,
-  image = '/blog-placeholder-1.jpg',
-} = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 
-const navigation = [
-  { href: '/', label: 'Home' },
-  { href: '/countries', label: 'Countries' },
-];
+const thisYear = new Date().getFullYear();
 ---
 
 <html lang="en" transition:animate="none">
@@ -34,11 +27,126 @@ const navigation = [
 
   <body class="bg-white text-brand-black dark:bg-brand-black dark:text-white">
     <slot name="header">
-      <SiteHeader activeCountries={activeCountries} />
+      <header
+        class="sticky top-0 z-50 flex items-center justify-center p-2 bg-white/50 dark:bg-black/50 backdrop-blur-lg drop-shadow-sm"
+        transition:name="site-header"
+      >
+        <a href="/" aria-label="Go to the homepage">
+          <img class="h-16 w-auto" src="/logo.png" />
+        </a>
+      </header>
     </slot>
+
     <main class="mb-16 flex-1 md:mb-24 lg:mb-32" transition:animate="fade">
       <slot />
     </main>
-    <SiteFooter navigation={navigation} />
+
+    <footer class="bg-gray-900 py-8 md:py-12 lg:py-16">
+      <div class="container max-w-5xl space-y-8 md:space-y-16">
+        <img class="h-32 w-auto mx-auto" src="/logo.png" />
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-6">
+          <div class="col-span-1">
+            <Heading as="p" size="h4" class:list="mb-2">Links</Heading>
+            <nav aria-label="External links" class="flex gap-2">
+              <ul class="flex gap-2 text-4xl">
+                <li>
+                  <a
+                    href="https://instagram.com/wrux"
+                    target="_blank"
+                    class="link"
+                    aria-label="View my Instagram profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-[1em] h-[1em]"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"
+                      ></path>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/wrux"
+                    target="_blank"
+                    class="link"
+                    aria-label="View my Github profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-[1em] h-[1em]"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"
+                      ></path>
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/callum-bonnyman/"
+                    target="_blank"
+                    class="link"
+                    aria-label="View my Linkedin profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-[1em] h-[1em]"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"
+                      ></path>
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <div class="col-span-1 md:col-span-2">
+            <Heading as="p" size="h4" class:list="mb-2">
+              Like this website?
+            </Heading>
+            <Text size="sm">
+              If you like this website,{' '}
+              <a
+                href="https://github.com/wrux/bloke"
+                target="_blank"
+                class="link"
+                rel="noreferrer nofollow"
+              >
+                view the source code
+              </a>
+               , fork the project and take whatever you like.
+            </Text>
+          </div>
+        </div>
+
+        <Text size="sm" class:list="text-center">
+          Copyright &copy;{' '}
+          <a
+            href="https://wrux.com"
+            target="_blank"
+            class="link"
+            aria-label="View my professional profile at wrux.com"
+            rel="noreferrer"
+          >
+            Callum Bonnyman
+          </a>{' '}
+          {thisYear}.
+        </Text>
+      </div>
+    </footer>
   </body>
 </html>

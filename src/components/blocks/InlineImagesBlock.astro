@@ -5,16 +5,17 @@ import Section from '../Section.astro';
 const { images } = Astro.props.node;
 ---
 
-<Section data-block="inline-images">
+<Section width="lg" data-block="inline-images">
   <div
-    class="flex flex-col items-center col-span-12 gap-8 sm:flex-row md:gap-12 lg:col-start-3"
+    class="grid gap-x-16 gap-y-8 grid-cols-1 md:grid-cols-dynamic items-center justify-center fade-in-up"
+    style={`--column-count: ${images.length};`}
   >
     {
       images.map(({ caption, image }) => (
         <SanityImage
           image={image}
           alt={image.asset.alt || caption || ''}
-          sizes="100vw"
+          loading="lazy"
         />
       ))
     }
