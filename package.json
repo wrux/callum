@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@astrojs/react": "^3.0.0",
-    "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/tailwind": "^5.0.0",
     "@egjs/grid": "^1.14.2",
@@ -22,7 +21,6 @@
     "@types/react-dom": "^18.2.7",
     "astro": "^3.0.5",
     "astro-portabletext": "^0.9.4",
-    "astro-sanity-picture": "^0.2.0",
     "class-variance-authority": "^0.7.0",
     "groq": "^3.16.2",
     "react": "^18.2.0",
