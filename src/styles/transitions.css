@@ -1,50 +1,47 @@
-.fade-in-up {
-  view-timeline-name: --subjectReveal;
-  animation-timeline: --subjectReveal;
-  animation-name: fadeInUp;
-  animation-fill-mode: both;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 30% contain 50%;
-}
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10rem);
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in-up {
+    view-timeline-name: --subjectReveal;
+    animation-timeline: --subjectReveal;
+    animation-name: fadeInUp;
+    animation-fill-mode: both;
+    animation-duration: 1ms; /* Firefox requires this to apply the animation */
+    animation-range: entry 30% contain 50%;
   }
 
-  50% {
-    opacity: 0.25;
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(10rem);
+    }
+
+    50% {
+      opacity: 0.25;
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
   }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-}
-
-.scale-in-up {
-  view-timeline-name: --subjectReveal;
-  animation-timeline: --subjectReveal;
-  animation-name: scaleInUp;
-  animation-fill-mode: both;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 10% 60%;
-  transform-origin: top;
-}
-
-@keyframes scaleInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10rem) scale(0.95);
+  .fade-out-up {
+    view-timeline-name: --subjectReveal;
+    animation-timeline: --subjectReveal;
+    animation-name: fadeOutUp;
+    animation-fill-mode: both;
+    animation-duration: 1ms; /* Firefox requires this to apply the animation */
+    animation-range: cover 30% cover 80%;
   }
 
-  25% {
-    opacity: 0.5;
-  }
+  @keyframes fadeOutUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  100% {
-    opacity: 1;
-    transform: translateY(0rem) scale(1);
+    100% {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
   }
 }
