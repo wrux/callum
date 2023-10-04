@@ -51,10 +51,24 @@ const posts = await getLatestPosts();
   </Section>
 
   <Section spacing="md">
-    <div class="px-5 md:col-span-8 md:col-start-2 lg:col-start-3 md:px-0">
-      <div class="space-y-12">
-        {posts.map((post) => <ArticleTeaser {...post} />)}
-      </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 md:pb-48"
+    >
+      {
+        posts.map((post) => (
+          <div class="teaser-wrapper">
+            <ArticleTeaser {...post} />
+          </div>
+        ))
+      }
     </div>
   </Section>
 </BaseLayout>
+
+<style>
+  .teaser-wrapper:nth-child(2n) {
+    @screen md {
+      transform: translateY(12rem);
+    }
+  }
+</style>

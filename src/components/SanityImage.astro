@@ -1,39 +1,34 @@
 ---
 import imageUrlBuilder from '@sanity/image-url';
 import { useSanityClient } from '@sanity/astro';
-// import SanityPicture from 'astro-sanity-picture';
+import type { ImageAsset } from 'sanity';
+
+export interface Props {
+  className?: string | string[];
+  // image: ImageAsset;
+  image: any;
+}
+
+const { className, image, ...props } = Astro.props;
 
 const client = useSanityClient();
-// const imageBuilder = imageUrlBuilder(client);
 
-const imageBuilder = imageUrlBuilder(client).fit('max').auto('format');
+const imageBuilder = imageUrlBuilder(client).fit('max').format('webp');
 
-const { image, ...props } = Astro.props;
+function urlFor(source: ImageAsset) {
+  return imageBuilder.image(source).url();
+}
 ---
 
 <img
-  src={imageBuilder.image(image).url()}
   alt={image?.alt || ''}
+  class:list={[
+    'max-h-[95vh] object-cover bg-gray-100 dark:bg-gray-900',
+    className,
+  ]}
+  src={urlFor(image)}
   title={image?.alt}
-  class:list="max-h-[95vh] object-cover bg-gray-100 dark:bg-gray-900"
   width={image.asset.metadata?.dimensions?.width}
   height={image.asset.metadata?.dimensions?.height}
   {...props}
 />
-
-{
-  /*
-<SanityPicture
-  src={image}
-  imageUrlBuilder={imageBuilder}
-  sizes="(min-width: 768px) 50vw, 100vw"
-  img={{
-    alt: image?.alt || '',
-    title: image?.alt,
-    class: 'h-auto object-cover bg-gray-100',
-    style: { aspectRatio },
-  }}
-  {...props}
-/>
-*/
-}

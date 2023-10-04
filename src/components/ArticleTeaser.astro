@@ -7,26 +7,23 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
   Astro.props;
 ---
 
-<article class="fade-in-up flex flex-col md:flex-row gap-8 link-box group">
+<article
+  class="fade-in-up flex flex-col items-center link-box group text-center"
+>
   {
     mainImage && (
-      <figure class="flex-1">
+      <figure>
         <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-50">
           <SanityImage
+            className="aspect-video"
             image={mainImage}
-            width="600"
             transition:name={`article_cover_${_id}`}
           />
         </div>
-        {mainImage?.alt && (
-          <Text as="figcaption" size="sm" class:list="mt-1 italic">
-            {mainImage.alt}
-          </Text>
-        )}
       </figure>
     )
   }
-  <div class="flex-1 md:py-8">
+  <div class="p-8 lg:px-16 max-w-prose">
     {
       (imageCount || readingTime) && (
         <Text display="muted" size="sm" class:list="mb-2">
@@ -46,7 +43,7 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
     >
       {title}
     </Heading>
-    {excerpt && <Text class:list="mb-6 line-clamp-4">{excerpt}</Text>}
+    {excerpt && <Text class:list="mb-6 line-clamp-3">{excerpt}</Text>}
     <Text size="sm">
       <a
         class="link link-overlay"
