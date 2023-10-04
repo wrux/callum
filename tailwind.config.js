@@ -16,13 +16,15 @@ module.exports = {
     },
     extend: {
       colors: {
+        black: 'rgb(4, 13, 18)',
+        // Brand colour pallete: https://colorhunt.co/palette/070a52d21312ed2b2af15a59
         brand: {
-          black: 'rgb(4, 13, 18)',
-          dark: 'rgb(24, 61, 61)',
-          medium: 'rgb(92, 131, 116)',
-          light: 'rgb(147, 177, 166)',
+          black: 'rgb(7, 10, 82)',
+          dark: 'rgb(210, 19, 18)',
+          medium: 'rgb(237, 43, 42)',
+          light: 'rgb(241, 90, 89)',
         },
-        wrux: '#00eacf',
+        wrux: 'rgb(0, 234, 207)',
       },
       fontFamily: {
         sans: ['InterVariable', 'Inter', ...fontFamily.sans],
