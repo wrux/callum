@@ -1,6 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import { BaseHead, Heading, Text } from '~/components';
+import { BaseHead, Heading, Logo, Text } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
@@ -26,11 +26,11 @@ const thisYear = new Date().getFullYear();
   <body class="bg-white text-brand-black dark:bg-brand-black dark:text-white">
     <slot name="header">
       <header
-        class="sticky top-0 z-50 flex items-center justify-center p-2 bg-white/50 dark:bg-black/50 backdrop-blur-lg"
+        class="flex items-center justify-center p-4"
         transition:name="site-header"
       >
         <a href="/" aria-label="Go to the homepage">
-          <img class="h-16 w-auto" src="/logo.png" />
+          <Logo class="text-[6rem]" />
         </a>
       </header>
     </slot>
@@ -41,9 +41,13 @@ const thisYear = new Date().getFullYear();
 
     <footer class="bg-gray-100 dark:bg-gray-900 py-8 md:py-12 lg:py-16">
       <div class="container max-w-5xl space-y-8 md:space-y-16">
-        <img class="h-32 w-auto mx-auto" src="/logo.png" />
+        <div
+          class="grid grid-cols-1 md:grid-cols-4 gap-x-16 gap-y-6 items-center"
+        >
+          <div class="col-span-1">
+            <Logo class="text-[6rem]" />
+          </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-6">
           <div class="col-span-1">
             <Heading as="p" size="h4" class:list="mb-2">Links</Heading>
             <nav aria-label="External links" class="flex gap-2">

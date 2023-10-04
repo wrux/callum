@@ -1,5 +1,12 @@
 ---
-import { ArticleTeaser, Heading, Section, Text } from '~/components';
+import {
+  ArticleTeaser,
+  Heading,
+  Logo,
+  Section,
+  Text,
+  Wordmark,
+} from '~/components';
 import { getLatestPosts } from '~/sanity/queries';
 import { BaseLayout } from '~/layouts';
 
@@ -15,12 +22,14 @@ const posts = await getLatestPosts();
     <header
       class="flex flex-col items-center justify-center min-h-most text-center"
     >
-      <img class="h-64 w-auto mb-6 aspect-square" src="/intro.jpg" />
+      <div class="flex flex-col items-center mb-8 md:mb-12 lg:mb-16">
+        <Logo class="text-[8rem]" />
+        <Wordmark class:list="text-[6rem]" />
+      </div>
 
       <div class="max-w-prose mx-auto">
         <Heading as="h1" size="h1" class:list="mb-10">
-          Discovering offbeat travel destinations worldwide through my travel
-          blog
+          Discovering offbeat travel destinations through my travel blog
         </Heading>
         <Text size="lg">Check out my most recent blog posts below</Text>
       </div>
