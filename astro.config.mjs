@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
+import { dataset, projectId } from './src/sanity/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,8 +17,8 @@ export default defineConfig({
   integrations: [
     react(),
     sanity({
-      projectId: 'kx8fng11',
-      dataset: 'staging',
+      projectId,
+      dataset,
       useCdn: false,
       studioBasePath: '/studio',
     }),
