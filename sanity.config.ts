@@ -9,6 +9,7 @@ import {
 } from '@sanity/dashboard';
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
+import { plausibleWidget } from '@wrux/sanity-analytics-dashboard-widgets';
 
 import { dataset, projectId } from '~/sanity/config';
 import schema from '~/sanity/schemas';
@@ -31,6 +32,10 @@ export default defineConfig({
           layout: { width: 'small' },
         }),
         projectUsersWidget(),
+        plausibleWidget({
+          auth: import.meta.env.PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
+          domain: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
+        }),
       ],
     }),
     deskTool({
