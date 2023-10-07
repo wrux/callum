@@ -1,38 +1,87 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import { BaseHead, Heading, Logo, Text } from '~/components';
+import { SEO } from 'astro-seo';
+import { Heading, Logo, Text } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
 import '../styles/transitions.css';
 
-interface Props {
+type meta = {
   title?: string;
   description?: string;
   image?: string;
-}
+};
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+export type Props = {
+  meta?: meta;
+};
+
+const { meta } = Astro.props;
+
+const title = meta?.title || 'Callum Bonnyman | callum.co.uk';
+const description =
+  meta?.description ||
+  'Callum Bonnyman: Discovering offbeat travel destinations through my travel blog.';
+const image = meta?.image || 'https://callum.co.uk/callum-social-image.webp';
 
 const thisYear = new Date().getFullYear();
 ---
 
 <html lang="en" transition:animate="none">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <SEO
+      title={title}
+      description={description}
+      openGraph={{
+        basic: {
+          title,
+          type: 'post',
+          image,
+        },
+      }}
+      twitter={{
+        creator: '@wrux',
+      }}
+      extend={{
+        link: [
+          { rel: 'icon', type: 'image/svg+xml', href: '/favicon.ico' },
+          { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+        ],
+        meta: [
+          {
+            name: 'twitter:image',
+            content: image,
+          },
+          { name: 'twitter:title', content: title },
+          { name: 'twitter:description', content: description },
+        ],
+      }}
+    />
+
+    <script
+      defer
+      data-api="/stats/api/event"
+      data-domain="callum.co.uk"
+      src="/stats/js/script.js"></script>
+
     <ViewTransitions />
-    <BaseHead description={description} title={title} image={image} />
   </head>
 
   <body class="bg-white text-black dark:bg-black dark:text-white">
     <slot name="header">
       <header class="flex items-center justify-center p-4">
         <a href="/" aria-label="Go to the homepage">
-          <Logo class="text-[6rem]" transition:name="header-logo" />
+          <Logo class="text-[6rem]" />
         </a>
       </header>
     </slot>
 
-    <main class="mb-16 flex-1 md:mb-24 lg:mb-32" transition:animate="fade">
+    <main class="flex-1" transition:animate="fade">
       <slot />
     </main>
 

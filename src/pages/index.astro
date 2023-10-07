@@ -4,6 +4,7 @@ import {
   Heading,
   Logo,
   Section,
+  TeaserGrid,
   Text,
   Wordmark,
 } from '~/components';
@@ -14,16 +15,18 @@ const posts = await getLatestPosts();
 ---
 
 <BaseLayout
-  title="About Me"
-  description="Lorem ipsum dolor sit amet"
-  image="/blog-placeholder-about.jpg"
+  meta={{
+    title: 'Home | Travel Blog | callum.co.uk',
+    description:
+      'Discovering offbeat travel destinations through my travel blog',
+  }}
 >
   <Section spacing="md" slot="header">
     <header
       class="flex flex-col items-center justify-center min-h-most text-center"
     >
       <div class="flex flex-col items-center mb-8 md:mb-12 lg:mb-16">
-        <Logo class="text-[8rem]" transition:name="header-logo" />
+        <Logo class="text-[8rem]" />
         <Wordmark class:list="text-[6rem]" />
       </div>
 
@@ -50,25 +53,13 @@ const posts = await getLatestPosts();
     </header>
   </Section>
 
-  <Section spacing="md">
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 md:pb-48"
-    >
-      {
-        posts.map((post) => (
-          <div class="teaser-wrapper">
-            <ArticleTeaser {...post} />
-          </div>
-        ))
-      }
-    </div>
-  </Section>
-</BaseLayout>
-
-<style>
-  .teaser-wrapper:nth-child(2n) {
-    @screen md {
-      transform: translateY(12rem);
-    }
+  {
+    posts.length > 0 && (
+      <TeaserGrid>
+        {posts.map((post) => (
+          <ArticleTeaser {...post} />
+        ))}
+      </TeaserGrid>
+    )
   }
-</style>
+</BaseLayout>

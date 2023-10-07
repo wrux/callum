@@ -1,0 +1,46 @@
+---
+import {
+  ArticleTeaser,
+  Heading,
+  Section,
+  TeaserGrid,
+  Text,
+} from '~/components';
+import { getLatestPosts } from '~/sanity/queries';
+import { BaseLayout } from '~/layouts';
+
+const posts = await getLatestPosts(2);
+---
+
+<BaseLayout
+  meta={{
+    title: 'Home | Travel Blog | callum.co.uk',
+    description:
+      'Discovering offbeat travel destinations through my travel blog',
+  }}
+>
+  <Section spacing="md">
+    <div class="container">
+      <div class="max-w-prose text-center mx-auto">
+        <Heading class:list="mb-8" as="h1">404: Page not found!</Heading>
+        <Text class:list="mb-2" size="lg">
+          Oops! It seems you've taken a detour to the unknown. But don't worry,
+          getting lost is all part of the adventure.
+        </Text>
+        <Text>
+          <a class="link" href="/">Go to the home page</a>
+        </Text>
+      </div>
+    </div>
+  </Section>
+
+  {
+    posts.length > 0 && (
+      <TeaserGrid>
+        {posts.map((post) => (
+          <ArticleTeaser {...post} />
+        ))}
+      </TeaserGrid>
+    )
+  }
+</BaseLayout>

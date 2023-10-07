@@ -1,13 +1,15 @@
 ---
-import { BaseLayout } from '../../layouts';
+import imageUrlBuilder from '@sanity/image-url';
+import { BaseLayout } from '~/layouts';
 import {
   DateTime,
   Heading,
   PortableText,
   SanityImage,
   Text,
-} from '../../components';
-import { getPosts } from '../../sanity/queries';
+} from '~/components';
+import { getPosts } from '~/sanity/queries';
+import { client } from '~/sanity/client';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -20,13 +22,25 @@ export async function getStaticPaths() {
 export type Props = Article;
 
 const post = Astro.props as Article;
+
+const imageBuilder = imageUrlBuilder(client).format('webp');
 ---
 
-<BaseLayout>
+<BaseLayout
+  meta={{
+    title: `${post.title} | callum.co.uk`,
+    description: post.excerpt,
+    image:
+      post.mainImage &&
+      imageBuilder.image(post.mainImage).width(1600).height(900).url(),
+  }}
+>
   <article>
     <section class="mb-8 mb:mb-12 lg:mb-16">
       <div class="container">
-        <div class="max-w-prose mx-auto text-center py-8 mb:py-12 lg:py-16">
+        <div
+          class="max-w-prose mx-auto text-center py-4 mb:pb-8 lg:pb-12 xl:pb-16"
+        >
           {
             (post?.imageCount || post?.readingTime) && (
               <Text display="muted" size="sm" class:list="mb-2 lg:mb-4">
