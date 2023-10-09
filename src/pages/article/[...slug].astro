@@ -74,10 +74,9 @@ const post = Astro.props as Article;
         </div>
       </div>
       <div class="container max-w-screen-2xl">
-        {console.log('CCCCCC', post?.mainImage)}
         {
           post?.mainImage && (
-            <figure transition:name={`article_image_${post._id}`}>
+            <figure>
               <SanityPicture
                 src={post.mainImage}
                 imageUrlBuilder={imageBuilder}
