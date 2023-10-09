@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://callum.co.uk
+
+# Sitemaps
+Sitemap: https://callum.co.uk/sitemap.xml

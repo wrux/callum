@@ -1,5 +1,5 @@
 import { countryCodeEmoji } from 'country-code-emoji';
-import { GlobeHemisphereWest } from 'phosphor-react';
+import { GlobeHemisphereWest } from '@phosphor-icons/react';
 import { defineField, defineType } from 'sanity';
 
 import countryListAlpha2 from './countryList';
@@ -8,28 +8,12 @@ const schema = defineType({
   name: 'country',
   type: 'document',
   title: 'Country',
-  icon: () => (
-    <>
-      <GlobeHemisphereWest style={{ fontSize: '2rem', lineHeight: '1' }} />
-    </>
-  ),
-  groups: [
-    {
-      name: 'content',
-      title: 'Content',
-      default: true,
-    },
-    {
-      name: 'metadata',
-      title: 'SEO & metadata',
-    },
-  ],
+  icon: GlobeHemisphereWest,
   fields: [
     defineField({
       name: 'name',
       type: 'string',
       title: 'Name',
-      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -39,7 +23,6 @@ const schema = defineType({
       options: {
         list: countryListAlpha2,
       },
-      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -50,20 +33,12 @@ const schema = defineType({
         source: 'name',
         maxLength: 96,
       },
-      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'description',
       type: 'text',
       title: 'Description',
-      group: 'content',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'metadata',
     }),
   ],
   preview: {

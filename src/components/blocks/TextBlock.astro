@@ -1,0 +1,10 @@
+---
+import PortableText from '../PortableText.astro';
+import Section from '../Section.astro';
+---
+
+<Section data-block="text">
+  <div class="max-w-prose">
+    <PortableText value={Astro.props.node.content} />
+  </div>
+</Section>

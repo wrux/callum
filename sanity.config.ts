@@ -1,25 +1,25 @@
-import {
-  dashboardTool,
-  projectInfoWidget,
-  projectUsersWidget,
-} from '@sanity/dashboard';
-import { visionTool } from '@sanity/vision';
-import { plausibleWidget } from '@wrux/sanity-analytics-dashboard-widgets';
 import { defineConfig } from 'sanity';
 import { deskTool } from 'sanity/desk';
-import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { media } from 'sanity-plugin-media';
+import { visionTool } from '@sanity/vision';
+import {
+  dashboardTool,
+  projectUsersWidget,
+  projectInfoWidget,
+} from '@sanity/dashboard';
+import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
+import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
+import { plausibleWidget } from '@wrux/sanity-analytics-dashboard-widgets';
 
-import { dataset, projectId } from '~/sanity/env';
-import { schemaTypes } from '~/sanity/schemas';
-import structure from '~/sanity/structure';
+import { dataset, projectId } from '~/sanity/config';
+import schema from '~/sanity/schemas';
+import { defaultDocumentNodeResolver, structure } from '~/sanity/structure';
 
 export default defineConfig({
-  basePath: '/studio',
-  projectId,
-  dataset,
   name: 'callum',
   title: 'callum.co.uk',
+  projectId,
+  dataset,
   plugins: [
     dashboardTool({
       widgets: [
@@ -29,24 +29,22 @@ export default defineConfig({
           layout: { width: 'medium' },
         }),
         projectInfoWidget({
-          layout: { width: 'medium' },
+          layout: { width: 'small' },
         }),
         projectUsersWidget(),
         plausibleWidget({
-          auth: process.env.NEXT_PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
-          domain: process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || '',
+          auth: import.meta.env.PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
+          domain: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
         }),
       ],
     }),
-    media(),
     deskTool({
       structure,
-      name: 'content',
-      title: 'Content',
+      defaultDocumentNode: defaultDocumentNodeResolver,
     }),
+    media(),
     visionTool(),
+    unsplashImageAsset(),
   ],
-  schema: {
-    types: schemaTypes,
-  },
+  schema,
 });

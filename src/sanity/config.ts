@@ -1,2 +1,3 @@
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
-export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
+export const dataset = 'staging';
+
+export const projectId = 'kx8fng11';

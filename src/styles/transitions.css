@@ -1,0 +1,49 @@
+@supports (animation-range: normal) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-in-up {
+      view-timeline-name: --subjectReveal;
+      animation-timeline: --subjectReveal;
+      animation-name: fadeInUp;
+      animation-fill-mode: both;
+      animation-duration: 1ms; /* Firefox requires this to apply the animation */
+      animation-range: entry contain;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(10rem);
+      }
+
+      50% {
+        opacity: 0.25;
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+
+    .fade-out-up {
+      view-timeline-name: --subjectReveal;
+      animation-timeline: --subjectReveal;
+      animation-name: fadeOutUp;
+      animation-fill-mode: both;
+      animation-duration: 1ms; /* Firefox requires this to apply the animation */
+      animation-range: cover 40% cover 80%;
+    }
+
+    @keyframes fadeOutUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(1rem);
+      }
+    }
+  }
+}

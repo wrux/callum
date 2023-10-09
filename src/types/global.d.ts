@@ -1,15 +1,7 @@
 import { PortableTextBlock } from '@portabletext/types';
 import { SanityDocument, SanityImageAssetDocument } from '@sanity/client';
-import { Block } from 'sanity';
 
 declare global {
-  /**
-   * Base React types
-   */
-  type PropsWithClassName<T = unknwon> = T & {
-    className?: string;
-  };
-
   /**
    * Sanity
    */
@@ -39,9 +31,11 @@ declare global {
       content: PortableTextBlock;
       countries: Array<CountryTeaser>;
       excerpt?: string;
+      imageCount: number;
       mainImage: ImageWithMeta;
       publishedAt: string;
       seo: MetaData;
+      readingTime: number;
       slug: string;
       title: string;
     }
@@ -49,7 +43,14 @@ declare global {
 
   type ArticleTeaser = Pick<
     Article,
-    '_id' | 'countries' | 'excerpt' | 'mainImage' | 'slug' | 'title'
+    | '_id'
+    | 'countries'
+    | 'excerpt'
+    | 'imageCount'
+    | 'mainImage'
+    | 'readingTime'
+    | 'slug'
+    | 'title'
   >;
 
   interface MetaData {

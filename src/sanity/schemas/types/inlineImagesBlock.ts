@@ -1,10 +1,11 @@
-import { Image } from 'phosphor-react';
+import { Image, SquareSplitHorizontal } from '@phosphor-icons/react';
 import { defineField, defineType } from 'sanity';
 
 const schema = defineType({
   type: 'object',
   name: 'inlineImagesBlock',
   title: 'Inline Images',
+  icon: SquareSplitHorizontal,
   fields: [
     defineField({
       title: 'Images',

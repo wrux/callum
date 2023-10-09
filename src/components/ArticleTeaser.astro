@@ -1,0 +1,80 @@
+---
+import SanityPicture from 'astro-sanity-picture';
+import { Heading, Text } from '~/components';
+import { imageBuilder } from '~/sanity/image';
+
+export type Props = ArticleTeaser & {
+  lazy?: boolean;
+  sizes?: string;
+};
+
+const {
+  excerpt,
+  imageCount,
+  lazy = false,
+  mainImage,
+  readingTime,
+  sizes = '(max-width: 767px) 90vw, (max-width: 1535px) 45vw, 512px',
+  slug,
+  title,
+} = Astro.props;
+---
+
+<article
+  class="fade-in-up flex flex-col items-center link-box group text-center"
+>
+  {
+    mainImage && (
+      <figure>
+        <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-50">
+          <SanityPicture
+            src={mainImage}
+            imageUrlBuilder={imageBuilder}
+            sizes={sizes}
+            loading={lazy ? 'lazy' : 'eager'}
+            img={{
+              alt: mainImage.asset.alt || title || '',
+            }}
+            style={{
+              aspectRatio: '16/9',
+              objectFit: 'cover',
+              width: '100%',
+            }}
+          />
+        </div>
+      </figure>
+    )
+  }
+  <div class="p-8 lg:px-16 max-w-prose">
+    {
+      (imageCount || readingTime) && (
+        <Text display="muted" size="sm" class:list="mb-2">
+          {[
+            readingTime && `${readingTime} minute read`,
+            imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
+          ]
+            .filter(Boolean)
+            .join(' and ')}
+        </Text>
+      )
+    }
+    <Heading
+      as="h2"
+      size="h2"
+      class:list="mb-4 md:mb-8 group-hover:text-brand-medium transition-colors duration-300"
+    >
+      {title}
+    </Heading>
+    {excerpt && <Text class:list="mb-6 line-clamp-3">{excerpt}</Text>}
+    <Text size="sm">
+      <a
+        class="link link-overlay"
+        href={`/article/${slug}`}
+        title={`Read full article: ${title}`}
+        aria-label={`Read full article: ${title}`}
+      >
+        Read full article
+      </a>
+    </Text>
+  </div>
+</article>

@@ -1,0 +1,30 @@
+---
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const sectionVariants = cva(['container'], {
+  variants: {
+    spacing: {
+      sm: ['my-6', 'md:my-8', 'lg:my-12'],
+      md: ['my-8', 'md:my-12', 'lg:my-16'],
+      lg: ['my-12', 'md:my-24', 'lg:my-32'],
+      none: [],
+    },
+    width: {
+      default: 'max-w-screen-xl',
+      lg: 'max-w-screen-2xl',
+    },
+  },
+  defaultVariants: {
+    spacing: 'sm',
+    width: 'default',
+  },
+});
+
+export type Props = VariantProps<typeof sectionVariants>;
+
+const { spacing, width, ...props } = Astro.props;
+---
+
+<section class:list={sectionVariants({ spacing, width })} {...props}>
+  <slot />
+</section>

@@ -1,0 +1,46 @@
+---
+import SanityPicture from 'astro-sanity-picture';
+import Section from '../Section.astro';
+import { imageBuilder } from '~/sanity/image';
+
+const { images } = Astro.props.node;
+
+const containerMaxWidth = 1344;
+
+const w = (n: number) => `${containerMaxWidth / n}px`;
+
+const sizes = [
+  `(max-width: 767px): 90vw, ${w(1)}px`, // one image
+  `(max-width: 767px): 90vw, (max-width: 1535px) 50vw, ${w(2)}`, // two images
+  `(max-width: 767px): 90vw, (max-width: 1535px) 33vw, ${w(3)}`, // three images
+  `(max-width: 767px): 90vw, (max-width: 1535px) 25vw, ${w(4)}`, // four images
+  `(max-width: 767px): 90vw, (max-width: 1535px) 20vw, ${w(5)}`, // five images
+];
+
+const imageSizes = sizes?.[images.length] || sizes[5];
+---
+
+<Section width="lg" data-block="inline-images">
+  <div
+    class="grid grid-cols-1 md:grid-cols-dynamic items-center justify-center fade-in-up"
+    style={`--column-count: ${images.length};`}
+  >
+    {
+      images.map(({ caption, image }) => (
+        <SanityPicture
+          src={image}
+          imageUrlBuilder={imageBuilder}
+          style={{
+            maxHeight: '95vh',
+            objectFit: 'cover',
+            width: '100%',
+          }}
+          sizes={imageSizes}
+          img={{
+            alt: image.asset.alt || caption || '',
+          }}
+        />
+      ))
+    }
+  </div>
+</Section>

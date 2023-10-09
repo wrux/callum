@@ -1,4 +1,4 @@
-import { Article } from 'phosphor-react';
+import { Article } from '@phosphor-icons/react';
 import { defineField, defineType } from 'sanity';
 
 import { previewStructuredText } from '~/sanity/helpers/previewStructuredText';
@@ -7,6 +7,7 @@ const schema = defineType({
   type: 'object',
   name: 'textBlock',
   title: 'Text',
+  icon: Article,
   fields: [
     defineField({
       title: 'Content',

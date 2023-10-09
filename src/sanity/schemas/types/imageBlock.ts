@@ -1,10 +1,11 @@
-import { Image } from 'phosphor-react';
+import { Image } from '@phosphor-icons/react';
 import { defineField, defineType } from 'sanity';
 
 const schema = defineType({
   type: 'object',
   name: 'imageBlock',
   title: 'Image',
+  icon: Image,
   fields: [
     defineField({
       title: 'Image',
