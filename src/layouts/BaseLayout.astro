@@ -220,5 +220,23 @@ const thisYear = new Date().getFullYear();
         </Text>
       </div>
     </footer>
+
+    <script>
+      document.addEventListener('astro:after-swap', () => {
+        document
+          .querySelectorAll<HTMLImageElement>('img[data-x-lqip="true"]')
+          .forEach((img) => {
+            img.addEventListener('load', () => {
+              img.animate([{ opacity: 0 }, { opacity: 1 }], {
+                duration: parseInt(img.dataset['xLqipTransitionDuration']!),
+                fill: 'forwards',
+              });
+            });
+            if (img.complete) {
+              img.style.opacity = '1';
+            }
+          });
+      });
+    </script>
   </body>
 </html>
