@@ -5,7 +5,7 @@
   text-decoration: underline;
   text-decoration-color: currentColor;
   text-underline-position: under;
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
 
   &:hover,
   &:focus {
