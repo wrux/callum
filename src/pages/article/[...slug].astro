@@ -1,15 +1,9 @@
 ---
-import imageUrlBuilder from '@sanity/image-url';
+import { imageBuilder } from '~/sanity/image';
+import SanityPicture from 'astro-sanity-picture';
 import { BaseLayout } from '~/layouts';
-import {
-  DateTime,
-  Heading,
-  PortableText,
-  SanityImage,
-  Text,
-} from '~/components';
+import { DateTime, Heading, PortableText, Text } from '~/components';
 import { getPosts } from '~/sanity/queries';
-import { client } from '~/sanity/client';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -22,8 +16,6 @@ export async function getStaticPaths() {
 export type Props = Article;
 
 const post = Astro.props as Article;
-
-const imageBuilder = imageUrlBuilder(client).format('webp');
 ---
 
 <BaseLayout
@@ -82,13 +74,17 @@ const imageBuilder = imageUrlBuilder(client).format('webp');
         </div>
       </div>
       <div class="container max-w-screen-2xl">
+        {console.log('CCCCCC', post?.mainImage)}
         {
-          post.mainImage && (
+          post?.mainImage && (
             <figure transition:name={`article_image_${post._id}`}>
-              <SanityImage
-                image={post.mainImage}
-                width="1280"
-                transition:name={`article_cover_${post._id}`}
+              <SanityPicture
+                src={post.mainImage}
+                imageUrlBuilder={imageBuilder}
+                sizes="(max-width: 1535px) 90vw, 1344px"
+                img={{
+                  alt: post.mainImage.asset.alt || post.title || '',
+                }}
               />
               {post.mainImage?.alt && (
                 <figcaption class="sr-only">{post.mainImage.alt}</figcaption>

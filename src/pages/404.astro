@@ -38,7 +38,7 @@ const posts = await getLatestPosts(2);
     posts.length > 0 && (
       <TeaserGrid>
         {posts.map((post) => (
-          <ArticleTeaser {...post} />
+          <ArticleTeaser {...post} lazy />
         ))}
       </TeaserGrid>
     )

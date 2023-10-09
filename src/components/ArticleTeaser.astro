@@ -1,10 +1,23 @@
 ---
-import { Heading, SanityImage, Text } from '~/components';
+import SanityPicture from 'astro-sanity-picture';
+import { Heading, Text } from '~/components';
+import { imageBuilder } from '~/sanity/image';
 
-export type Props = ArticleTeaser;
+export type Props = ArticleTeaser & {
+  lazy?: boolean;
+  sizes?: string;
+};
 
-const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
-  Astro.props;
+const {
+  excerpt,
+  imageCount,
+  lazy = false,
+  mainImage,
+  readingTime,
+  sizes = '(max-width: 767px) 90vw, (max-width: 1535px) 45vw, 512px',
+  slug,
+  title,
+} = Astro.props;
 ---
 
 <article
@@ -14,10 +27,19 @@ const { _id, excerpt, imageCount, mainImage, readingTime, slug, title } =
     mainImage && (
       <figure>
         <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-50">
-          <SanityImage
-            className="aspect-video"
-            image={mainImage}
-            transition:name={`article_cover_${_id}`}
+          <SanityPicture
+            src={mainImage}
+            imageUrlBuilder={imageBuilder}
+            sizes={sizes}
+            loading={lazy ? 'lazy' : 'eager'}
+            img={{
+              alt: mainImage.asset.alt || title || '',
+            }}
+            style={{
+              aspectRatio: '16/9',
+              objectFit: 'cover',
+              width: '100%',
+            }}
           />
         </div>
       </figure>
