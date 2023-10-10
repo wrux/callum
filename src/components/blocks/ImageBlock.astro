@@ -17,7 +17,7 @@ const { caption, image } = Astro.props.node;
         objectFit: 'cover',
         width: '100%',
       }}
-      sizes="(max-width: 1279px) 90vw, 1120px"
+      sizes="(max-width: 1279px) calc(100vw - 2rem), 1120px"
       loading="lazy"
       img={{
         alt: image.asset.alt || caption || '',
