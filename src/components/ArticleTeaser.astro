@@ -4,7 +4,7 @@ import { Heading, Text } from '~/components';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
-  lazy?: boolean;
+  lazy?: number;
   sizes?: string;
 };
 
@@ -14,7 +14,7 @@ const {
   lazy = false,
   mainImage,
   readingTime,
-  sizes = '(max-width: 767px) 90vw, (max-width: 1535px) 45vw, 512px',
+  sizes = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1535px) calc((100vw - 3rem) * 0.5), 32rem',
   slug,
   title,
 } = Astro.props;
