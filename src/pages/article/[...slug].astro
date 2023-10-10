@@ -84,6 +84,7 @@ const post = Astro.props as Article;
                 img={{
                   alt: post.mainImage.asset.alt || post.title || '',
                 }}
+                loading="eager"
               />
               {post.mainImage?.alt && (
                 <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
