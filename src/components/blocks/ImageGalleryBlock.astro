@@ -10,22 +10,24 @@ const { images } = Astro.props.node;
   data-block="image-gallery"
 >
   <div class="container max-w-full lg:max-w-screen-xl">
-    <div class="track grid gap-4 lg:gap-8 items-center fade-in-up">
+    <div class="track grid gap-4 lg:gap-8 items-center">
       {
         images.map(({ caption, image }) => (
-          <SanityPicture
-            src={image}
-            imageUrlBuilder={imageBuilder}
-            style={{
-              maxHeight: '95vh',
-              objectFit: 'cover',
-            }}
-            sizes="(max-width: 896px) calc(75vw - 3rem) , 768px"
-            loading="lazy"
-            img={{
-              alt: image.asset.alt || caption || '',
-            }}
-          />
+          <div class="item">
+            <SanityPicture
+              src={image}
+              imageUrlBuilder={imageBuilder}
+              style={{
+                maxHeight: '95vh',
+                objectFit: 'cover',
+              }}
+              sizes="(max-width: 896px) calc(75vw - 3rem) , 768px"
+              loading="lazy"
+              img={{
+                alt: image.asset.alt || caption || '',
+              }}
+            />
+          </div>
         ))
       }
     </div>
@@ -39,6 +41,36 @@ const { images } = Astro.props.node;
   }
 
   .track {
-    grid: auto / auto-flow min(calc(100vw - 8rem), 768px);
+    grid: auto / auto-flow min(calc(100vw - 8rem), 48rem);
+  }
+
+  @supports (animation-range: normal) {
+    @media (prefers-reduced-motion: no-preference) {
+      .item {
+        view-timeline-name: --subjectReveal;
+        animation-timeline: --subjectReveal;
+        animation-name: fadeInSide;
+        animation-fill-mode: both;
+        animation-duration: 1ms; /* Firefox requires this to apply the animation */
+        animation-range: entry entry 70%;
+        view-timeline-axis: inline;
+      }
+
+      @keyframes fadeInSide {
+        0% {
+          opacity: 0;
+          transform: translateX(10rem);
+        }
+
+        50% {
+          opacity: 0.25;
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateX(0px);
+        }
+      }
+    }
   }
 </style>
