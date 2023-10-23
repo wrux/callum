@@ -19,7 +19,7 @@
     "@sanity/client": "^6.4.9",
     "@sanity/dashboard": "^3.1.5",
     "@sanity/image-url": "^1.0.2",
-    "@sanity/vision": "^3.17.0",
+    "@sanity/vision": "^3.18.1",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@wrux/sanity-analytics-dashboard-widgets": "^0.1.1",
