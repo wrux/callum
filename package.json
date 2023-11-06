@@ -23,7 +23,7 @@
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@wrux/sanity-analytics-dashboard-widgets": "^0.1.1",
-    "astro": "^3.0.5",
+    "astro": "^3.4.3",
     "astro-portabletext": "^0.9.6",
     "astro-sanity-picture": "^0.2.0",
     "astro-seo": "^0.8.0",
