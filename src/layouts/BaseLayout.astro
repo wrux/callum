@@ -1,7 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import { SEO } from 'astro-seo';
-import { Heading, Logo, Text } from '~/components';
+import { Heading, Logo, Text, Wordmark } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
@@ -79,14 +79,23 @@ const thisYear = new Date().getFullYear();
 
   <body class="bg-white text-black dark:bg-black dark:text-white">
     <slot name="header">
-      <header class="flex items-center justify-center p-4">
-        <div class="relative">
-          <a href="/" aria-label="Go to the homepage">
-            <Logo class="text-[6rem]" />
+      <header
+        class="flex items-center justify-center p-4 bg-white/50 dark:bg-black/50 sticky top-0 z-50 backdrop-blur-lg mt-8 lg:mt-12"
+      >
+        <div
+          class="flex justify-between md:block gap-8 md:relative items-center"
+        >
+          <a
+            class="flex gap-2 items-center"
+            href="/"
+            aria-label="Go to the homepage"
+          >
+            <Logo class="text-[4rem]" />
+            <Wordmark class="text-[4rem] drop-shadow-md" />
           </a>
           <a
             href="/"
-            class="absolute left-full top-1/2 -translate-y-1/2 translate-x-4 grid place-items-center w-8 h-8 rounded-full text-lg bg-gray-200 dark:bg-gray-900 hover:bg-gray-400 focus:bg-gray-400 dark:hover:gray-500 dark:focus:bg-gray-500 transition-colors text-gray-500 dark:text-gray-400 hover:text-gray-200 focus:text-gray-200 dark:hover:text-black dark:focus:text-black"
+            class="md:absolute left-full top-1/2 md:-translate-y-1/2 md:translate-x-4 grid place-items-center w-8 h-8 rounded-full text-lg bg-gray-200 dark:bg-gray-900 hover:bg-gray-400 focus:bg-gray-400 dark:hover:gray-500 dark:focus:bg-gray-500 transition-colors text-gray-500 dark:text-gray-400 hover:text-gray-200 focus:text-gray-200 dark:hover:text-black dark:focus:text-black"
             aria-label="Go to the homepage"
           >
             <svg
