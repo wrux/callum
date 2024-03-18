@@ -16,7 +16,7 @@
     "@fontsource-variable/inter": "^5.0.15",
     "@phosphor-icons/react": "^2.0.15",
     "@sanity/astro": "^1.3.0",
-    "@sanity/client": "^6.4.9",
+    "@sanity/client": "^6.15.5",
     "@sanity/dashboard": "^3.1.5",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.19.1",
