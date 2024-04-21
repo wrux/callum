@@ -1,6 +1,6 @@
 ---
 import imageUrlBuilder from '@sanity/image-url';
-import { useSanityClient } from '@sanity/astro';
+import { sanityClient } from 'sanity:client';
 import type { ImageAsset } from 'sanity';
 
 export interface Props {
@@ -13,7 +13,7 @@ const { className, image, ...props } = Astro.props;
 
 const client = useSanityClient();
 
-const imageBuilder = imageUrlBuilder(client).fit('max').format('webp');
+const imageBuilder = imageUrlBuilder(sanityClient).fit('max').format('webp');
 
 function urlFor(source: ImageAsset) {
   return imageBuilder.image(source).url();
