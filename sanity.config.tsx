@@ -17,6 +17,7 @@ import { defaultDocumentNodeResolver, structure } from '~/sanity/structure';
 export default defineConfig({
   name: 'callum',
   title: 'callum.co.uk',
+  icon: () => <img src="/favicon.svg" alt="Callum.co.uk logo" />,
   projectId,
   dataset,
   plugins: [
