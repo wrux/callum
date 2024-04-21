@@ -55,17 +55,19 @@ const { images } = Astro.props.node;
   </div>
 
   <div
-    class="absolute top-16 z-10 w-full pointer-events-none fade-in transition-all duration-500"
+    class="absolute top-1/2 z-10 w-full pointer-events-none fade-in transition-all duration-500 -translate-y-1/2"
     x-cloak
     :class="showOverlay ? 'translate-x-0' : 'opacity-0 -translate-x-8'"
   >
     <div class="container max-w-full lg:max-w-screen-xl">
-      <p class="inline-block py-3 px-5 bg-white/50 dark:bg-gray-800/50">
-        <Text as="span">
+      <p
+        class="inline-block py-2 px-4 bg-white/80 dark:bg-gray-800/80 rounded-full ml-4"
+      >
+        <Text as="span" size="sm">
           Scroll for more
 
           <svg
-            class="inline-block h-[1.3em] w-[1.3em]"
+            class="inline-block h-[1.3em] w-[1.3em] translate-y-[-5%]"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 256 256"
