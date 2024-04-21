@@ -15,13 +15,13 @@ export default defineConfig({
     domains: ['cdn.sanity.io'],
   },
   integrations: [
-    react(),
     sanity({
       projectId,
       dataset,
       useCdn: false,
       studioBasePath: '/studio',
     }),
+    react(),
     sitemap(),
     tailwind(),
   ],
