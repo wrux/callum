@@ -1,4 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
-import { client } from './client';
+import { sanityClient } from 'sanity:client';
 
-export const imageBuilder = imageUrlBuilder(client).fit('max').format('webp');
+export const imageBuilder = imageUrlBuilder(sanityClient)
+  .fit('max')
+  .format('webp');

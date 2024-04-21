@@ -9,7 +9,6 @@ import {
 } from '@sanity/dashboard';
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
-import { plausibleWidget } from '@wrux/sanity-analytics-dashboard-widgets';
 
 import { dataset, projectId } from '~/sanity/config';
 import schema from '~/sanity/schemas';
@@ -18,6 +17,7 @@ import { defaultDocumentNodeResolver, structure } from '~/sanity/structure';
 export default defineConfig({
   name: 'callum',
   title: 'callum.co.uk',
+  icon: () => <img src="/favicon.svg" alt="Callum.co.uk logo" />,
   projectId,
   dataset,
   plugins: [
@@ -32,10 +32,6 @@ export default defineConfig({
           layout: { width: 'small' },
         }),
         projectUsersWidget(),
-        plausibleWidget({
-          auth: import.meta.env.PUBLIC_PLAUSIBLE_DASHBOARD_AUTH || '',
-          domain: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '',
-        }),
       ],
     }),
     deskTool({
