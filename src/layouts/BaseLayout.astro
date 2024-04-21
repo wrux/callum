@@ -69,10 +69,11 @@ const thisYear = new Date().getFullYear();
     <meta name="theme-color" content="#040D12" />
 
     <script
+      is:inline
       defer
-      data-api="/stats/api/event"
+      data-api="/p/send"
       data-domain="callum.co.uk"
-      src="/stats/js/script.js"></script>
+      src="/p/app.js"></script>
 
     <ViewTransitions />
   </head>
@@ -214,7 +215,7 @@ const thisYear = new Date().getFullYear();
               >
                 view the source code
               </a>
-               , fork the project and take whatever you like.
+              , fork the project and take whatever you like.
             </Text>
           </div>
         </div>
