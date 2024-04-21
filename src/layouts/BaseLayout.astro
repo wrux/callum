@@ -237,6 +237,12 @@ const thisYear = new Date().getFullYear();
     </footer>
 
     <script>
+      import Alpine from 'alpinejs';
+
+      window.Alpine = Alpine;
+
+      Alpine.start();
+
       document.addEventListener('astro:after-swap', () => {
         document
           .querySelectorAll<HTMLImageElement>('img[data-x-lqip="true"]')
@@ -253,5 +259,11 @@ const thisYear = new Date().getFullYear();
           });
       });
     </script>
+
+    <style is:global>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
   </body>
 </html>

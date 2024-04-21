@@ -1,35 +1,82 @@
 ---
 import SanityPicture from 'astro-sanity-picture';
 import { imageBuilder } from '~/sanity/image';
+import { Text } from '~/components';
 
 const { images } = Astro.props.node;
 ---
 
 <section
-  class="wrapper my-8 md:my-12 lg:my-16 fade-in-up"
-  data-block="image-gallery"
+  class="relative"
+  x-data="{
+    showOverlay: false,
+    get track() {
+      return this.$refs?.imageGalleryTrack;
+    },
+    init() {
+      if (!this.track) return;
+      console.log('track');
+      this.showOverlay = this.track.scrollLeft === 0;
+      this?.track.addEventListener(
+        'scroll',
+        () => this.showOverlay = this.track.scrollLeft === 0,
+        { passive: true }
+      );
+    },
+  }"
 >
-  <div class="container max-w-full lg:max-w-screen-xl">
-    <div class="track grid gap-4 lg:gap-8 items-center">
-      {
-        images.map(({ caption, image }) => (
-          <div class="item">
-            <SanityPicture
-              src={image}
-              imageUrlBuilder={imageBuilder}
-              style={{
-                maxHeight: '95vh',
-                objectFit: 'cover',
-              }}
-              sizes="(max-width: 896px) calc(75vw - 3rem) , 768px"
-              loading="lazy"
-              img={{
-                alt: image.asset.alt || caption || '',
-              }}
-            />
-          </div>
-        ))
-      }
+  <div
+    class="wrapper my-8 md:my-12 lg:my-16 fade-in-up"
+    x-ref="imageGalleryTrack"
+  >
+    <div class="relative container max-w-full lg:max-w-screen-xl">
+      <div class="flex gap-4 lg:gap-8 items-center">
+        {
+          images.map(({ caption, image }, index) => (
+            <div class="item">
+              <SanityPicture
+                src={image}
+                imageUrlBuilder={imageBuilder}
+                style={{
+                  maxHeight: '95vh',
+                  objectFit: 'cover',
+                }}
+                sizes="(max-width: 896px) calc(75vw - 3rem) , 768px"
+                loading="lazy"
+                img={{
+                  alt: image.asset.alt || caption || '',
+                }}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="absolute top-16 z-10 w-full pointer-events-none fade-in transition-all duration-500"
+    x-cloak
+    :class="showOverlay ? 'translate-x-0' : 'opacity-0 -translate-x-8'"
+  >
+    <div class="container max-w-full lg:max-w-screen-xl">
+      <p class="inline-block py-3 px-5 bg-white/50 dark:bg-gray-800/50">
+        <Text as="span">
+          Scroll for more
+
+          <svg
+            class="inline-block h-[1.3em] w-[1.3em]"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+            aria-label="Right arrow"
+          >
+            <path
+              d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"
+            ></path>
+          </svg>
+        </Text>
+      </p>
     </div>
   </div>
 </section>
@@ -40,13 +87,12 @@ const { images } = Astro.props.node;
     scroll-snap-type: x mandatory;
   }
 
-  .track {
-    grid: auto / auto-flow min(calc(100vw - 8rem), 48rem);
-  }
-
   @supports (animation-range: normal) {
     @media (prefers-reduced-motion: no-preference) {
       .item {
+        flex: 1 0 auto;
+        width: min(calc(100vw - 8rem), 48rem);
+
         view-timeline-name: --subjectReveal;
         animation-timeline: --subjectReveal;
         animation-name: fadeInSide;
@@ -59,7 +105,7 @@ const { images } = Astro.props.node;
       @keyframes fadeInSide {
         0% {
           opacity: 0;
-          transform: translateX(10rem);
+          transform: translateX(min(10rem, 25vw));
         }
 
         50% {
