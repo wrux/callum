@@ -19,9 +19,9 @@ module.exports = {
         // Brand colour pallete: https://colorhunt.co/palette/070a52d21312ed2b2af15a59
         brand: {
           black: 'rgb(7, 10, 82)',
-          dark: 'rgb(210, 19, 18)',
-          medium: 'rgb(237, 43, 42)',
-          light: 'rgb(241, 90, 89)',
+          dark: 'hsl(225, 80%, 30%)',
+          medium: 'hsl(225, 80%, 50%)',
+          light: 'hsl(225, 80%, 70%)',
         },
         wrux: 'rgb(0, 234, 207)',
       },
