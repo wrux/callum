@@ -37,7 +37,7 @@
     "sanity-plugin-asset-source-unsplash": "^3.0.1",
     "sanity-plugin-dashboard-widget-document-list": "^1.0.1",
     "sanity-plugin-media": "^2.2.5",
-    "styled-components": "^6.1.8",
+    "styled-components": "^6.1.13",
     "tailwindcss": "^3.4.3"
   },
   "devDependencies": {
