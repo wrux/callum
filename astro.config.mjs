@@ -9,7 +9,11 @@ import { dataset, projectId } from './src/sanity/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://callum.co.uk',
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
   output: 'hybrid',
   image: {
     domains: ['cdn.sanity.io'],
