@@ -214,13 +214,15 @@ const isHomepage = Astro.url.pathname === '/';
       // Update header position based on current page
       function updateHeaderPosition() {
         const header = document.querySelector('.site-header');
-        const isHomepage = document.body.dataset.isHomepage === 'true';
-        
+        const isHomepage = window.location.pathname === '/';
+
         if (header) {
           if (isHomepage) {
-            header.style.transform = 'translateY(-150%)';
+            header.classList.remove('translate-y-0');
+            header.classList.add('-translate-y-[150%]');
           } else {
-            header.style.transform = 'translateY(0)';
+            header.classList.remove('-translate-y-[150%]');
+            header.classList.add('translate-y-0');
           }
         }
       }
@@ -230,10 +232,6 @@ const isHomepage = Astro.url.pathname === '/';
 
       // Update on view transition
       document.addEventListener('astro:after-swap', () => {
-        // Update body data attribute
-        const isHomepage = window.location.pathname === '/';
-        document.body.dataset.isHomepage = String(isHomepage);
-        
         // Update header position
         updateHeaderPosition();
 
