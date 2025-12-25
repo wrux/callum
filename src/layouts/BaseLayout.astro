@@ -75,7 +75,7 @@ const isHomepage = Astro.url.pathname === '/';
   </head>
 
   <body
-    class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-50 antialiased"
+    class="bg-gray-950 text-gray-50 antialiased"
     data-is-homepage={isHomepage}
   >
     <header
@@ -92,21 +92,21 @@ const isHomepage = Astro.url.pathname === '/';
       </a>
       <a
         href="/"
-        class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-2 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"
+        class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
         aria-label="Go to the homepage"
       >
         <Icon name="mdi:arrow-left" class="w-5 h-5" />
       </a>
     </header>
 
-    <slot name="header"></slot>
+    <slot name="header" />
 
     <main class="flex-1" transition:animate="fade">
       <slot />
     </main>
 
     <footer
-      class="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12 md:py-16 lg:py-20"
+      class="mt-8 bg-gray-950 border-t border-gray-800 py-12 md:py-16 lg:py-20"
     >
       <div class="container max-w-6xl space-y-10 md:space-y-16">
         <div
@@ -120,7 +120,7 @@ const isHomepage = Astro.url.pathname === '/';
             <Heading
               as="p"
               size="h6"
-              class:list="mb-4 text-gray-900 dark:text-gray-100 font-semibold"
+              class:list="mb-4 text-gray-100 font-semibold"
               >Links</Heading
             >
             <nav aria-label="External links" class="flex gap-2">
@@ -129,7 +129,7 @@ const isHomepage = Astro.url.pathname === '/';
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-medium dark:hover:text-brand-light"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
                   >
@@ -140,7 +140,7 @@ const isHomepage = Astro.url.pathname === '/';
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-medium dark:hover:text-brand-light"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Github profile"
                     rel="noreferrer nofollow"
                   >
@@ -151,7 +151,7 @@ const isHomepage = Astro.url.pathname === '/';
                   <a
                     href="https://www.linkedin.com/in/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-medium dark:hover:text-brand-light"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Linkedin profile"
                     rel="noreferrer nofollow"
                   >
@@ -166,11 +166,11 @@ const isHomepage = Astro.url.pathname === '/';
             <Heading
               as="p"
               size="h6"
-              class:list="mb-3 text-gray-900 dark:text-gray-100 font-semibold"
+              class:list="mb-3 text-gray-100 font-semibold"
             >
               Like this website?
             </Heading>
-            <Text size="sm" class:list="text-gray-600 dark:text-gray-400">
+            <Text size="sm" class:list="text-gray-400">
               If you like this website,{' '}
               <a
                 href="https://github.com/wrux/bloke"
@@ -187,7 +187,7 @@ const isHomepage = Astro.url.pathname === '/';
 
         <Text
           size="sm"
-          class:list="text-center text-gray-500 dark:text-gray-500 pt-8 border-t border-gray-200 dark:border-gray-800"
+          class:list="text-center text-gray-500 pt-8 border-t border-gray-800"
         >
           Copyright &copy;{' '}
           <a

@@ -10,7 +10,7 @@
 
   &:hover,
   &:focus {
-    @apply text-brand-medium dark:text-brand-light;
+    @apply text-brand-light;
 
     text-decoration-color: transparent;
     text-underline-offset: 6px;

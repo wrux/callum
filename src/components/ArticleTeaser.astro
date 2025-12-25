@@ -21,7 +21,7 @@ const {
 ---
 
 <article
-  class="flex flex-col link-box group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-200/50 dark:border-gray-800/50 hover:border-gray-300 dark:hover:border-gray-700"
+  class="flex flex-col link-box group bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-800/50 hover:border-gray-700"
 >
   {
     mainImage && (
@@ -58,18 +58,18 @@ const {
     <Heading
       as="h2"
       size="h3"
-      class:list="mb-2 group-hover:text-brand-medium dark:group-hover:text-brand-light transition-colors duration-300 text-left"
+      class:list="mb-2 group-hover:text-brand-light transition-colors duration-300 text-left"
     >
       {title}
     </Heading>
     {excerpt && (
-      <Text size="sm" class:list="mb-3 line-clamp-2 text-gray-600 dark:text-gray-400 text-left leading-relaxed flex-grow">
+      <Text size="sm" class:list="mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
         {excerpt}
       </Text>
     )}
     <div class="mt-auto">
       <a
-        class="link link-overlay font-medium inline-flex items-baseline gap-1.5 group/link text-brand-medium dark:text-brand-light hover:text-brand-dark dark:hover:text-brand-medium transition-colors duration-200 text-sm"
+        class="link link-overlay font-medium inline-flex items-baseline gap-1.5 group/link text-brand-light hover:text-brand-medium transition-colors duration-200 text-sm"
         href={`/article/${slug}`}
         title={`Read full article: ${title}`}
         aria-label={`Read full article: ${title}`}

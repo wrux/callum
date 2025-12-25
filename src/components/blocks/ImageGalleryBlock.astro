@@ -32,7 +32,7 @@ const { images } = Astro.props.node;
       <div class="flex gap-4 lg:gap-8 items-center">
         {
           images.map(({ caption, image }, index) => (
-            <div class="item rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-800">
+            <div class="item rounded-xl overflow-hidden shadow-lg border border-gray-800">
               <SanityPicture
                 src={image}
                 imageUrlBuilder={imageBuilder}
@@ -60,7 +60,7 @@ const { images } = Astro.props.node;
   >
     <div class="container max-w-full lg:max-w-screen-xl">
       <p
-        class="inline-block py-2 px-4 bg-white/80 dark:bg-gray-800/80 rounded-full ml-4"
+        class="inline-block py-2 px-4 bg-gray-800/80 rounded-full ml-4"
       >
         <Text as="span" size="sm">
           Scroll for more

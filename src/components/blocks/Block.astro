@@ -31,7 +31,7 @@ const styleIs = (style: string) => style === node.style;
       <slot />
     </Heading>
   ) : styleIs('blockquote') ? (
-    <blockquote class:list="border-l-4 border-brand-medium dark:border-brand-light pl-6 py-2 my-6 italic text-gray-700 dark:text-gray-300" {...attrs}>
+    <blockquote class:list="border-l-4 border-brand-light pl-6 py-2 my-6 italic text-gray-300" {...attrs}>
       <slot />
     </blockquote>
   ) : styleIs('normal') ? (
