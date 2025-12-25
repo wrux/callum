@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
+import icon from 'astro-icon';
 import { dataset, projectId } from './src/sanity/config';
 
 // https://astro.build/config
@@ -33,5 +34,10 @@ export default defineConfig({
     react(),
     sitemap(),
     tailwind(),
+    icon({
+      include: {
+        'mdi:*': true,
+      },
+    }),
   ],
 });
