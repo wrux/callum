@@ -15,7 +15,6 @@ const { images } = Astro.props.node;
     },
     init() {
       if (!this.track) return;
-      console.log('track');
       this.showOverlay = this.track.scrollLeft === 0;
       this?.track.addEventListener(
         'scroll',

@@ -16,7 +16,12 @@ export default defineConfig({
   }),
   output: 'static',
   image: {
-    domains: ['cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
   integrations: [
     sanity({
