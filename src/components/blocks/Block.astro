@@ -7,39 +7,39 @@ const styleIs = (style: string) => style === node.style;
 
 {
   styleIs('h1') ? (
-    <Heading as="h1" size="h1" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h1" size="h1" class:list="mt-12 mb-6 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('h2') ? (
-    <Heading as="h2" size="h2" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h2" size="h2" class:list="mt-10 mb-5 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('h3') ? (
-    <Heading as="h3" size="h3" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h3" size="h3" class:list="mt-8 mb-4 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('h4') ? (
-    <Heading as="h4" size="h4" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h4" size="h4" class:list="mt-6 mb-3 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('h5') ? (
-    <Heading as="h5" size="h5" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h5" size="h5" class:list="mt-6 mb-3 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('h6') ? (
-    <Heading as="h6" size="h6" class:list="mt-[0.8em] mb-[0.4em]" {...attrs}>
+    <Heading as="h6" size="h6" class:list="mt-6 mb-3 first:mt-0" {...attrs}>
       <slot />
     </Heading>
   ) : styleIs('blockquote') ? (
-    <blockquote {...attrs}>
+    <blockquote class:list="border-l-4 border-brand-medium dark:border-brand-light pl-6 py-2 my-6 italic text-gray-700 dark:text-gray-300" {...attrs}>
       <slot />
     </blockquote>
   ) : styleIs('normal') ? (
-    <Text class:list="my-4" {...attrs}>
+    <Text class:list="my-5 leading-relaxed" {...attrs}>
       <slot />
     </Text>
   ) : (
-    <Text {...props}>
+    <Text class:list="my-5 leading-relaxed" {...props}>
       <slot />
     </Text>
   )

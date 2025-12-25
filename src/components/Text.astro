@@ -1,16 +1,16 @@
 ---
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const sectionVariants = cva(['font-sans', 'font-normal', 'leading-normal'], {
+const sectionVariants = cva(['font-sans', 'font-normal'], {
   variants: {
     display: {
-      muted: 'text-gray-700 dark:text-gray-400',
+      muted: 'text-gray-600 dark:text-gray-400',
     },
     size: {
-      xs: 'text-xs lg:text-sm',
-      sm: 'text-sm lg:text-base',
-      md: 'text-base lg:text-lg',
-      lg: 'text-lg lg:text-xl',
+      xs: 'text-xs lg:text-sm leading-relaxed',
+      sm: 'text-sm lg:text-base leading-relaxed',
+      md: 'text-base lg:text-lg leading-relaxed',
+      lg: 'text-lg lg:text-xl xl:text-2xl leading-relaxed',
     },
   },
   defaultVariants: {

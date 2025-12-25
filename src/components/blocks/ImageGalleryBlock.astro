@@ -25,20 +25,20 @@ const { images } = Astro.props.node;
   }"
 >
   <div
-    class="wrapper my-8 md:my-12 lg:my-16 fade-in-up"
+    class="wrapper my-8 md:my-12 lg:my-16"
     x-ref="imageGalleryTrack"
   >
     <div class="relative container max-w-full lg:max-w-screen-xl">
       <div class="flex gap-4 lg:gap-8 items-center">
         {
           images.map(({ caption, image }, index) => (
-            <div class="item">
+            <div class="item rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-800">
               <SanityPicture
                 src={image}
                 imageUrlBuilder={imageBuilder}
                 style={{
-                  maxHeight: '95vh',
-                  objectFit: 'cover',
+                  width: '100%',
+                  height: 'auto',
                 }}
                 sizes="(max-width: 896px) calc(75vw - 3rem) , 768px"
                 loading="lazy"
@@ -54,7 +54,7 @@ const { images } = Astro.props.node;
   </div>
 
   <div
-    class="absolute top-1/2 z-10 w-full pointer-events-none fade-in transition-all duration-500 -translate-y-1/2"
+    class="absolute top-1/2 z-10 w-full pointer-events-none transition-all duration-500 -translate-y-1/2"
     x-cloak
     :class="showOverlay ? 'translate-x-0' : 'opacity-0 -translate-x-8'"
   >
@@ -88,36 +88,8 @@ const { images } = Astro.props.node;
     scroll-snap-type: x mandatory;
   }
 
-  @supports (animation-range: normal) {
-    @media (prefers-reduced-motion: no-preference) {
-      .item {
-        flex: 1 0 auto;
-        width: min(calc(100vw - 8rem), 48rem);
-
-        view-timeline-name: --subjectReveal;
-        animation-timeline: --subjectReveal;
-        animation-name: fadeInSide;
-        animation-fill-mode: both;
-        animation-duration: 1ms; /* Firefox requires this to apply the animation */
-        animation-range: entry entry 70%;
-        view-timeline-axis: inline;
-      }
-
-      @keyframes fadeInSide {
-        0% {
-          opacity: 0;
-          transform: translateX(min(10rem, 25vw));
-        }
-
-        50% {
-          opacity: 0.25;
-        }
-
-        100% {
-          opacity: 1;
-          transform: translateX(0px);
-        }
-      }
-    }
+  .item {
+    flex: 1 0 auto;
+    width: min(calc(100vw - 8rem), 48rem);
   }
 </style>

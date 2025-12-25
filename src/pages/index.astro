@@ -22,26 +22,28 @@ const posts = await getLatestPosts();
       'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknwon places!',
   }}
 >
-  <Section spacing="md" slot="header">
+  <Section spacing="lg" slot="header">
     <header
-      class="flex flex-col items-center justify-center min-h-most text-center"
+      class="flex flex-col items-center justify-center min-h-most text-center px-4"
     >
-      <div class="flex flex-col items-center mb-8 md:mb-12 lg:mb-16">
-        <Logo class="text-[8rem]" />
-        <Wordmark class:list="text-[6rem]" />
+      <div class="flex flex-col items-center mb-10 md:mb-14 lg:mb-20">
+        <Logo class="text-[7rem] md:text-[8rem] lg:text-[9rem] opacity-90" />
+        <Wordmark class:list="text-[5rem] md:text-[6rem] lg:text-[7rem] mt-2" />
       </div>
 
-      <div class="max-w-prose mx-auto">
-        <Heading as="h1" size="h1" class:list="mb-10">
+      <div class="max-w-4xl mx-auto">
+        <Heading as="h1" size="h1" class:list="mb-8 lg:mb-10">
           Discovering offbeat travel destinations through my travel blog
         </Heading>
-        <Text size="lg">Check out my most recent blog posts below</Text>
+        <Text size="lg" class:list="text-gray-600 dark:text-gray-400">
+          Check out my most recent blog posts below
+        </Text>
       </div>
 
-      <div class="grid place-items-center mt-6 text-4xl">
+      <div class="grid place-items-center mt-10 lg:mt-12 text-3xl md:text-4xl text-gray-400 dark:text-gray-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-[1em] h-[1em] fade-out-up pointer-events-none"
+          class="w-[1em] h-[1em] pointer-events-none"
           aria-hidden="true"
           fill="currentColor"
           viewBox="0 0 256 256"
