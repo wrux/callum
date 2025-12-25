@@ -28,6 +28,7 @@ const description =
 const image = meta?.image || 'https://callum.co.uk/callum-social-image.webp';
 
 const thisYear = new Date().getFullYear();
+const isHomepage = Astro.url.pathname === '/';
 ---
 
 <html lang="en" transition:animate="none">
@@ -75,27 +76,30 @@ const thisYear = new Date().getFullYear();
 
   <body
     class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-50 antialiased"
+    data-is-homepage={isHomepage}
   >
-    <slot name="header">
-      <header
-        class="fixed top-4 left-4 right-4 z-50 flex justify-between items-center pointer-events-none"
+    <header
+      class={`site-header fixed top-4 left-4 right-4 z-50 flex justify-between items-center pointer-events-none transition-transform duration-500 ease-in-out ${
+        isHomepage ? '-translate-y-[150%]' : 'translate-y-0'
+      }`}
+    >
+      <a
+        class="pointer-events-auto transition-opacity hover:opacity-70"
+        href="/"
+        aria-label="Go to the homepage"
       >
-        <a
-          class="pointer-events-auto transition-opacity hover:opacity-70"
-          href="/"
-          aria-label="Go to the homepage"
-        >
-          <Logo class="text-[2rem] md:text-[2.5rem]" />
-        </a>
-        <a
-          href="/"
-          class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-2 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"
-          aria-label="Go to the homepage"
-        >
-          <Icon name="mdi:arrow-left" class="w-5 h-5" />
-        </a>
-      </header>
-    </slot>
+        <Logo class="text-[2rem] md:text-[2.5rem]" />
+      </a>
+      <a
+        href="/"
+        class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-2 border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300"
+        aria-label="Go to the homepage"
+      >
+        <Icon name="mdi:arrow-left" class="w-5 h-5" />
+      </a>
+    </header>
+
+    <slot name="header"></slot>
 
     <main class="flex-1" transition:animate="fade">
       <slot />
@@ -207,7 +211,33 @@ const thisYear = new Date().getFullYear();
 
       Alpine.start();
 
+      // Update header position based on current page
+      function updateHeaderPosition() {
+        const header = document.querySelector('.site-header');
+        const isHomepage = document.body.dataset.isHomepage === 'true';
+        
+        if (header) {
+          if (isHomepage) {
+            header.style.transform = 'translateY(-150%)';
+          } else {
+            header.style.transform = 'translateY(0)';
+          }
+        }
+      }
+
+      // Initialize header position
+      updateHeaderPosition();
+
+      // Update on view transition
       document.addEventListener('astro:after-swap', () => {
+        // Update body data attribute
+        const isHomepage = window.location.pathname === '/';
+        document.body.dataset.isHomepage = String(isHomepage);
+        
+        // Update header position
+        updateHeaderPosition();
+
+        // Handle image animations
         document
           .querySelectorAll<HTMLImageElement>('img[data-x-lqip="true"]')
           .forEach((img) => {
@@ -227,6 +257,18 @@ const thisYear = new Date().getFullYear();
     <style is:global>
       [x-cloak] {
         display: none !important;
+      }
+
+      .site-header {
+        view-transition-name: site-header;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(site-header),
+        ::view-transition-new(site-header) {
+          animation-duration: 0.5s;
+          animation-timing-function: ease-in-out;
+        }
       }
     </style>
   </body>
