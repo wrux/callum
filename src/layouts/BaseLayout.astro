@@ -90,13 +90,17 @@ const isHomepage = Astro.url.pathname === '/';
       >
         <Logo class="text-[2rem] md:text-[2.5rem]" />
       </a>
-      <a
-        href="/"
-        class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
-        aria-label="Go to the homepage"
-      >
-        <Icon name="mdi:arrow-left" class="w-5 h-5" />
-      </a>
+      {
+        !isHomepage && (
+          <a
+            href="/"
+            class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
+            aria-label="Go to the homepage"
+          >
+            <Icon name="mdi:arrow-left" class="w-5 h-5" />
+          </a>
+        )
+      }
     </header>
 
     <slot name="header" />
@@ -120,8 +124,7 @@ const isHomepage = Astro.url.pathname === '/';
             <Heading
               as="p"
               size="h6"
-              class:list="mb-4 text-gray-100 font-semibold"
-              >Links</Heading
+              class:list="mb-4 text-gray-100 font-semibold">Links</Heading
             >
             <nav aria-label="External links" class="flex gap-2">
               <ul class="flex gap-3 text-3xl md:text-4xl">
