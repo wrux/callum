@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
 import { dataset, projectId } from './src/sanity/config';
@@ -14,7 +14,7 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  output: 'hybrid',
+  output: 'static',
   image: {
     domains: ['cdn.sanity.io'],
   },
