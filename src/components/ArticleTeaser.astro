@@ -4,7 +4,7 @@ import { Heading, Text } from '~/components';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
-  lazy?: number;
+  lazy?: boolean | number;
   sizes?: string;
 };
 

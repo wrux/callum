@@ -211,15 +211,30 @@ const isHomepage = Astro.url.pathname === '/';
 
       Alpine.start();
 
-      // Update header position based on current page
+      // Update header position based on current page and scroll
       function updateHeaderPosition() {
         const header = document.querySelector('.site-header');
         const isHomepage = window.location.pathname === '/';
 
         if (header) {
           if (isHomepage) {
-            header.classList.remove('translate-y-0');
-            header.classList.add('-translate-y-[150%]');
+            const heroSection = document.getElementById('hero-section');
+            if (heroSection) {
+              const heroBottom = heroSection.getBoundingClientRect().bottom;
+              const scrolledPastHero = heroBottom < 0;
+
+              if (scrolledPastHero) {
+                header.classList.remove('-translate-y-[150%]');
+                header.classList.add('translate-y-0');
+              } else {
+                header.classList.remove('translate-y-0');
+                header.classList.add('-translate-y-[150%]');
+              }
+            } else {
+              // Fallback: hide header if hero section not found
+              header.classList.remove('translate-y-0');
+              header.classList.add('-translate-y-[150%]');
+            }
           } else {
             header.classList.remove('-translate-y-[150%]');
             header.classList.add('translate-y-0');
@@ -229,6 +244,20 @@ const isHomepage = Astro.url.pathname === '/';
 
       // Initialize header position
       updateHeaderPosition();
+
+      // Add scroll listener for homepage header transition
+      // Uses requestAnimationFrame for performance
+      let ticking = false;
+      function handleScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateHeaderPosition();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', handleScroll, { passive: true });
 
       // Update on view transition
       document.addEventListener('astro:after-swap', () => {
