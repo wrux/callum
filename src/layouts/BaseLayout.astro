@@ -2,7 +2,7 @@
 import { ViewTransitions } from 'astro:transitions';
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
-import { Logo, Wordmark } from '~/components';
+import { Logo } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
@@ -180,7 +180,9 @@ const isHomepage = Astro.url.pathname === '/';
           </div>
         </div>
 
-        <p class="type-text-sm text-center text-gray-500 pt-8 border-t border-gray-800">
+        <p
+          class="type-text-sm text-center text-gray-500 pt-8 border-t border-gray-800"
+        >
           Copyright &copy;{' '}
           <a
             href="https://wrux.com"
@@ -197,12 +199,6 @@ const isHomepage = Astro.url.pathname === '/';
     </footer>
 
     <script>
-      import Alpine from 'alpinejs';
-
-      window.Alpine = Alpine;
-
-      Alpine.start();
-
       // Update header position based on current page and scroll
       function updateHeaderPosition() {
         const header = document.querySelector('.site-header');
@@ -274,10 +270,6 @@ const isHomepage = Astro.url.pathname === '/';
     </script>
 
     <style is:global>
-      [x-cloak] {
-        display: none !important;
-      }
-
       .site-header {
         view-transition-name: site-header;
       }

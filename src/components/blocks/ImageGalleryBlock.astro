@@ -15,7 +15,7 @@ export interface Props {
 const { images } = Astro.props.node;
 ---
 
-<Section width="lg" data-block="image-gallery">
+<Section width="full" data-block="image-gallery">
   <div class="masonry-grid">
     {
       images.map(({ caption, image }) => (
@@ -154,7 +154,7 @@ const { images } = Astro.props.node;
     }
   }
 
-  @media (min-width: 1536px) {
+  @media (min-width: 1280px) {
     .masonry-item {
       width: calc(33.333% - 11px);
     }
