@@ -1,9 +1,49 @@
 ---
 import { imageBuilder } from '~/sanity/image';
+import { createImageUrlBuilder } from '@sanity/image-url';
+import { sanityClient } from 'sanity:client';
 import SanityPicture from 'astro-sanity-picture';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DateTime, PortableText } from '~/components';
 import { getPosts } from '~/sanity/queries';
+
+// Create a cropped image builder for main images with fixed 16:9 aspect ratio
+const baseCroppedBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+
+// Create a proxy wrapper to ensure 16:9 aspect ratio is maintained
+const croppedImageBuilder = new Proxy(baseCroppedBuilder, {
+  get(target, prop) {
+    if (prop === 'image') {
+      return (source: any) => {
+        const builder = target.image(source);
+        // Override width/height methods to maintain 16:9 aspect ratio
+        const originalWidth = builder.width.bind(builder);
+        const originalHeight = builder.height.bind(builder);
+
+        builder.width = function (width: number) {
+          originalWidth(width);
+          // Calculate height to maintain 16:9 aspect ratio
+          const height = Math.round((width * 9) / 16);
+          originalHeight(height);
+          return this;
+        };
+
+        builder.height = function (height: number) {
+          originalHeight(height);
+          // Calculate width to maintain 16:9 aspect ratio
+          const width = Math.round((height * 16) / 9);
+          originalWidth(width);
+          return this;
+        };
+
+        return builder;
+      };
+    }
+    return (target as any)[prop];
+  },
+});
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -75,15 +115,18 @@ const post = Astro.props as Article;
         {
           post?.mainImage && (
             <figure class="md:rounded-2xl overflow-hidden shadow-2xl border-0 md:border border-gray-800">
-              <SanityPicture
-                src={post.mainImage}
-                imageUrlBuilder={imageBuilder}
-                sizes="(max-width: 767px) 100vw, (max-width: 1535px) 90vw, 1344px"
-                img={{
-                  alt: post.mainImage.asset.alt || post.title || '',
-                }}
-                loading="eager"
-              />
+              <div class="relative aspect-[16/9] overflow-hidden">
+                <SanityPicture
+                  src={post.mainImage}
+                  imageUrlBuilder={croppedImageBuilder}
+                  sizes="(max-width: 767px) 100vw, (max-width: 1535px) 90vw, 1344px"
+                  img={{
+                    alt: post.mainImage.asset.alt || post.title || '',
+                    class: 'w-full h-full object-cover',
+                  }}
+                  loading="eager"
+                />
+              </div>
               {post.mainImage?.alt && (
                 <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
               )}
