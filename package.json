@@ -33,6 +33,7 @@
     "class-variance-authority": "^0.7.1",
     "country-code-emoji": "^2.3.0",
     "groq": "^5.1.0",
+    "masonry-layout": "^4.2.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "sanity": "^5.1.0",
