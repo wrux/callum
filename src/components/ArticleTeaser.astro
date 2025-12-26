@@ -1,6 +1,5 @@
 ---
 import SanityPicture from 'astro-sanity-picture';
-import { Heading, Text } from '~/components';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
@@ -45,27 +44,23 @@ const {
   <div class="p-4 md:p-5 lg:p-6 flex flex-col flex-grow">
     {
       (imageCount || readingTime) && (
-        <Text display="muted" size="xs" class:list="mb-2 uppercase tracking-wider font-medium">
+        <p class="type-text-xs type-text-muted mb-2 uppercase tracking-wider font-medium">
           {[
             readingTime && `${readingTime} min read`,
             imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
           ]
             .filter(Boolean)
             .join(' • ')}
-        </Text>
+        </p>
       )
     }
-    <Heading
-      as="h2"
-      size="h3"
-      class:list="mb-2 group-hover:text-brand-light transition-colors duration-300 text-left"
-    >
+    <h2 class="type-h3 mb-2 group-hover:text-brand-light transition-colors duration-300 text-left">
       {title}
-    </Heading>
+    </h2>
     {excerpt && (
-      <Text size="sm" class:list="mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
+      <p class="type-text-sm mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
         {excerpt}
-      </Text>
+      </p>
     )}
     <div class="mt-auto">
       <a

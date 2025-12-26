@@ -2,7 +2,7 @@
 import { ViewTransitions } from 'astro:transitions';
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
-import { Heading, Logo, Text, Wordmark } from '~/components';
+import { Logo, Wordmark } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
@@ -121,11 +121,7 @@ const isHomepage = Astro.url.pathname === '/';
           </div>
 
           <div class="col-span-1">
-            <Heading
-              as="p"
-              size="h6"
-              class:list="mb-4 text-gray-100 font-semibold">Links</Heading
-            >
+            <p class="type-h6 mb-4 text-gray-100 font-semibold">Links</p>
             <nav aria-label="External links" class="flex gap-2">
               <ul class="flex gap-3 text-3xl md:text-4xl">
                 <li>
@@ -166,14 +162,10 @@ const isHomepage = Astro.url.pathname === '/';
           </div>
 
           <div class="col-span-1 md:col-span-2">
-            <Heading
-              as="p"
-              size="h6"
-              class:list="mb-3 text-gray-100 font-semibold"
-            >
+            <p class="type-h6 mb-3 text-gray-100 font-semibold">
               Like this website?
-            </Heading>
-            <Text size="sm" class:list="text-gray-400">
+            </p>
+            <p class="type-text-sm text-gray-400">
               If you like this website,{' '}
               <a
                 href="https://github.com/wrux/bloke"
@@ -184,14 +176,11 @@ const isHomepage = Astro.url.pathname === '/';
                 view the source code
               </a>
               , fork the project and take whatever you like.
-            </Text>
+            </p>
           </div>
         </div>
 
-        <Text
-          size="sm"
-          class:list="text-center text-gray-500 pt-8 border-t border-gray-800"
-        >
+        <p class="type-text-sm text-center text-gray-500 pt-8 border-t border-gray-800">
           Copyright &copy;{' '}
           <a
             href="https://wrux.com"
@@ -203,7 +192,7 @@ const isHomepage = Astro.url.pathname === '/';
             Callum Bonnyman
           </a>{' '}
           {thisYear}.
-        </Text>
+        </p>
       </div>
     </footer>
 

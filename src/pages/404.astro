@@ -1,10 +1,8 @@
 ---
 import {
   ArticleTeaser,
-  Heading,
   Section,
   TeaserGrid,
-  Text,
 } from '~/components';
 import { getLatestPosts } from '~/sanity/queries';
 import { BaseLayout } from '~/layouts';
@@ -22,14 +20,14 @@ const posts = await getLatestPosts(2);
   <Section spacing="md">
     <div class="container">
       <div class="max-w-2xl text-center mx-auto">
-        <Heading class:list="mb-6 lg:mb-8" as="h1">404: Page not found!</Heading>
-        <Text class:list="mb-6 lg:mb-8 text-gray-400" size="lg">
+        <h1 class="type-h1 mb-6 lg:mb-8">404: Page not found!</h1>
+        <p class="type-text-lg mb-6 lg:mb-8 text-gray-400">
           Oops! It seems you've taken a detour to the unknown. But don't worry,
           getting lost is all part of the adventure.
-        </Text>
-        <Text>
+        </p>
+        <p>
           <a class="link font-medium text-lg" href="/">Go to the home page</a>
-        </Text>
+        </p>
       </div>
     </div>
   </Section>

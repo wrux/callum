@@ -1,6 +1,5 @@
 ---
 import SanityPicture from 'astro-sanity-picture';
-import Text from '../Text.astro';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 
@@ -26,9 +25,9 @@ const { caption, image } = Astro.props.node;
     </div>
     {
       caption && (
-        <Text as="figcaption" size="sm" class:list="italic text-center text-gray-400 px-4 max-w-3xl mx-auto">
+        <figcaption class="type-text-sm italic text-center text-gray-400 px-4 max-w-3xl mx-auto">
           {caption}
-        </Text>
+        </figcaption>
       )
     }
   </figure>

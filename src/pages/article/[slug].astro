@@ -2,7 +2,7 @@
 import { imageBuilder } from '~/sanity/image';
 import SanityPicture from 'astro-sanity-picture';
 import { BaseLayout } from '~/layouts';
-import { DateTime, Heading, PortableText, Text } from '~/components';
+import { DateTime, PortableText } from '~/components';
 import { getPosts } from '~/sanity/queries';
 
 export async function getStaticPaths() {
@@ -35,7 +35,7 @@ const post = Astro.props as Article;
         >
           {
             (post?.imageCount || post?.readingTime) && (
-              <Text display="muted" size="sm" class:list="mb-4 lg:mb-6 uppercase tracking-wide">
+              <p class="type-text-sm type-text-muted mb-4 lg:mb-6 uppercase tracking-wide">
                 {[
                   post?.readingTime && `${post.readingTime} min read`,
                   post?.imageCount &&
@@ -43,7 +43,7 @@ const post = Astro.props as Article;
                 ]
                   .filter(Boolean)
                   .join(' • ')}
-              </Text>
+              </p>
             )
           }
           {
@@ -58,19 +58,19 @@ const post = Astro.props as Article;
               </div>
             )
           }
-          <Heading as="h1" size="h1" class:list="mb-6 lg:mb-8">
+          <h1 class="type-h1 mb-6 lg:mb-8">
             {post.title}
-          </Heading>
+          </h1>
           {
             post?.excerpt && (
-              <Text size="lg" class:list="mb-8 lg:mb-10 text-gray-300 max-w-3xl mx-auto">
+              <p class="type-text-lg mb-8 lg:mb-10 text-gray-300 max-w-3xl mx-auto">
                 {post.excerpt}
-              </Text>
+              </p>
             )
           }
-          <Text display="muted" size="sm" class:list="text-gray-500">
+          <p class="type-text-sm type-text-muted text-gray-500">
             Published <DateTime date={post.publishedAt} />
-          </Text>
+          </p>
         </div>
       </div>
       <div class="container max-w-screen-2xl mt-8 lg:mt-12">
