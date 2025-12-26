@@ -84,7 +84,7 @@ const isHomepage = Astro.url.pathname === '/';
       }`}
     >
       <a
-        class="pointer-events-auto transition-opacity hover:opacity-70"
+        class="flex items-center justify-center pointer-events-auto transition-opacity hover:opacity-70 size-14 rounded-xl bg-gray-950/80 backdrop-blur-xl"
         href="/"
         aria-label="Go to the homepage"
       >
@@ -94,10 +94,11 @@ const isHomepage = Astro.url.pathname === '/';
         !isHomepage && (
           <a
             href="/"
-            class="pointer-events-auto grid place-items-center w-10 h-10 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
+            class="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
             aria-label="Go to the homepage"
           >
-            <Icon name="mdi:arrow-left" class="w-5 h-5" />
+            <Icon name="mdi:keyboard-backspace" class="w-5 h-5" />
+            <span class="text-sm font-medium">Back</span>
           </a>
         )
       }
