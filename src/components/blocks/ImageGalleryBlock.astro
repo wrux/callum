@@ -34,10 +34,10 @@ const { images } = Astro.props.node;
             }}
           />
           {caption && (
-            <div class="absolute bottom-0 left-0 px-3 py-5 max-w-[calc(100%-1rem)]">
-              <span class="rounded-lg inline text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+            <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
+              <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                 {caption}
-              </span>
+              </div>
             </div>
           )}
         </div>
