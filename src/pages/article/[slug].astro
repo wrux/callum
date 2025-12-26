@@ -1,7 +1,7 @@
 ---
 import { imageBuilder } from '~/sanity/image';
 import SanityPicture from 'astro-sanity-picture';
-import { BaseLayout } from '~/layouts';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DateTime, PortableText } from '~/components';
 import { getPosts } from '~/sanity/queries';
 
@@ -30,9 +30,7 @@ const post = Astro.props as Article;
   <article>
     <section class="mb-12 md:mb-16 lg:mb-20">
       <div class="container">
-        <div
-          class="max-w-4xl mx-auto text-center py-6 md:py-8 lg:py-12"
-        >
+        <div class="max-w-4xl mx-auto text-center py-6 md:py-8 lg:py-12">
           {
             (post?.imageCount || post?.readingTime) && (
               <p class="type-text-sm type-text-muted mb-4 lg:mb-6 uppercase tracking-wide">

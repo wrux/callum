@@ -1,11 +1,7 @@
 ---
-import {
-  ArticleTeaser,
-  Section,
-  TeaserGrid,
-} from '~/components';
+import { ArticleTeaser, Section, TeaserGrid } from '~/components';
 import { getLatestPosts } from '~/sanity/queries';
-import { BaseLayout } from '~/layouts';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 
 const posts = await getLatestPosts(2);
 ---

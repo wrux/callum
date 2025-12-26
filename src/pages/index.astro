@@ -8,7 +8,7 @@ import {
 } from '~/components';
 import { Icon } from 'astro-icon/components';
 import { getLatestPosts } from '~/sanity/queries';
-import { BaseLayout } from '~/layouts';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 
 const posts = await getLatestPosts();
 ---
