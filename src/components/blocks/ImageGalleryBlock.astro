@@ -17,7 +17,7 @@ const { images } = Astro.props.node;
 const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
-<Section width="full" data-block="image-gallery">
+<Section width="mobile-full" data-block="image-gallery">
   {/* Desktop: Masonry grid */}
   <div class="masonry-grid hidden md:block">
     {
@@ -59,12 +59,12 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
         {/* Main Swiper */}
         <div
-          class={`swiper gallery-main-${galleryId} mb-3 relative rounded-xl overflow-hidden`}
+          class={`swiper gallery-main-${galleryId} mb-3 relative overflow-hidden md:rounded-xl`}
         >
           <div class="swiper-wrapper">
             {images.map(({ caption, image }, index) => (
               <div class="swiper-slide">
-                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                <div class="relative overflow-hidden shadow-lg border-0 md:border md:border-gray-800">
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
@@ -72,7 +72,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                       width: '100%',
                       height: 'auto',
                     }}
-                    sizes="calc(100vw - 2rem)"
+                    sizes="100vw"
                     loading={index === 0 ? 'eager' : 'lazy'}
                     img={{
                       alt: image.asset.alt || caption || '',
@@ -118,7 +118,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 
         {/* Thumbnails Swiper */}
         {images.length > 1 && (
-          <div class={`swiper gallery-thumbs-${galleryId}`}>
+          <div class={`swiper gallery-thumbs-${galleryId} px-4`}>
             <div class="swiper-wrapper">
               {images.map(({ image, caption }) => (
                 <div class="swiper-slide">
@@ -347,7 +347,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   }
 
   .mobile-gallery .swiper[class*='gallery-thumbs'] {
-    padding: 4px 0;
+    padding: 4px 1rem;
     overflow: hidden;
     max-width: 100%;
   }
