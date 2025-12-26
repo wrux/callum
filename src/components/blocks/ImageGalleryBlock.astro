@@ -19,18 +19,23 @@ const { images } = Astro.props.node;
   <div class="masonry-grid">
     {
       images.map(({ caption, image }) => (
-        <div class="masonry-item rounded-xl overflow-hidden shadow-lg border border-gray-800 relative">
+        <div
+          class="masonry-item rounded-xl overflow-hidden shadow-lg border border-gray-800 relative"
+          style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
+        >
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
             style={{
               width: '100%',
-              height: 'auto',
+              height: '100%',
+              objectFit: 'cover',
             }}
             sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1535px) calc(50vw - 3rem), 400px"
             loading="lazy"
             img={{
               alt: image.asset.alt || caption || '',
+              class: 'w-full h-full object-cover',
             }}
           />
           {caption && (
@@ -63,11 +68,8 @@ const { images } = Astro.props.node;
       }
       grid.dataset.masonryInitialized = 'true';
 
-      // Wait for images to load before initializing Masonry
-      const images = gridElement.querySelectorAll('img');
-      let loadedImages = 0;
-      const totalImages = images.length;
-
+      // Initialize Masonry immediately using aspect ratios
+      // This prevents layout shift since items have aspect ratios set
       const initMasonry = () => {
         if (!Masonry) {
           console.error('Masonry library not available');
@@ -91,37 +93,28 @@ const { images } = Astro.props.node;
           return;
         }
 
-        // Re-layout when images load
+        // Initial layout - items have aspect ratios so this works immediately
+        layoutMethod.call(msnry);
+
+        // Re-layout when images load for fine-tuning (images might have slightly different dimensions)
+        const images = gridElement.querySelectorAll('img');
         images.forEach((img) => {
-          if (img.complete) {
-            layoutMethod.call(msnry);
-          } else {
-            img.addEventListener('load', () => {
-              layoutMethod.call(msnry);
-            });
+          if (!img.complete) {
+            img.addEventListener(
+              'load',
+              () => {
+                layoutMethod.call(msnry);
+              },
+              { once: true },
+            );
           }
         });
       };
 
-      if (totalImages === 0) {
+      // Use requestAnimationFrame to ensure DOM is ready and aspect ratios are applied
+      requestAnimationFrame(() => {
         initMasonry();
-      } else {
-        images.forEach((img) => {
-          if (img.complete) {
-            loadedImages++;
-            if (loadedImages === totalImages) {
-              initMasonry();
-            }
-          } else {
-            img.addEventListener('load', () => {
-              loadedImages++;
-              if (loadedImages === totalImages) {
-                initMasonry();
-              }
-            });
-          }
-        });
-      }
+      });
     });
   }
 
@@ -146,6 +139,7 @@ const { images } = Astro.props.node;
     margin-bottom: 16px;
     break-inside: avoid;
     position: relative;
+    min-height: 0;
   }
 
   @media (max-width: 767px) {
