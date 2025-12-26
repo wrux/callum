@@ -1,12 +1,11 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { Logo } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
-import '../styles/transitions.css';
 import '../styles/global.css';
 
 type meta = {
@@ -71,7 +70,7 @@ const isHomepage = Astro.url.pathname === '/';
     <meta name="msapplication-TileColor" content="#040D12" />
     <meta name="theme-color" content="#040D12" />
 
-    <ViewTransitions />
+    <ClientRouter />
   </head>
 
   <body

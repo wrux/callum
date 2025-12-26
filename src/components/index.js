@@ -1,6 +1,5 @@
 export { default as ArticleTeaser } from './ArticleTeaser.astro';
 export { default as DateTime } from './DateTime.astro';
-export { default as FormattedDate } from './FormattedDate.astro';
 export { default as Logo } from './Logo.astro';
 export { default as PortableText } from './PortableText.astro';
 export { default as SanityImage } from './SanityImage.astro';
