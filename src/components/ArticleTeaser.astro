@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
 import { imageBuilder } from '~/sanity/image';
 
@@ -33,10 +34,11 @@ const {
             loading={lazy ? 'lazy' : 'eager'}
             img={{
               alt: mainImage.asset.alt || title || '',
-              class: 'transition-transform duration-700 ease-out group-hover:scale-110 w-full h-full object-cover',
+              class:
+                'transition-transform duration-700 ease-out group-hover:scale-110 w-full h-full object-cover',
             }}
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
       </figure>
     )
@@ -54,37 +56,30 @@ const {
         </p>
       )
     }
-    <h2 class="type-h3 mb-2 group-hover:text-brand-light transition-colors duration-300 text-left">
+    <h2
+      class="type-h3 mb-2 group-hover:text-brand-light transition-colors duration-300 text-left"
+    >
       {title}
     </h2>
-    {excerpt && (
-      <p class="type-text-sm mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
-        {excerpt}
-      </p>
-    )}
+    {
+      excerpt && (
+        <p class="type-text-sm mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
+          {excerpt}
+        </p>
+      )
+    }
     <div class="mt-auto">
       <a
-        class="link link-overlay font-medium inline-flex items-baseline gap-1.5 group/link text-brand-light hover:text-brand-medium transition-colors duration-200 text-sm"
+        class="link link-overlay font-medium inline-flex items-center gap-1.5 group/link text-sm"
         href={`/article/${slug}`}
         title={`Read full article: ${title}`}
         aria-label={`Read full article: ${title}`}
       >
         <span>Read article</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2.5"
-          class="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-1 inline-block"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <Icon
+          name="mdi:chevron-right"
+          class="w-5 h-5 transition-transform duration-500 group-hover/link:translate-x-1 inline-block"
+        />
       </a>
     </div>
   </div>
