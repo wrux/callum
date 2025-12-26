@@ -2,6 +2,7 @@
 import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
+import { Icon } from 'astro-icon/components';
 
 export interface Props {
   node: {
@@ -13,10 +14,12 @@ export interface Props {
 }
 
 const { images } = Astro.props.node;
+const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
 <Section width="full" data-block="image-gallery">
-  <div class="masonry-grid">
+  {/* Desktop: Masonry grid */}
+  <div class="masonry-grid hidden md:block">
     {
       images.map(({ caption, image }) => (
         <div
@@ -31,7 +34,7 @@ const { images } = Astro.props.node;
               height: '100%',
               objectFit: 'cover',
             }}
-            sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1535px) calc(50vw - 3rem), 400px"
+            sizes="(max-width: 1535px) calc(50vw - 3rem), 400px"
             loading="lazy"
             img={{
               alt: image.asset.alt || caption || '',
@@ -49,10 +52,107 @@ const { images } = Astro.props.node;
       ))
     }
   </div>
+
+  {/* Mobile: Swiper gallery with thumbnails */}
+  {
+    images.length > 0 && (
+      <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
+        {/* Main Swiper */}
+        <div
+          class={`swiper gallery-main-${galleryId} mb-3 relative rounded-xl overflow-hidden`}
+        >
+          <div class="swiper-wrapper">
+            {images.map(({ caption, image }, index) => (
+              <div class="swiper-slide">
+                <div class="relative rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                  <SanityPicture
+                    src={image}
+                    imageUrlBuilder={imageBuilder}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                    }}
+                    sizes="calc(100vw - 2rem)"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    img={{
+                      alt: image.asset.alt || caption || '',
+                      class: 'w-full h-auto',
+                    }}
+                  />
+                  {/* Caption overlay */}
+                  {caption && (
+                    <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
+                      <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+                        {caption}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Navigation buttons */}
+          {images.length > 1 && (
+            <div class="absolute top-0 left-0 w-full flex justify-between p-4 z-10">
+              <button
+                class:list={[
+                  `navigate-prev gallery-nav-prev-${galleryId}`,
+                  'aspect-square flex items-center justify-center w-10 h-10 rounded-lg bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70 transition-all duration-500',
+                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                ]}
+              >
+                <Icon name="mdi:chevron-left" size={20} />
+              </button>
+              <button
+                class:list={[
+                  `navigate-next gallery-nav-next-${galleryId}`,
+                  'aspect-square flex items-center justify-center w-10 h-10 rounded-lg bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70 transition-all duration-500',
+                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                ]}
+              >
+                <Icon name="mdi:chevron-right" size={20} />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Thumbnails Swiper */}
+        {images.length > 1 && (
+          <div class={`swiper gallery-thumbs-${galleryId}`}>
+            <div class="swiper-wrapper">
+              {images.map(({ image, caption }) => (
+                <div class="swiper-slide">
+                  <div class="gallery-thumbnail aspect-square rounded-lg overflow-hidden border-2 border-gray-800 opacity-60 transition-all cursor-pointer hover:opacity-100">
+                    <SanityPicture
+                      src={image}
+                      imageUrlBuilder={imageBuilder}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                      sizes="80px"
+                      loading="lazy"
+                      img={{
+                        alt: image.asset.alt || caption || '',
+                        class: 'w-full h-full object-cover',
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
 </Section>
 
 <script>
   import Masonry from 'masonry-layout';
+  import Swiper from 'swiper';
+  import { Thumbs, Navigation } from 'swiper/modules';
 
   function initMasonryGallery() {
     // Find this specific gallery grid
@@ -118,16 +218,105 @@ const { images } = Astro.props.node;
     });
   }
 
+  function initMobileGallery() {
+    const mobileGalleries = document.querySelectorAll('.mobile-gallery');
+
+    mobileGalleries.forEach((gallery) => {
+      const galleryId = gallery.getAttribute('data-gallery-id');
+      if (!galleryId) return;
+
+      const mainSwiperEl = gallery.querySelector(
+        `.gallery-main-${galleryId}`,
+      ) as HTMLElement;
+      const thumbsSwiperEl = gallery.querySelector(
+        `.gallery-thumbs-${galleryId}`,
+      ) as HTMLElement;
+
+      if (!mainSwiperEl) return;
+
+      // Skip if already initialized
+      if (mainSwiperEl.dataset.swiperInitialized === 'true') {
+        return;
+      }
+      mainSwiperEl.dataset.swiperInitialized = 'true';
+
+      // Initialize thumbnails swiper first (required for Thumbs module)
+      let thumbsSwiper: Swiper | null = null;
+      if (thumbsSwiperEl) {
+        thumbsSwiper = new Swiper(thumbsSwiperEl, {
+          spaceBetween: 12,
+          slidesPerView: 3,
+          centeredSlides: true,
+          loop: true,
+          freeMode: false,
+          watchSlidesProgress: true,
+          slideToClickedSlide: true,
+          breakpoints: {
+            375: {
+              slidesPerView: 5,
+            },
+          },
+        });
+      }
+
+      // Initialize main swiper with Thumbs module
+      const slides = mainSwiperEl.querySelectorAll('.swiper-slide');
+      const hasMultipleSlides = slides.length > 1;
+
+      const modules = [];
+      if (thumbsSwiper) modules.push(Thumbs);
+      if (hasMultipleSlides) modules.push(Navigation);
+
+      const mainSwiper = new Swiper(mainSwiperEl, {
+        modules: modules,
+        spaceBetween: 16,
+        autoHeight: true,
+        loop: true,
+        loopAdditionalSlides: 2,
+        navigation: hasMultipleSlides
+          ? {
+              nextEl: `.gallery-nav-next-${galleryId}`,
+              prevEl: `.gallery-nav-prev-${galleryId}`,
+            }
+          : undefined,
+        thumbs: thumbsSwiper
+          ? {
+              swiper: thumbsSwiper,
+            }
+          : undefined,
+      });
+
+      // Ensure thumbnails center the active slide when main swiper changes
+      if (thumbsSwiper && mainSwiper) {
+        mainSwiper.on('slideChange', () => {
+          const realIndex = mainSwiper.realIndex;
+          thumbsSwiper.slideToLoop(realIndex);
+        });
+      }
+    });
+  }
+
+  function init() {
+    initMasonryGallery();
+    initMobileGallery();
+  }
+
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMasonryGallery);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    initMasonryGallery();
+    init();
   }
 
   // Also initialize on view transitions (Astro)
-  document.addEventListener('astro:after-swap', initMasonryGallery);
+  document.addEventListener('astro:after-swap', init);
 </script>
+
+<style>
+  @import 'swiper/css';
+  @import 'swiper/css/navigation';
+  @import 'swiper/css/thumbs';
+</style>
 
 <style scoped>
   .masonry-grid {
@@ -146,6 +335,72 @@ const { images } = Astro.props.node;
     .masonry-item {
       width: 100%;
     }
+  }
+
+  /* Mobile gallery styles */
+  .mobile-gallery .swiper {
+    width: 100%;
+  }
+
+  .mobile-gallery .swiper-slide {
+    width: 100%;
+  }
+
+  .mobile-gallery .swiper[class*='gallery-thumbs'] {
+    padding: 4px 0;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-wrapper {
+    align-items: center;
+  }
+
+  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
+    width: calc((100% - 24px) / 3); /* 3 slides with 2 gaps of 12px each */
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 375px) {
+    .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
+      width: calc((100% - 48px) / 5); /* 5 slides with 4 gaps of 12px each */
+    }
+  }
+
+  /* Navigation button styles */
+  .mobile-gallery .swiper-button-prev,
+  .mobile-gallery .swiper-button-next {
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-top: 0;
+    top: 1rem;
+  }
+
+  .mobile-gallery .swiper-button-prev {
+    left: 1rem;
+  }
+
+  .mobile-gallery .swiper-button-next {
+    right: 1rem;
+  }
+
+  .mobile-gallery .swiper-button-prev:hover,
+  .mobile-gallery .swiper-button-next:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .mobile-gallery .gallery-thumbnail {
+    transition: all 0.3s ease;
+  }
+
+  .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {
+    border-color: white;
+    opacity: 1;
+    transform: scale(1.05);
   }
 
   @media (min-width: 1280px) {
