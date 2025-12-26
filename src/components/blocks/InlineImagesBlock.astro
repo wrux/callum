@@ -3,6 +3,15 @@ import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 
+export interface Props {
+  node: {
+    images: {
+      caption: string;
+      image: ImageWithMeta;
+    }[];
+  };
+}
+
 const { images } = Astro.props.node;
 
 const containerMaxWidth = 1344;
@@ -35,7 +44,7 @@ const imageSizes = sizes?.[images.length] || sizes[5];
   >
     {
       images.map(({ caption, image }) => (
-        <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+        <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800 relative">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
@@ -48,6 +57,13 @@ const imageSizes = sizes?.[images.length] || sizes[5];
               alt: image.asset.alt || caption || '',
             }}
           />
+          {caption && (
+            <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
+              <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+                {caption}
+              </div>
+            </div>
+          )}
         </div>
       ))
     }
