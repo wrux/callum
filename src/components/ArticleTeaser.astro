@@ -1,10 +1,10 @@
 ---
+import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
-import { Heading, Text } from '~/components';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
-  lazy?: number;
+  lazy?: boolean | number;
   sizes?: string;
 };
 
@@ -14,19 +14,19 @@ const {
   lazy = false,
   mainImage,
   readingTime,
-  sizes = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1535px) calc((100vw - 3rem) * 0.5), 32rem',
+  sizes = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc((100vw - 3rem) * 0.5), (max-width: 1535px) calc((100vw - 4rem) * 0.33), 28rem',
   slug,
   title,
 } = Astro.props;
 ---
 
 <article
-  class="fade-in-up flex flex-col items-center link-box group text-center"
+  class="flex flex-col link-box group bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-800/50 hover:border-gray-700"
 >
   {
     mainImage && (
-      <figure>
-        <div class="relative after:block after:inset-0 after:absolute after:bg-brand-medium after:opacity-0 after:z-1 after:transition-opacity after:duration-300 group-hover:after:opacity-50">
+      <figure class="w-full overflow-hidden relative">
+        <div class="relative aspect-[16/9] overflow-hidden">
           <SanityPicture
             src={mainImage}
             imageUrlBuilder={imageBuilder}
@@ -34,47 +34,53 @@ const {
             loading={lazy ? 'lazy' : 'eager'}
             img={{
               alt: mainImage.asset.alt || title || '',
-            }}
-            style={{
-              aspectRatio: '16/9',
-              objectFit: 'cover',
-              width: '100%',
+              class:
+                'transition-transform duration-700 ease-out group-hover:scale-110 w-full h-full object-cover',
             }}
           />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
       </figure>
     )
   }
-  <div class="p-8 lg:px-16 max-w-prose">
+  <div class="p-5 md:p-6 lg:p-8 flex flex-col flex-grow">
     {
       (imageCount || readingTime) && (
-        <Text display="muted" size="sm" class:list="mb-2">
+        <p class="type-text-xs type-text-muted mb-2 uppercase tracking-wider font-medium">
           {[
-            readingTime && `${readingTime} minute read`,
+            readingTime && `${readingTime} min read`,
             imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
           ]
             .filter(Boolean)
-            .join(' with ')}
-        </Text>
+            .join(' • ')}
+        </p>
       )
     }
-    <Heading
-      as="h2"
-      size="h2"
-      class:list="mb-4 md:mb-8 group-hover:text-brand-light transition-colors duration-300"
+    <h2
+      class="type-h3 mb-2 group-hover:text-brand-light transition-colors duration-300 text-left"
     >
       {title}
-    </Heading>
-    {excerpt && <Text class:list="mb-6 line-clamp-3">{excerpt}</Text>}
-    <Text size="sm">
+    </h2>
+    {
+      excerpt && (
+        <p class="type-text-sm mb-3 line-clamp-2 text-gray-400 text-left leading-relaxed flex-grow">
+          {excerpt}
+        </p>
+      )
+    }
+    <div class="mt-auto">
       <a
-        class="link link-overlay"
+        class="link link-overlay font-medium inline-flex items-center gap-1.5 group/link text-sm"
         href={`/article/${slug}`}
         title={`Read full article: ${title}`}
         aria-label={`Read full article: ${title}`}
       >
-        Read full article
+        <span>Read article</span>
+        <Icon
+          name="mdi:chevron-right"
+          class="w-5 h-5 transition-transform duration-500 group-hover/link:translate-x-1 inline-block"
+        />
       </a>
-    </Text>
+    </div>
   </div>
 </article>

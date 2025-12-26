@@ -1,11 +1,12 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import { SEO } from 'astro-seo';
-import { Heading, Logo, Text, Wordmark } from '~/components';
+import { Icon } from 'astro-icon/components';
+import { Logo } from '~/components';
 
 import '@fontsource-variable/inter';
 import '../styles/link.css';
-import '../styles/transitions.css';
+import '../styles/global.css';
 
 type meta = {
   title?: string;
@@ -26,6 +27,7 @@ const description =
 const image = meta?.image || 'https://callum.co.uk/callum-social-image.webp';
 
 const thisYear = new Date().getFullYear();
+const isHomepage = Astro.url.pathname === '/';
 ---
 
 <html lang="en" transition:animate="none">
@@ -68,126 +70,91 @@ const thisYear = new Date().getFullYear();
     <meta name="msapplication-TileColor" content="#040D12" />
     <meta name="theme-color" content="#040D12" />
 
-    <ViewTransitions />
+    <ClientRouter />
   </head>
 
-  <body class="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100">
-    <slot name="header">
-      <header
-        class="flex items-center justify-center p-4 bg-white/50 dark:bg-gray-800/50 sticky top-0 z-50 backdrop-blur-lg mt-8 lg:mt-12"
+  <body
+    class="bg-gray-950 text-gray-50 antialiased"
+    data-is-homepage={isHomepage}
+  >
+    <header
+      class={`site-header fixed top-4 left-4 right-4 z-50 flex justify-between items-center pointer-events-none transition-transform duration-500 ease-in-out ${
+        isHomepage ? '-translate-y-[150%]' : 'translate-y-0'
+      }`}
+    >
+      <a
+        class="flex items-center justify-center pointer-events-auto transition-opacity hover:opacity-70 size-14 rounded-xl bg-gray-950/80 backdrop-blur-xl"
+        href="/"
+        aria-label="Go to the homepage"
       >
-        <div
-          class="flex justify-between md:block gap-8 md:relative items-center"
-        >
-          <a
-            class="flex gap-2 items-center"
-            href="/"
-            aria-label="Go to the homepage"
-          >
-            <Logo class="text-[4rem]" />
-            <Wordmark class="text-[4rem] drop-shadow-md" />
-          </a>
+        <Logo class="text-[2rem] md:text-[2.5rem]" />
+      </a>
+      {
+        !isHomepage && (
           <a
             href="/"
-            class="md:absolute left-full top-1/2 md:-translate-y-1/2 md:translate-x-4 grid place-items-center w-8 h-8 rounded-full text-lg bg-gray-200 dark:bg-gray-900 hover:bg-gray-400 focus:bg-gray-400 dark:hover:gray-500 dark:focus:bg-gray-500 transition-colors text-gray-500 dark:text-gray-400 hover:text-gray-200 focus:text-gray-200 dark:hover:text-gray-800 dark:focus:text-gray-800"
+            class="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
             aria-label="Go to the homepage"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 256 256"
-              class="w-[1em] h-[1em] pointer-events-none"
-            >
-              <path
-                d="M232,200a8,8,0,0,1-16,0,88.1,88.1,0,0,0-88-88H51.31l34.35,34.34a8,8,0,0,1-11.32,11.32l-48-48a8,8,0,0,1,0-11.32l48-48A8,8,0,0,1,85.66,61.66L51.31,96H128A104.11,104.11,0,0,1,232,200Z"
-              ></path>
-            </svg>
+            <Icon name="mdi:keyboard-backspace" class="w-5 h-5" />
+            <span class="text-sm font-medium">Back</span>
           </a>
-        </div>
-      </header>
-    </slot>
+        )
+      }
+    </header>
+
+    <slot name="header" />
 
     <main class="flex-1" transition:animate="fade">
       <slot />
     </main>
 
-    <footer class="bg-gray-100 dark:bg-gray-900 py-8 md:py-12 lg:py-16">
-      <div class="container max-w-5xl space-y-8 md:space-y-16">
+    <footer
+      class="mt-8 bg-gray-950 border-t border-gray-800 py-12 md:py-16 lg:py-20"
+    >
+      <div class="container max-w-6xl space-y-10 md:space-y-16">
         <div
-          class="grid grid-cols-1 md:grid-cols-4 gap-x-16 gap-y-6 items-center"
+          class="grid grid-cols-1 md:grid-cols-4 gap-x-16 gap-y-8 items-start"
         >
           <div class="col-span-1">
-            <Logo class="text-[6rem]" />
+            <Logo class="text-[5rem] md:text-[6rem] opacity-90" />
           </div>
 
           <div class="col-span-1">
-            <Heading as="p" size="h4" class:list="mb-2">Links</Heading>
+            <p class="type-h6 mb-4 text-gray-100 font-semibold">Links</p>
             <nav aria-label="External links" class="flex gap-2">
-              <ul class="flex gap-2 text-4xl">
+              <ul class="flex gap-3 text-3xl md:text-4xl">
                 <li>
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
-                    class="link"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-[1em] h-[1em] pointer-events-none"
-                      fill="currentColor"
-                      viewBox="0 0 256 256"
-                      aria-hidden="true"
-                      user-scalable="no"
-                    >
-                      <path
-                        d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"
-                      ></path>
-                    </svg>
+                    <Icon name="mdi:instagram" class="w-[1em] h-[1em]" />
                   </a>
                 </li>
                 <li>
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
-                    class="link"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Github profile"
                     rel="noreferrer nofollow"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-[1em] h-[1em] pointer-events-none"
-                      fill="currentColor"
-                      viewBox="0 0 256 256"
-                      aria-hidden="true"
-                      user-scalable="no"
-                    >
-                      <path
-                        d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"
-                      ></path>
-                    </svg>
+                    <Icon name="mdi:github" class="w-[1em] h-[1em]" />
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://www.linkedin.com/in/callum-bonnyman/"
+                    href="https://www.linkedin.com/in/wrux"
                     target="_blank"
-                    class="link"
+                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
                     aria-label="View my Linkedin profile"
                     rel="noreferrer nofollow"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-[1em] h-[1em] pointer-events-none"
-                      fill="currentColor"
-                      viewBox="0 0 256 256"
-                      aria-hidden="true"
-                      user-scalable="no"
-                    >
-                      <path
-                        d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"
-                      ></path>
-                    </svg>
+                    <Icon name="mdi:linkedin" class="w-[1em] h-[1em]" />
                   </a>
                 </li>
               </ul>
@@ -195,48 +162,97 @@ const thisYear = new Date().getFullYear();
           </div>
 
           <div class="col-span-1 md:col-span-2">
-            <Heading as="p" size="h4" class:list="mb-2">
+            <p class="type-h6 mb-3 text-gray-100 font-semibold">
               Like this website?
-            </Heading>
-            <Text size="sm">
+            </p>
+            <p class="type-text-sm text-gray-400">
               If you like this website,{' '}
               <a
                 href="https://github.com/wrux/bloke"
                 target="_blank"
-                class="link"
+                class="link font-medium"
                 rel="noreferrer nofollow"
               >
                 view the source code
               </a>
               , fork the project and take whatever you like.
-            </Text>
+            </p>
           </div>
         </div>
 
-        <Text size="sm" class:list="text-center">
+        <p
+          class="type-text-sm text-center text-gray-500 pt-8 border-t border-gray-800"
+        >
           Copyright &copy;{' '}
           <a
             href="https://wrux.com"
             target="_blank"
-            class="link"
+            class="link font-medium"
             aria-label="View my professional profile at wrux.com"
             rel="noreferrer"
           >
             Callum Bonnyman
           </a>{' '}
           {thisYear}.
-        </Text>
+        </p>
       </div>
     </footer>
 
     <script>
-      import Alpine from 'alpinejs';
+      // Update header position based on current page and scroll
+      function updateHeaderPosition() {
+        const header = document.querySelector('.site-header');
+        const isHomepage = window.location.pathname === '/';
 
-      window.Alpine = Alpine;
+        if (header) {
+          if (isHomepage) {
+            const heroSection = document.getElementById('hero-section');
+            if (heroSection) {
+              const heroBottom = heroSection.getBoundingClientRect().bottom;
+              const scrolledPastHero = heroBottom < 0;
 
-      Alpine.start();
+              if (scrolledPastHero) {
+                header.classList.remove('-translate-y-[150%]');
+                header.classList.add('translate-y-0');
+              } else {
+                header.classList.remove('translate-y-0');
+                header.classList.add('-translate-y-[150%]');
+              }
+            } else {
+              // Fallback: hide header if hero section not found
+              header.classList.remove('translate-y-0');
+              header.classList.add('-translate-y-[150%]');
+            }
+          } else {
+            header.classList.remove('-translate-y-[150%]');
+            header.classList.add('translate-y-0');
+          }
+        }
+      }
 
+      // Initialize header position
+      updateHeaderPosition();
+
+      // Add scroll listener for homepage header transition
+      // Uses requestAnimationFrame for performance
+      let ticking = false;
+      function handleScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateHeaderPosition();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', handleScroll, { passive: true });
+
+      // Update on view transition
       document.addEventListener('astro:after-swap', () => {
+        // Update header position
+        updateHeaderPosition();
+
+        // Handle image animations
         document
           .querySelectorAll<HTMLImageElement>('img[data-x-lqip="true"]')
           .forEach((img) => {
@@ -254,8 +270,16 @@ const thisYear = new Date().getFullYear();
     </script>
 
     <style is:global>
-      [x-cloak] {
-        display: none !important;
+      .site-header {
+        view-transition-name: site-header;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(site-header),
+        ::view-transition-new(site-header) {
+          animation-duration: 0.5s;
+          animation-timing-function: ease-in-out;
+        }
       }
     </style>
   </body>

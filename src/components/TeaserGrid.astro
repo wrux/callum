@@ -2,8 +2,8 @@
 import Section from './Section.astro';
 ---
 
-<Section spacing="md">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4 lg:gap-16">
-    <slot />
-  </div>
-</Section>
+<div
+  class="container max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-5 lg:gap-6"
+>
+  <slot />
+</div>

@@ -3,6 +3,15 @@ import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 
+export interface Props {
+  node: {
+    images: {
+      caption: string;
+      image: ImageWithMeta;
+    }[];
+  };
+}
+
 const { images } = Astro.props.node;
 
 const containerMaxWidth = 1344;
@@ -10,17 +19,17 @@ const containerMaxWidth = 1344;
 const w = (n: number) => `${containerMaxWidth / n}px`;
 
 const sizes = [
-  `(max-width: 767px): calc(100vw - 2rem), ${w(1)}px`, // one image
-  `(max-width: 767px): calc(100vw - 2rem), (max-width: 1535px) calc(50vw - 5rem), ${w(
+  `(max-width: 767px) 100vw, ${w(1)}px`, // one image
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(50vw - 5rem), ${w(
     2,
   )}`, // two images
-  `(max-width: 767px): calc(100vw - 2rem), (max-width: 1535px) calc(33vw - 6rem), ${w(
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(33vw - 6rem), ${w(
     3,
   )}`, // three images
-  `(max-width: 767px): calc(100vw - 2rem), (max-width: 1535px) calc(25vw - 7rem), ${w(
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(25vw - 7rem), ${w(
     4,
   )}`, // four images
-  `(max-width: 767px): calc(100vw - 2rem), (max-width: 1535px) calc(20vw - 8rem), ${w(
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(20vw - 8rem), ${w(
     5,
   )}`, // five images
 ];
@@ -28,27 +37,33 @@ const sizes = [
 const imageSizes = sizes?.[images.length] || sizes[5];
 ---
 
-<Section width="lg" data-block="inline-images">
+<Section width="mobile-full" data-block="inline-images">
   <div
     class="grid grid-cols-1 md:grid-cols-dynamic items-center justify-center gap-4"
     style={`--column-count: ${images.length};`}
   >
     {
       images.map(({ caption, image }) => (
-        <div class="fade-in-up">
+        <div class="md:rounded-xl overflow-hidden shadow-lg border-0 md:border border-gray-800 relative">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
             style={{
-              maxHeight: '95vh',
-              objectFit: 'cover',
               width: '100%',
+              height: 'auto',
             }}
             sizes={imageSizes}
             img={{
               alt: image.asset.alt || caption || '',
             }}
           />
+          {caption && (
+            <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
+              <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+                {caption}
+              </div>
+            </div>
+          )}
         </div>
       ))
     }

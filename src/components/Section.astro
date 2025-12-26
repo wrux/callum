@@ -1,17 +1,19 @@
 ---
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const sectionVariants = cva(['container'], {
+const sectionVariants = cva([], {
   variants: {
     spacing: {
-      sm: ['my-6', 'md:my-8', 'lg:my-12'],
-      md: ['my-8', 'md:my-12', 'lg:my-16'],
-      lg: ['my-12', 'md:my-24', 'lg:my-32'],
+      sm: ['my-8', 'md:my-12', 'lg:my-16'],
+      md: ['my-12', 'md:my-16', 'lg:my-20'],
+      lg: ['my-16', 'md:my-24', 'lg:my-32'],
       none: [],
     },
     width: {
-      default: 'max-w-screen-xl',
-      lg: 'max-w-screen-2xl',
+      default: 'container max-w-screen-xl',
+      lg: 'container max-w-screen-2xl',
+      full: 'w-full px-4 md:px-6 lg:px-8',
+      'mobile-full': 'w-full md:container md:max-w-screen-2xl md:px-6 lg:px-8',
     },
   },
   defaultVariants: {

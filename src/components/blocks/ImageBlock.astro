@@ -1,33 +1,33 @@
 ---
 import SanityPicture from 'astro-sanity-picture';
-import Text from '../Text.astro';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 
 const { caption, image } = Astro.props.node;
 ---
 
-<Section data-block="image">
-  <figure class="fade-in-up space-y-2">
-    <SanityPicture
-      src={image}
-      imageUrlBuilder={imageBuilder}
-      style={{
-        maxHeight: '95vh',
-        objectFit: 'cover',
-        width: '100%',
-      }}
-      sizes="(max-width: 1279px) calc(100vw - 2rem), 1120px"
-      loading="lazy"
-      img={{
-        alt: image.asset.alt || caption || '',
-      }}
-    />
+<Section data-block="image" width="mobile-full">
+  <figure class="space-y-3">
+    <div class="md:rounded-xl overflow-hidden shadow-lg border-0 md:border border-gray-800">
+      <SanityPicture
+        src={image}
+        imageUrlBuilder={imageBuilder}
+        style={{
+          width: '100%',
+          height: 'auto',
+        }}
+        sizes="(max-width: 767px) 100vw, (max-width: 1535px) calc(100vw - 4rem), 1400px"
+        loading="lazy"
+        img={{
+          alt: image.asset.alt || caption || '',
+        }}
+      />
+    </div>
     {
       caption && (
-        <Text as="figcaption" size="sm" class:list="italic">
+        <figcaption class="type-text-sm italic text-center text-gray-400 px-4 md:px-0 max-w-3xl mx-auto">
           {caption}
-        </Text>
+        </figcaption>
       )
     }
   </figure>

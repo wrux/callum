@@ -3,8 +3,8 @@ import PortableText from '../PortableText.astro';
 import Section from '../Section.astro';
 ---
 
-<Section data-block="text">
-  <div class="max-w-prose">
+<Section data-block="text" width="mobile-full">
+  <div class="max-w-3xl mx-auto px-4 md:px-0">
     <PortableText value={Astro.props.node.content} />
   </div>
 </Section>

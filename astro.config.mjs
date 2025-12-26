@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
+import icon from 'astro-icon';
 import { dataset, projectId } from './src/sanity/config';
 
 // https://astro.build/config
@@ -14,9 +15,14 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  output: 'hybrid',
+  output: 'static',
   image: {
-    domains: ['cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
   integrations: [
     sanity({
@@ -28,5 +34,10 @@ export default defineConfig({
     react(),
     sitemap(),
     tailwind(),
+    icon({
+      include: {
+        'mdi:*': true,
+      },
+    }),
   ],
 });

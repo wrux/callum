@@ -1,21 +1,18 @@
 ---
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { sanityClient } from 'sanity:client';
-import type { ImageAsset } from 'sanity';
+import type { ImageWithMeta } from '~/types/global';
 
 export interface Props {
   className?: string | string[];
-  // image: ImageAsset;
-  image: any;
+  image: ImageWithMeta;
 }
 
 const { className, image, ...props } = Astro.props;
 
-const client = useSanityClient();
+const imageBuilder = createImageUrlBuilder(sanityClient).fit('max').format('webp');
 
-const imageBuilder = imageUrlBuilder(sanityClient).fit('max').format('webp');
-
-function urlFor(source: ImageAsset) {
+function urlFor(source: ImageWithMeta) {
   return imageBuilder.image(source).url();
 }
 ---
@@ -23,7 +20,7 @@ function urlFor(source: ImageAsset) {
 <img
   alt={image?.alt || ''}
   class:list={[
-    'max-h-[95vh] object-cover bg-gray-100 dark:bg-gray-900',
+    'max-h-[95vh] object-cover bg-gray-900',
     className,
   ]}
   src={urlFor(image)}
