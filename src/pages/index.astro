@@ -153,37 +153,6 @@ const featuredPostHeroMediaTransitionName = featuredPost
   }
 </BaseLayout>
 
-<script>
-  function initHomeHeroImageFade() {
-    const images = document.querySelectorAll('.home-hero-image');
-
-    images.forEach((image) => {
-      if (!(image instanceof HTMLImageElement)) {
-        return;
-      }
-
-      const markLoaded = () => {
-        requestAnimationFrame(() => {
-          image.dataset.isLoaded = 'true';
-          image
-            .closest('.home-hero-media')
-            ?.setAttribute('data-image-loaded', 'true');
-        });
-      };
-
-      if (image.complete && image.naturalWidth > 0) {
-        markLoaded();
-        return;
-      }
-
-      image.addEventListener('load', markLoaded, { once: true });
-    });
-  }
-
-  initHomeHeroImageFade();
-  document.addEventListener('astro:page-load', initHomeHeroImageFade);
-</script>
-
 <style>
   .home-hero {
     --hero-image-aspect-ratio: 2 / 1;

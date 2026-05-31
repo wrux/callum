@@ -253,7 +253,8 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <script is:inline>
       (() => {
-        const initializedKey = '__callumHeaderSyncInitialized';
+        const headerInitializedKey = '__callumHeaderSyncInitialized';
+        const imageInitializedKey = '__callumImageLoadStateInitialized';
 
         function syncHeaderState() {
           const header = document.querySelector('.site-header');
@@ -295,13 +296,119 @@ const usesHeroHeader = isHomepage || isArticlePage;
           }
         }
 
-        syncHeaderState();
+        function markHeroImageLoaded(image) {
+          image.dataset.callumImageLoaded = 'true';
+          image
+            .closest('.home-hero-media, .article-hero-media')
+            ?.setAttribute('data-image-loaded', 'true');
+        }
 
-        if (!window[initializedKey]) {
-          window[initializedKey] = true;
+        function revealLqipImage(image, shouldAnimate) {
+          if (image.dataset.callumImageLoaded === 'true') {
+            image.style.opacity = '1';
+            return;
+          }
+
+          image.dataset.callumImageLoaded = 'true';
+
+          const prefersReducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches;
+          const duration = Number(image.dataset.xLqipTransitionDuration) || 0;
+
+          if (
+            shouldAnimate &&
+            duration > 0 &&
+            !prefersReducedMotion &&
+            typeof image.animate === 'function'
+          ) {
+            const animation = image.animate([{ opacity: 0 }, { opacity: 1 }], {
+              duration,
+              fill: 'forwards',
+            });
+
+            animation.onfinish = () => {
+              image.style.opacity = '1';
+              animation.cancel();
+            };
+
+            return;
+          }
+
+          image.style.opacity = '1';
+        }
+
+        function syncImageLoadStates() {
+          document
+            .querySelectorAll('.home-hero-image, .article-hero-image')
+            .forEach((image) => {
+              if (!(image instanceof HTMLImageElement)) {
+                return;
+              }
+
+              if (image.complete && image.naturalWidth > 0) {
+                markHeroImageLoaded(image);
+                return;
+              }
+
+              if (image.dataset.callumLoadListenerAttached === 'true') {
+                return;
+              }
+
+              image.dataset.callumLoadListenerAttached = 'true';
+              image.addEventListener(
+                'load',
+                () => {
+                  requestAnimationFrame(() => {
+                    markHeroImageLoaded(image);
+                  });
+                },
+                { once: true },
+              );
+            });
+
+          document
+            .querySelectorAll('img[data-x-lqip="true"]')
+            .forEach((image) => {
+              if (!(image instanceof HTMLImageElement)) {
+                return;
+              }
+
+              if (image.complete && image.naturalWidth > 0) {
+                revealLqipImage(image, false);
+                return;
+              }
+
+              if (image.dataset.callumLoadListenerAttached === 'true') {
+                return;
+              }
+
+              image.dataset.callumLoadListenerAttached = 'true';
+              image.addEventListener(
+                'load',
+                () => {
+                  revealLqipImage(image, true);
+                },
+                { once: true },
+              );
+            });
+        }
+
+        syncHeaderState();
+        syncImageLoadStates();
+
+        if (!window[headerInitializedKey]) {
+          window[headerInitializedKey] = true;
           document.addEventListener('astro:page-load', syncHeaderState);
           document.addEventListener('astro:after-swap', syncHeaderState);
           window.addEventListener('scroll', syncHeaderState, { passive: true });
+        }
+
+        if (!window[imageInitializedKey]) {
+          window[imageInitializedKey] = true;
+          document.addEventListener('astro:after-swap', syncImageLoadStates);
+          document.addEventListener('astro:page-load', syncImageLoadStates);
+          window.addEventListener('pageshow', syncImageLoadStates);
         }
       })();
     </script>

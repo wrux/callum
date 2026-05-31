@@ -2,51 +2,10 @@
 import { imageBuilder } from '~/sanity/image';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import { sanityClient } from 'sanity:client';
-import SanityPicture from 'astro-sanity-picture';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DateTime, PortableText } from '~/components';
 import { getPosts } from '~/sanity/queries';
-
-// Create a cropped image builder for main images with fixed 2:1 aspect ratio
-const baseCroppedBuilder = createImageUrlBuilder(sanityClient)
-  .fit('crop')
-  .format('webp');
-
-// Create a proxy wrapper to ensure 2:1 aspect ratio is maintained.
-// Sanity's URL builder is immutable, so use the returned builder from width/height
-// calls to preserve dimensions before hotspot/crop rects are calculated.
-const croppedImageBuilder = new Proxy(baseCroppedBuilder, {
-  get(target, prop) {
-    if (prop === 'image') {
-      return (source: any) => {
-        const builder = target.image(source);
-
-        return new Proxy(builder, {
-          get(imageTarget, imageProp) {
-            if (imageProp === 'width') {
-              return (width: number) =>
-                imageTarget.width(width).height(Math.round(width / 2));
-            }
-
-            if (imageProp === 'height') {
-              return (height: number) =>
-                imageTarget.width(Math.round(height * 2)).height(height);
-            }
-
-            const value = (imageTarget as any)[imageProp];
-            return typeof value === 'function'
-              ? value.bind(imageTarget)
-              : value;
-          },
-        });
-      };
-    }
-
-    const value = (target as any)[prop];
-    return typeof value === 'function' ? value.bind(target) : value;
-  },
-});
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -66,6 +25,34 @@ const heroImagePosition =
   heroImageHotspot?.x != null && heroImageHotspot?.y != null
     ? `${heroImageHotspot.x * 100}% ${heroImageHotspot.y * 100}%`
     : '50% 50%';
+const heroImageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
+const heroImageHeightForWidth = (width: number) => Math.round(width / 2);
+const heroImageSrc =
+  post.mainImage &&
+  heroImageBuilder
+    .image(post.mainImage)
+    .width(1600)
+    .height(heroImageHeightForWidth(1600))
+    .quality(78)
+    .url();
+const heroImageSrcSet =
+  post.mainImage &&
+  heroImageWidths
+    .map((width) => {
+      const url = heroImageBuilder
+        .image(post.mainImage)
+        .width(width)
+        .height(heroImageHeightForWidth(width))
+        .quality(78)
+        .url();
+
+      return `${url} ${width}w`;
+    })
+    .join(', ');
+const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
 const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
 ---
 
@@ -81,29 +68,26 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
   <article class="article-page">
     <header
       class="article-hero"
-      data-has-image={post.mainImage ? 'true' : 'false'}
+      data-has-image={heroImageSrc ? 'true' : 'false'}
     >
       {
-        post?.mainImage && (
+        heroImageSrc && (
           <figure
             class="article-hero-media"
             style={`--article-hero-image-position: ${heroImagePosition};`}
             transition:name={postHeroMediaTransitionName}
           >
-            <SanityPicture
-              class="article-hero-picture"
-              src={post.mainImage}
-              imageUrlBuilder={croppedImageBuilder}
+            <img
+              class="article-hero-image"
+              src={heroImageSrc}
+              srcset={heroImageSrcSet}
               sizes="100vw"
-              widths={[640, 960, 1280, 1600, 1920, 2400]}
-              sources={[{ options: { quality: 78 } }]}
-              img={{
-                alt: post.mainImage.asset.alt || post.title || '',
-                class: 'article-hero-image',
-                decoding: 'async',
-                fetchpriority: 'high',
-                loading: 'eager',
-              }}
+              alt={heroImageAlt}
+              width="1600"
+              height={heroImageHeightForWidth(1600)}
+              decoding="async"
+              fetchpriority="high"
+              loading="eager"
             />
             {post.mainImage?.alt && (
               <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
@@ -196,37 +180,6 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
   </article>
 </BaseLayout>
 
-<script>
-  function initArticleHeroImageFade() {
-    const images = document.querySelectorAll('.article-hero-image');
-
-    images.forEach((image) => {
-      if (!(image instanceof HTMLImageElement)) {
-        return;
-      }
-
-      const markLoaded = () => {
-        requestAnimationFrame(() => {
-          image.dataset.isLoaded = 'true';
-          image
-            .closest('.article-hero-media')
-            ?.setAttribute('data-image-loaded', 'true');
-        });
-      };
-
-      if (image.complete && image.naturalWidth > 0) {
-        markLoaded();
-        return;
-      }
-
-      image.addEventListener('load', markLoaded, { once: true });
-    });
-  }
-
-  initArticleHeroImageFade();
-  document.addEventListener('astro:page-load', initArticleHeroImageFade);
-</script>
-
 <style>
   .article-page {
     background:
@@ -299,12 +252,7 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     opacity: 0.8;
   }
 
-  .article-hero :global(.article-hero-picture) {
-    width: 100%;
-    height: 100%;
-  }
-
-  .article-hero :global(.article-hero-image) {
+  .article-hero-image {
     width: 100%;
     height: 100%;
     filter: brightness(0.56);
