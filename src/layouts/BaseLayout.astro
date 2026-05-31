@@ -156,92 +156,80 @@ const isHomepage = Astro.url.pathname === '/';
       <slot />
     </main>
 
-    <footer
-      class="mt-8 border-t border-gray-800 bg-gray-950 py-12 md:py-16 lg:py-20"
-    >
-      <div class="container max-w-6xl space-y-10 md:space-y-16">
-        <div
-          class="grid grid-cols-1 items-start gap-x-16 gap-y-8 md:grid-cols-4"
-        >
-          <div class="col-span-1">
-            <Logo class="text-[5rem] opacity-90 md:text-[6rem]" />
-          </div>
+    <footer class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14">
+      <div class="container max-w-6xl">
+        <div class="footer-brand">
+          <Logo class="text-[5rem] opacity-90 md:text-[6rem]" />
 
-          <div class="col-span-1">
-            <p class="type-h6 mb-4 font-semibold text-gray-100">Links</p>
-            <nav aria-label="External links" class="flex gap-2">
-              <ul class="flex gap-3 text-3xl md:text-4xl">
-                <li>
-                  <a
-                    href="https://instagram.com/wrux"
-                    target="_blank"
-                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
-                    aria-label="View my Instagram profile"
-                    rel="noreferrer nofollow"
-                  >
-                    <Icon name="mdi:instagram" class="h-[1em] w-[1em]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/wrux"
-                    target="_blank"
-                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
-                    aria-label="View my Github profile"
-                    rel="noreferrer nofollow"
-                  >
-                    <Icon name="mdi:github" class="h-[1em] w-[1em]" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/wrux"
-                    target="_blank"
-                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
-                    aria-label="View my Linkedin profile"
-                    rel="noreferrer nofollow"
-                  >
-                    <Icon name="mdi:linkedin" class="h-[1em] w-[1em]" />
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-
-          <div class="col-span-1 md:col-span-2">
-            <p class="type-h6 mb-3 font-semibold text-gray-100">
-              Like this website?
-            </p>
-            <p class="type-text-sm text-gray-400">
-              If you like this website,{' '}
-              <a
-                href="https://github.com/wrux/bloke"
-                target="_blank"
-                class="link font-medium"
-                rel="noreferrer nofollow"
-              >
-                view the source code
-              </a>
-              , fork the project and take whatever you like.
-            </p>
-          </div>
+          <nav aria-label="External links">
+            <ul class="footer-social-list">
+              <li>
+                <a
+                  href="https://instagram.com/wrux"
+                  target="_blank"
+                  class="footer-social-link"
+                  aria-label="View my Instagram profile"
+                  rel="noreferrer nofollow"
+                >
+                  <span class="footer-social-link-surface" aria-hidden="true"
+                  ></span>
+                  <Icon name="mdi:instagram" class="footer-social-link-icon" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/wrux"
+                  target="_blank"
+                  class="footer-social-link"
+                  aria-label="View my GitHub profile"
+                  rel="noreferrer nofollow"
+                >
+                  <span class="footer-social-link-surface" aria-hidden="true"
+                  ></span>
+                  <Icon name="mdi:github" class="footer-social-link-icon" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/wrux"
+                  target="_blank"
+                  class="footer-social-link"
+                  aria-label="View my LinkedIn profile"
+                  rel="noreferrer nofollow"
+                >
+                  <span class="footer-social-link-surface" aria-hidden="true"
+                  ></span>
+                  <Icon name="mdi:linkedin" class="footer-social-link-icon" />
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <p
-          class="type-text-sm border-t border-gray-800 pt-8 text-center text-gray-400"
-        >
-          Copyright &copy;{' '}
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            Copyright &copy;{' '}
+            <a
+              href="https://wrux.com"
+              target="_blank"
+              class="link font-medium"
+              aria-label="View my professional profile at wrux.com"
+              rel="noreferrer"
+            >
+              Callum Bonnyman
+            </a>{' '}
+            {thisYear}.
+          </p>
           <a
-            href="https://wrux.com"
+            href="https://github.com/wrux/callum"
             target="_blank"
-            class="link font-medium"
-            aria-label="View my professional profile at wrux.com"
-            rel="noreferrer"
+            class="footer-repo-link link font-medium"
+            rel="noreferrer nofollow"
           >
-            Callum Bonnyman
-          </a>{' '}
-          {thisYear}.
-        </p>
+            <span>source code</span>
+            <Icon name="mdi:open-in-new" class="footer-repo-link-icon" />
+          </a>
+        </div>
       </div>
     </footer>
 
@@ -282,3 +270,139 @@ const isHomepage = Astro.url.pathname === '/';
     </script>
   </body>
 </html>
+
+<style>
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .footer-social-list {
+    display: flex;
+    gap: 0.12rem;
+    width: fit-content;
+    filter: url(#buttonFilter);
+  }
+
+  .footer-social-list li {
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-social-list:has(
+      li:nth-child(1) .footer-social-link:is(:hover, :focus-visible)
+    )
+    li:nth-child(n + 2) {
+    transform: translateX(0.7rem);
+  }
+
+  .footer-social-list:has(
+      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
+    )
+    li:nth-child(1) {
+    transform: translateX(-0.7rem);
+  }
+
+  .footer-social-list:has(
+      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
+    )
+    li:nth-child(3) {
+    transform: translateX(0.7rem);
+  }
+
+  .footer-social-list:has(
+      li:nth-child(3) .footer-social-link:is(:hover, :focus-visible)
+    )
+    li:nth-child(-n + 2) {
+    transform: translateX(-0.7rem);
+  }
+
+  .footer-social-link {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    width: 2.75rem;
+    aspect-ratio: 1;
+    place-items: center;
+    color: var(--color-gray-50);
+    text-decoration: none;
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-social-link-surface {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .footer-social-link-surface::before {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: var(--color-brand-medium);
+    border-radius: 999px;
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-social-link :global(.footer-social-link-icon) {
+    width: 1.35rem;
+    height: 1.35rem;
+    transition:
+      opacity 240ms ease,
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .footer-social-link:hover,
+  .footer-social-link:focus-visible {
+    transform: scale(1.03);
+  }
+
+  .footer-social-link:hover .footer-social-link-surface::before,
+  .footer-social-link:focus-visible .footer-social-link-surface::before {
+    transform: scale(1.08);
+  }
+
+  .footer-social-link:hover :global(.footer-social-link-icon),
+  .footer-social-link:focus-visible :global(.footer-social-link-icon) {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+
+  .footer-copyright {
+    margin: 0;
+    color: var(--color-gray-500);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block-start: 3rem;
+    border-top: 1px solid var(--color-gray-800);
+    padding-block-start: 1rem;
+  }
+
+  .footer-repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex: none;
+    color: var(--color-gray-400);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .footer-repo-link :global(.footer-repo-link-icon) {
+    flex: 0 0 auto;
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+</style>

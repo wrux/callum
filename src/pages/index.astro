@@ -1,11 +1,5 @@
 ---
-import {
-  ArticleTeaser,
-  Logo,
-  Section,
-  TeaserGrid,
-  Wordmark,
-} from '~/components';
+import { ArticleTeaser, Logo, TeaserGrid, Wordmark } from '~/components';
 import { Icon } from 'astro-icon/components';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
@@ -41,39 +35,30 @@ const posts = await getLatestPosts();
       </p>
     </div>
 
-    <div class="mx-auto w-full max-w-3xl bg-gray-950">
-      <div class="relative flex items-center justify-center">
-        <div class="absolute inset-0 flex items-center">
-          <div
-            class="h-px w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent"
-          >
-          </div>
-        </div>
-        <div class="relative flex items-center gap-5 px-6 md:gap-6">
-          <div
-            class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-12 md:w-12"
-          >
+    <div class="hero-glob-panel mx-auto w-full max-w-3xl">
+      <div class="hero-glob-track">
+        <div class="hero-glob-row">
+          <span class="hero-glob hero-glob-small" aria-hidden="true">
+            <span class="hero-glob-surface"></span>
             <Icon
               name="mdi:airplane"
-              class="h-3 w-3 rotate-[-15deg] text-white transition-transform duration-300 group-hover:rotate-[-25deg] md:h-5 md:w-5"
+              class="hero-glob-icon hero-glob-icon-plane"
             />
-          </div>
-          <div
-            class="group flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-16 md:w-16"
-          >
+          </span>
+          <span class="hero-glob hero-glob-large" aria-hidden="true">
+            <span class="hero-glob-surface"></span>
             <Icon
               name="mdi:map-marker"
-              class="h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110 md:h-7 md:w-7"
+              class="hero-glob-icon hero-glob-icon-marker"
             />
-          </div>
-          <div
-            class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-12 md:w-12"
-          >
+          </span>
+          <span class="hero-glob hero-glob-small" aria-hidden="true">
+            <span class="hero-glob-surface"></span>
             <Icon
               name="mdi:camera"
-              class="h-3 w-3 rotate-[-15deg] text-white transition-transform duration-300 group-hover:rotate-[-25deg] md:h-5 md:w-5"
+              class="hero-glob-icon hero-glob-icon-camera"
             />
-          </div>
+          </span>
         </div>
       </div>
     </div>
@@ -81,15 +66,142 @@ const posts = await getLatestPosts();
 
   {
     posts.length > 0 && (
-      <TeaserGrid>
-        {posts.map((post, index) => (
-          <ArticleTeaser
-            {...post}
-            lazy={index >= 3 ? index : undefined}
-            priority={index === 0}
-          />
-        ))}
-      </TeaserGrid>
+      <section class="home-posts">
+        <TeaserGrid>
+          {posts.map((post, index) => (
+            <ArticleTeaser
+              {...post}
+              lazy={index >= 3 ? index : undefined}
+              priority={index === 0}
+            />
+          ))}
+        </TeaserGrid>
+      </section>
     )
   }
 </BaseLayout>
+
+<style>
+  .hero-glob-panel {
+    background: var(--color-gray-950);
+  }
+
+  .hero-glob-track {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-glob-track::before {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0;
+    height: 1px;
+    content: '';
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-gray-700),
+      transparent
+    );
+  }
+
+  .hero-glob-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-inline: 1.5rem;
+  }
+
+  .hero-glob {
+    --hero-glob-size: 3rem;
+    --hero-glob-icon-size: 1.25rem;
+
+    position: relative;
+    display: grid;
+    width: var(--hero-glob-size);
+    aspect-ratio: 1;
+    place-items: center;
+    color: var(--color-gray-50);
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-glob-small {
+    --hero-glob-size: 2.75rem;
+    --hero-glob-icon-size: 1.15rem;
+  }
+
+  .hero-glob-large {
+    --hero-glob-size: 4rem;
+    --hero-glob-icon-size: 1.75rem;
+  }
+
+  .hero-glob-surface {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    filter: url(#buttonFilter);
+  }
+
+  .hero-glob-surface::before,
+  .hero-glob-surface::after {
+    position: absolute;
+    content: '';
+    background: var(--color-brand-medium);
+    border-radius: 999px;
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-glob-surface::before {
+    inset: 0;
+  }
+
+  .hero-glob-surface::after {
+    inset-block-start: 0.12rem;
+    inset-inline-end: -0.22rem;
+    width: 42%;
+    aspect-ratio: 1;
+  }
+
+  .hero-glob :global(.hero-glob-icon) {
+    position: relative;
+    z-index: 1;
+    width: var(--hero-glob-icon-size);
+    height: var(--hero-glob-icon-size);
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-glob :global(.hero-glob-icon-plane),
+  .hero-glob :global(.hero-glob-icon-camera) {
+    transform: rotate(-15deg);
+  }
+
+  .hero-glob:hover {
+    transform: translateY(-3px);
+  }
+
+  .hero-glob:hover .hero-glob-surface::after {
+    transform: translate(4px, -3px);
+  }
+
+  .hero-glob:hover :global(.hero-glob-icon-plane),
+  .hero-glob:hover :global(.hero-glob-icon-camera) {
+    transform: translateX(2px) rotate(-28deg);
+  }
+
+  .hero-glob:hover :global(.hero-glob-icon-marker) {
+    transform: translateY(-2px) scale(1.08);
+  }
+
+  .home-posts {
+    padding-block-end: clamp(6rem, 10vw, 10rem);
+  }
+
+  @media (width >= 48rem) {
+    .hero-glob-row {
+      gap: 1.5rem;
+    }
+  }
+</style>
