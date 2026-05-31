@@ -15,6 +15,9 @@ export default defineConfig({
     },
   }),
   output: 'static',
+  build: {
+    inlineStylesheets: 'always',
+  },
   image: {
     remotePatterns: [
       {
