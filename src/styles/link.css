@@ -1,3 +1,5 @@
+@reference './global.css';
+
 .link {
   @apply transition-all duration-200;
 

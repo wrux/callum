@@ -23,7 +23,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     {
       images.map(({ caption, image }) => (
         <div
-          class="masonry-item rounded-xl overflow-hidden shadow-lg border border-gray-800 relative"
+          class="masonry-item relative overflow-hidden rounded-xl border border-gray-800 shadow-lg"
           style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
         >
           <SanityPicture
@@ -35,15 +35,18 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               objectFit: 'cover',
             }}
             sizes="(max-width: 1535px) calc(50vw - 3rem), 400px"
-            loading="lazy"
+            widths={[320, 480, 640, 800]}
+            sources={[{ options: { quality: 74 } }]}
             img={{
               alt: image.asset.alt || caption || '',
               class: 'w-full h-full object-cover',
+              decoding: 'async',
+              loading: 'lazy',
             }}
           />
           {caption && (
-            <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
-              <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+            <div class="absolute bottom-0 left-0 max-w-[calc(100%-1rem)] p-4">
+              <div class="rounded-lg bg-black/30 px-4 py-3 text-sm leading-5 text-white backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                 {caption}
               </div>
             </div>
@@ -59,12 +62,12 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
         {/* Main Swiper */}
         <div
-          class={`swiper gallery-main-${galleryId} mb-3 relative overflow-hidden md:rounded-xl`}
+          class={`swiper gallery-main-${galleryId} relative mb-3 overflow-hidden md:rounded-xl`}
         >
           <div class="swiper-wrapper">
             {images.map(({ caption, image }, index) => (
               <div class="swiper-slide">
-                <div class="relative overflow-hidden shadow-lg border-0 md:border md:border-gray-800">
+                <div class="relative overflow-hidden border-0 shadow-lg md:border md:border-gray-800">
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
@@ -73,16 +76,20 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                       height: 'auto',
                     }}
                     sizes="100vw"
-                    loading={index === 0 ? 'eager' : 'lazy'}
+                    widths={[480, 640, 800, 960, 1280]}
+                    sources={[{ options: { quality: 76 } }]}
                     img={{
                       alt: image.asset.alt || caption || '',
                       class: 'w-full h-auto',
+                      decoding: 'async',
+                      fetchpriority: index === 0 ? 'high' : 'auto',
+                      loading: index === 0 ? 'eager' : 'lazy',
                     }}
                   />
                   {/* Caption overlay */}
                   {caption && (
-                    <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
-                      <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+                    <div class="absolute bottom-0 left-0 max-w-[calc(100%-1rem)] p-4">
+                      <div class="rounded-lg bg-black/30 px-4 py-3 text-sm leading-5 text-white backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                         {caption}
                       </div>
                     </div>
@@ -93,12 +100,12 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
           </div>
           {/* Navigation buttons */}
           {images.length > 1 && (
-            <div class="absolute top-0 left-0 w-full flex justify-between p-4 z-10">
+            <div class="absolute top-0 left-0 z-10 flex w-full justify-between p-4">
               <button
                 class:list={[
                   `navigate-prev gallery-nav-prev-${galleryId}`,
-                  'aspect-square flex items-center justify-center w-10 h-10 rounded-lg bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70 transition-all duration-500',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-[8px] transition-all duration-500 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70',
+                  'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
               >
                 <Icon name="mdi:chevron-left" size={20} />
@@ -106,8 +113,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               <button
                 class:list={[
                   `navigate-next gallery-nav-next-${galleryId}`,
-                  'aspect-square flex items-center justify-center w-10 h-10 rounded-lg bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70 transition-all duration-500',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-[8px] transition-all duration-500 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70',
+                  'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
               >
                 <Icon name="mdi:chevron-right" size={20} />
@@ -122,7 +129,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
             <div class="swiper-wrapper">
               {images.map(({ image, caption }) => (
                 <div class="swiper-slide">
-                  <div class="gallery-thumbnail aspect-square rounded-lg overflow-hidden border-2 border-gray-800 opacity-60 transition-all cursor-pointer hover:opacity-100">
+                  <div class="gallery-thumbnail aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-gray-800 opacity-60 transition-all hover:opacity-100">
                     <SanityPicture
                       src={image}
                       imageUrlBuilder={imageBuilder}
@@ -132,10 +139,13 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                         objectFit: 'cover',
                       }}
                       sizes="80px"
-                      loading="lazy"
+                      widths={[80, 160]}
+                      sources={[{ options: { quality: 70 } }]}
                       img={{
                         alt: image.asset.alt || caption || '',
                         class: 'w-full h-full object-cover',
+                        decoding: 'async',
+                        loading: 'lazy',
                       }}
                     />
                   </div>
