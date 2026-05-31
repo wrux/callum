@@ -38,6 +38,9 @@ const heroImageSrcSet =
     })
     .join(', ');
 const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
+const featuredPostHeroMediaTransitionName = featuredPost
+  ? `post-hero-media-${featuredPost.slug}`
+  : undefined;
 ---
 
 <BaseLayout
@@ -55,7 +58,10 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
   >
     {
       heroImageSrc && (
-        <figure class="home-hero-media">
+        <figure
+          class="home-hero-media"
+          transition:name={featuredPostHeroMediaTransitionName}
+        >
           <img
             class="home-hero-image"
             src={heroImageSrc}

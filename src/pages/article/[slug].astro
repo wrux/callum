@@ -66,6 +66,7 @@ const heroImagePosition =
   heroImageHotspot?.x != null && heroImageHotspot?.y != null
     ? `${heroImageHotspot.x * 100}% ${heroImageHotspot.y * 100}%`
     : '50% 50%';
+const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
 ---
 
 <BaseLayout
@@ -87,6 +88,7 @@ const heroImagePosition =
           <figure
             class="article-hero-media"
             style={`--article-hero-image-position: ${heroImagePosition};`}
+            transition:name={postHeroMediaTransitionName}
           >
             <SanityPicture
               class="article-hero-picture"
