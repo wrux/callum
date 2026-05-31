@@ -31,7 +31,6 @@ declare global {
       content: PortableTextBlock;
       countries: Array<CountryTeaser>;
       excerpt?: string;
-      imageCount: number;
       mainImage: ImageWithMeta;
       publishedAt: string;
       seo: MetaData;
@@ -46,7 +45,6 @@ declare global {
     | '_id'
     | 'countries'
     | 'excerpt'
-    | 'imageCount'
     | 'mainImage'
     | 'readingTime'
     | 'slug'

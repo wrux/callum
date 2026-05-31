@@ -54,6 +54,12 @@ const heroImageSrcSet =
     .join(', ');
 const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
 const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
+const hasReadingTime =
+  typeof post.readingTime === 'number' && post.readingTime > 0;
+const countryNames = post.countries
+  ?.map((country) => country.name)
+  .filter(Boolean)
+  .join(', ');
 ---
 
 <BaseLayout
@@ -102,20 +108,16 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
       <div class="article-hero-inner container max-w-6xl">
         <div class="article-hero-copy">
           {
-            post?.countries?.length > 0 && (
-              <ul class="article-hero-countries" aria-label="Countries">
-                {post.countries.map((country) => (
-                  <li>
-                    <span class="article-hero-country">
-                      <Icon
-                        name="mdi:map-marker"
-                        class="article-hero-country-icon"
-                      />
-                      <span>{country.name}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+            countryNames && (
+              <p class="article-hero-countries" aria-label="Countries">
+                <span class="article-hero-country">
+                  <Icon
+                    name="mdi:map-marker"
+                    class="article-hero-country-icon"
+                  />
+                  <span>{countryNames}</span>
+                </span>
+              </p>
             )
           }
 
@@ -126,49 +128,32 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
           {post?.excerpt && <p class="article-hero-excerpt">{post.excerpt}</p>}
 
           {
-            post?.publishedAt && (
-              <p class="article-hero-date">
-                <Icon
-                  name="mdi:calendar-blank-outline"
-                  class="article-hero-date-icon"
-                />
-                <span>
-                  Published on <DateTime date={post.publishedAt} />
-                </span>
-              </p>
-            )
-          }
+            (post?.publishedAt || hasReadingTime) && (
+              <div class="article-hero-details" aria-label="Article details">
+                {post?.publishedAt && (
+                  <p class="article-hero-detail">
+                    <Icon
+                      name="mdi:calendar-blank-outline"
+                      class="article-hero-detail-icon"
+                    />
+                    <span>
+                      Published on <DateTime date={post.publishedAt} />
+                    </span>
+                  </p>
+                )}
 
-          {
-            (post?.imageCount || post?.readingTime) && (
-              <dl class="article-hero-meta" aria-label="Article details">
-                {post?.readingTime && (
-                  <div class="article-hero-meta-item">
-                    <dt>Reading time</dt>
-                    <dd>
-                      <Icon
-                        name="mdi:clock-outline"
-                        class="article-hero-meta-icon"
-                      />
-                      <span>{post.readingTime} min read</span>
-                    </dd>
-                  </div>
+                {hasReadingTime && (
+                  <p class="article-hero-detail">
+                    <Icon
+                      name="mdi:book-open-page-variant-outline"
+                      class="article-hero-detail-icon"
+                    />
+                    <span>
+                      Estimated <strong>{post.readingTime} min read</strong>
+                    </span>
+                  </p>
                 )}
-                {post?.imageCount && (
-                  <div class="article-hero-meta-item">
-                    <dt>Images</dt>
-                    <dd>
-                      <Icon
-                        name="mdi:image-multiple-outline"
-                        class="article-hero-meta-icon"
-                      />
-                      <span>
-                        {post.imageCount} image{post.imageCount > 1 ? 's' : ''}
-                      </span>
-                    </dd>
-                  </div>
-                )}
-              </dl>
+              </div>
             )
           }
         </div>
@@ -198,6 +183,7 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     position: relative;
     isolation: isolate;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     overflow: hidden;
     background:
       radial-gradient(
@@ -219,10 +205,9 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
   .article-hero-media,
   .article-hero-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
-    aspect-ratio: var(--hero-image-aspect-ratio);
+    height: 100%;
   }
 
   .article-hero-media {
@@ -267,14 +252,18 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
   }
 
   .article-hero-inner {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
     display: flex;
+    width: 100%;
+    min-width: 0;
     align-items: flex-start;
     padding-block: 6rem 2.5rem;
   }
 
   .article-hero-copy {
+    width: 100%;
+    min-width: 0;
     max-width: 58rem;
   }
 
@@ -282,31 +271,33 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     display: flex;
     width: fit-content;
     max-width: 100%;
-    flex-wrap: wrap;
-    gap: 0.1rem;
     margin: 0 0 1.25rem;
-    padding: 0;
-    list-style: none;
     filter: url(#buttonFilter);
   }
 
   .article-hero-country {
     display: inline-flex;
+    max-width: 100%;
     min-height: 1.9rem;
     align-items: center;
     gap: 0.28rem;
     border-radius: 999px;
     background: var(--color-brand-medium);
+    padding-block: 0.42rem;
     padding-inline: 0.62rem 0.72rem;
     color: var(--color-gray-50);
     font-size: 0.75rem;
     font-weight: 750;
-    line-height: 1;
+    line-height: 1.15;
   }
 
   .article-hero-country :global(.article-hero-country-icon) {
     width: 0.82rem;
     height: 0.82rem;
+  }
+
+  .article-hero-country span {
+    min-width: 0;
   }
 
   .article-hero-title {
@@ -327,11 +318,23 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     line-height: 1.62;
   }
 
-  .article-hero-date {
+  .article-hero-details {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.15rem 0 0;
+  }
+
+  .article-hero-detail {
     display: inline-flex;
+    max-width: 100%;
     align-items: center;
     gap: 0.45rem;
-    margin: 1.15rem 0 0;
+    margin: 0;
     border-radius: 999px;
     background: rgb(3 7 18 / 0.1);
     padding: 0.2rem 0.85rem 0.2rem 0.2rem;
@@ -342,7 +345,7 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     -webkit-backdrop-filter: blur(18px);
   }
 
-  .article-hero-date :global(.article-hero-date-icon) {
+  .article-hero-detail :global(.article-hero-detail-icon) {
     box-sizing: content-box;
     flex: 0 0 auto;
     width: 0.85rem;
@@ -353,54 +356,14 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
     color: var(--color-gray-50);
   }
 
-  .article-hero-date :global(time) {
+  .article-hero-detail :global(time),
+  .article-hero-detail strong {
     font-weight: 700;
     letter-spacing: 0;
   }
 
-  .article-hero-meta {
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    flex-wrap: wrap;
-    gap: 0.18rem;
-    margin: 1rem 0 0;
-    filter: url(#buttonFilter);
-  }
-
-  .article-hero-meta-item {
-    margin: 0;
-  }
-
-  .article-hero-meta-item dt {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .article-hero-meta-item dd {
-    display: inline-flex;
-    min-height: 2.75rem;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.11);
-    padding-inline: 1rem;
-    color: var(--color-gray-100);
-    font-size: 0.9rem;
-    font-weight: 720;
-    line-height: 1;
-    backdrop-filter: blur(18px);
-  }
-
-  .article-hero-meta-item :global(.article-hero-meta-icon) {
-    width: 1.05rem;
-    height: 1.05rem;
+  .article-hero-detail span {
+    min-width: 0;
   }
 
   .article-content {
@@ -422,8 +385,7 @@ const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
       max-width: 11ch;
     }
 
-    .article-hero-countries,
-    .article-hero-meta {
+    .article-hero-countries {
       filter: none;
     }
   }

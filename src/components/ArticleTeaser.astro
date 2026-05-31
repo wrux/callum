@@ -11,7 +11,6 @@ export type Props = ArticleTeaser & {
 
 const {
   excerpt,
-  imageCount,
   lazy = false,
   mainImage,
   priority = false,
@@ -22,6 +21,7 @@ const {
 } = Astro.props;
 
 const loading = lazy ? 'lazy' : 'eager';
+const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
 ---
 
 <article class="article-teaser">
@@ -50,14 +50,9 @@ const loading = lazy ? 'lazy' : 'eager';
   }
   <div class="article-teaser-content">
     {
-      (imageCount || readingTime) && (
+      hasReadingTime && (
         <p class="article-teaser-meta type-text-xs type-text-muted">
-          {[
-            readingTime && `${readingTime} min read`,
-            imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
-          ]
-            .filter(Boolean)
-            .join(' • ')}
+          {readingTime} min read
         </p>
       )
     }
