@@ -12,36 +12,38 @@ const baseCroppedBuilder = createImageUrlBuilder(sanityClient)
   .fit('crop')
   .format('webp');
 
-// Create a proxy wrapper to ensure 16:9 aspect ratio is maintained
+// Create a proxy wrapper to ensure 16:9 aspect ratio is maintained.
+// Sanity's URL builder is immutable, so use the returned builder from width/height
+// calls to preserve dimensions before hotspot/crop rects are calculated.
 const croppedImageBuilder = new Proxy(baseCroppedBuilder, {
   get(target, prop) {
     if (prop === 'image') {
       return (source: any) => {
         const builder = target.image(source);
-        // Override width/height methods to maintain 16:9 aspect ratio
-        const originalWidth = builder.width.bind(builder);
-        const originalHeight = builder.height.bind(builder);
 
-        builder.width = function (width: number) {
-          originalWidth(width);
-          // Calculate height to maintain 16:9 aspect ratio
-          const height = Math.round((width * 9) / 16);
-          originalHeight(height);
-          return this;
-        };
+        return new Proxy(builder, {
+          get(imageTarget, imageProp) {
+            if (imageProp === 'width') {
+              return (width: number) =>
+                imageTarget.width(width).height(Math.round((width * 9) / 16));
+            }
 
-        builder.height = function (height: number) {
-          originalHeight(height);
-          // Calculate width to maintain 16:9 aspect ratio
-          const width = Math.round((height * 16) / 9);
-          originalWidth(width);
-          return this;
-        };
+            if (imageProp === 'height') {
+              return (height: number) =>
+                imageTarget.width(Math.round((height * 16) / 9)).height(height);
+            }
 
-        return builder;
+            const value = (imageTarget as any)[imageProp];
+            return typeof value === 'function'
+              ? value.bind(imageTarget)
+              : value;
+          },
+        });
       };
     }
-    return (target as any)[prop];
+
+    const value = (target as any)[prop];
+    return typeof value === 'function' ? value.bind(target) : value;
   },
 });
 

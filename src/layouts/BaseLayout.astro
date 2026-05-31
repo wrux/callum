@@ -1,6 +1,7 @@
 ---
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
+import { ClientRouter } from 'astro:transitions';
 import { Logo } from '~/components';
 
 import '../styles/link.css';
@@ -72,6 +73,7 @@ const isHomepage = Astro.url.pathname === '/';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="callum.co.uk" />
     <link rel="manifest" href="/site.webmanifest" />
+    <ClientRouter />
   </head>
 
   <body
@@ -79,29 +81,51 @@ const isHomepage = Astro.url.pathname === '/';
     data-is-homepage={isHomepage}
   >
     <header
-      class={`site-header fixed top-4 left-4 right-4 z-50 flex justify-between items-center pointer-events-none transition-transform duration-500 ease-in-out ${
-        isHomepage ? '-translate-y-[150%]' : 'translate-y-0'
-      }`}
+      class="site-header sticky top-0 z-50 border-b border-transparent bg-gray-950/85 backdrop-blur-xl transition-colors duration-200 data-[is-stuck=true]:border-gray-800"
+      data-is-homepage={isHomepage}
+      data-is-stuck="false"
+      transition:name="site-header"
+      transition:persist
     >
-      <a
-        class="pointer-events-auto flex size-14 items-center justify-center rounded-xl bg-gray-950/80 backdrop-blur-xl transition-opacity hover:opacity-70"
-        href="/"
-        aria-label="Go to the homepage"
+      <div
+        class="container flex h-16 max-w-6xl items-center justify-between gap-4"
       >
-        <Logo class="text-[2rem] md:text-[2.5rem]" />
-      </a>
-      {
-        !isHomepage && (
+        <a
+          class="group hover:text-brand-light flex size-12 shrink-0 items-center justify-center text-gray-50 transition-colors duration-200"
+          href="/"
+          aria-label="Go to the homepage"
+        >
+          <Logo class="text-[2.25rem] md:text-[2.4rem]" />
+        </a>
+
+        <nav
+          class="flex min-w-0 items-center justify-end gap-2 text-sm font-medium text-gray-300"
+          aria-label="Primary navigation"
+        >
           <a
             href="/"
-            class="pointer-events-auto flex items-center gap-2 rounded-full border-2 border-gray-700 bg-gray-950/80 px-4 py-2 text-gray-100 shadow-md backdrop-blur-xl transition-all duration-200 hover:border-gray-600 hover:text-gray-300 hover:shadow-lg"
-            aria-label="Go to the homepage"
+            class="header-back-link inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 transition-colors duration-200 hover:bg-white/10 hover:text-gray-50"
+            aria-label="Back to homepage"
+            aria-hidden={isHomepage ? 'true' : 'false'}
+            data-header-back-link
+            hidden={isHomepage}
           >
-            <Icon name="mdi:keyboard-backspace" class="h-5 w-5" />
-            <span class="text-sm font-medium">Back</span>
+            <Icon name="mdi:keyboard-backspace" class="h-4 w-4" />
+            <span>Back</span>
           </a>
-        )
-      }
+
+          <a
+            href="https://wrux.com"
+            target="_blank"
+            class="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 transition-colors duration-200 hover:bg-white/10 hover:text-gray-50"
+            aria-label="Visit wrux.com"
+            rel="noreferrer"
+          >
+            <span>wrux.com</span>
+            <Icon name="mdi:open-in-new" class="h-3.5 w-3.5" />
+          </a>
+        </nav>
+      </div>
     </header>
 
     <slot name="header" />
@@ -199,54 +223,40 @@ const isHomepage = Astro.url.pathname === '/';
       </div>
     </footer>
 
-    <script>
-      // Update header position based on current page and scroll
-      function updateHeaderPosition() {
-        const header = document.querySelector('.site-header');
-        const isHomepage = window.location.pathname === '/';
+    <script is:inline>
+      (() => {
+        const initializedKey = '__callumHeaderSyncInitialized';
 
-        if (header) {
-          if (isHomepage) {
-            const heroSection = document.getElementById('hero-section');
-            if (heroSection) {
-              const heroBottom = heroSection.getBoundingClientRect().bottom;
-              const scrolledPastHero = heroBottom < 0;
+        function syncHeaderState() {
+          const header = document.querySelector('.site-header');
+          const backLink = document.querySelector('[data-header-back-link]');
+          const isHomepage = window.location.pathname === '/';
 
-              if (scrolledPastHero) {
-                header.classList.remove('-translate-y-[150%]');
-                header.classList.add('translate-y-0');
-              } else {
-                header.classList.remove('translate-y-0');
-                header.classList.add('-translate-y-[150%]');
-              }
+          if (header) {
+            header.dataset.isHomepage = String(isHomepage);
+            header.dataset.isStuck = String(window.scrollY > 0);
+          }
+
+          if (backLink) {
+            backLink.hidden = isHomepage;
+            backLink.setAttribute('aria-hidden', String(isHomepage));
+            if (isHomepage) {
+              backLink.setAttribute('tabindex', '-1');
             } else {
-              // Fallback: hide header if hero section not found
-              header.classList.remove('translate-y-0');
-              header.classList.add('-translate-y-[150%]');
+              backLink.removeAttribute('tabindex');
             }
-          } else {
-            header.classList.remove('-translate-y-[150%]');
-            header.classList.add('translate-y-0');
           }
         }
-      }
 
-      // Initialize header position
-      updateHeaderPosition();
+        syncHeaderState();
 
-      // Add scroll listener for homepage header transition
-      // Uses requestAnimationFrame for performance
-      let ticking = false;
-      function handleScroll() {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            updateHeaderPosition();
-            ticking = false;
-          });
-          ticking = true;
+        if (!window[initializedKey]) {
+          window[initializedKey] = true;
+          document.addEventListener('astro:page-load', syncHeaderState);
+          document.addEventListener('astro:after-swap', syncHeaderState);
+          window.addEventListener('scroll', syncHeaderState, { passive: true });
         }
-      }
-      window.addEventListener('scroll', handleScroll, { passive: true });
+      })();
     </script>
   </body>
 </html>
