@@ -1,10 +1,8 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { Logo } from '~/components';
 
-import '@fontsource-variable/inter';
 import '../styles/link.css';
 import '../styles/global.css';
 
@@ -30,7 +28,7 @@ const thisYear = new Date().getFullYear();
 const isHomepage = Astro.url.pathname === '/';
 ---
 
-<html lang="en" transition:animate="none">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -67,8 +65,6 @@ const isHomepage = Astro.url.pathname === '/';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="callum.co.uk" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <ClientRouter />
   </head>
 
   <body
@@ -81,7 +77,7 @@ const isHomepage = Astro.url.pathname === '/';
       }`}
     >
       <a
-        class="flex items-center justify-center pointer-events-auto transition-opacity hover:opacity-70 size-14 rounded-xl bg-gray-950/80 backdrop-blur-xl"
+        class="pointer-events-auto flex size-14 items-center justify-center rounded-xl bg-gray-950/80 backdrop-blur-xl transition-opacity hover:opacity-70"
         href="/"
         aria-label="Go to the homepage"
       >
@@ -91,10 +87,10 @@ const isHomepage = Astro.url.pathname === '/';
         !isHomepage && (
           <a
             href="/"
-            class="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-gray-950/80 backdrop-blur-xl border-2 border-gray-700 hover:border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 text-gray-100 hover:text-gray-300"
+            class="pointer-events-auto flex items-center gap-2 rounded-full border-2 border-gray-700 bg-gray-950/80 px-4 py-2 text-gray-100 shadow-md backdrop-blur-xl transition-all duration-200 hover:border-gray-600 hover:text-gray-300 hover:shadow-lg"
             aria-label="Go to the homepage"
           >
-            <Icon name="mdi:keyboard-backspace" class="w-5 h-5" />
+            <Icon name="mdi:keyboard-backspace" class="h-5 w-5" />
             <span class="text-sm font-medium">Back</span>
           </a>
         )
@@ -103,56 +99,56 @@ const isHomepage = Astro.url.pathname === '/';
 
     <slot name="header" />
 
-    <main class="flex-1" transition:animate="fade">
+    <main class="flex-1">
       <slot />
     </main>
 
     <footer
-      class="mt-8 bg-gray-950 border-t border-gray-800 py-12 md:py-16 lg:py-20"
+      class="mt-8 border-t border-gray-800 bg-gray-950 py-12 md:py-16 lg:py-20"
     >
       <div class="container max-w-6xl space-y-10 md:space-y-16">
         <div
-          class="grid grid-cols-1 md:grid-cols-4 gap-x-16 gap-y-8 items-start"
+          class="grid grid-cols-1 items-start gap-x-16 gap-y-8 md:grid-cols-4"
         >
           <div class="col-span-1">
-            <Logo class="text-[5rem] md:text-[6rem] opacity-90" />
+            <Logo class="text-[5rem] opacity-90 md:text-[6rem]" />
           </div>
 
           <div class="col-span-1">
-            <p class="type-h6 mb-4 text-gray-100 font-semibold">Links</p>
+            <p class="type-h6 mb-4 font-semibold text-gray-100">Links</p>
             <nav aria-label="External links" class="flex gap-2">
               <ul class="flex gap-3 text-3xl md:text-4xl">
                 <li>
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
+                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
                   >
-                    <Icon name="mdi:instagram" class="w-[1em] h-[1em]" />
+                    <Icon name="mdi:instagram" class="h-[1em] w-[1em]" />
                   </a>
                 </li>
                 <li>
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
+                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
                     aria-label="View my Github profile"
                     rel="noreferrer nofollow"
                   >
-                    <Icon name="mdi:github" class="w-[1em] h-[1em]" />
+                    <Icon name="mdi:github" class="h-[1em] w-[1em]" />
                   </a>
                 </li>
                 <li>
                   <a
                     href="https://www.linkedin.com/in/wrux"
                     target="_blank"
-                    class="link transition-all duration-200 hover:scale-110 hover:text-brand-light"
+                    class="link hover:text-brand-light transition-all duration-200 hover:scale-110"
                     aria-label="View my Linkedin profile"
                     rel="noreferrer nofollow"
                   >
-                    <Icon name="mdi:linkedin" class="w-[1em] h-[1em]" />
+                    <Icon name="mdi:linkedin" class="h-[1em] w-[1em]" />
                   </a>
                 </li>
               </ul>
@@ -160,7 +156,7 @@ const isHomepage = Astro.url.pathname === '/';
           </div>
 
           <div class="col-span-1 md:col-span-2">
-            <p class="type-h6 mb-3 text-gray-100 font-semibold">
+            <p class="type-h6 mb-3 font-semibold text-gray-100">
               Like this website?
             </p>
             <p class="type-text-sm text-gray-400">
@@ -179,7 +175,7 @@ const isHomepage = Astro.url.pathname === '/';
         </div>
 
         <p
-          class="type-text-sm text-center text-gray-500 pt-8 border-t border-gray-800"
+          class="type-text-sm border-t border-gray-800 pt-8 text-center text-gray-400"
         >
           Copyright &copy;{' '}
           <a
@@ -244,41 +240,6 @@ const isHomepage = Astro.url.pathname === '/';
         }
       }
       window.addEventListener('scroll', handleScroll, { passive: true });
-
-      // Update on view transition
-      document.addEventListener('astro:after-swap', () => {
-        // Update header position
-        updateHeaderPosition();
-
-        // Handle image animations
-        document
-          .querySelectorAll<HTMLImageElement>('img[data-x-lqip="true"]')
-          .forEach((img) => {
-            img.addEventListener('load', () => {
-              img.animate([{ opacity: 0 }, { opacity: 1 }], {
-                duration: parseInt(img.dataset['xLqipTransitionDuration']!),
-                fill: 'forwards',
-              });
-            });
-            if (img.complete) {
-              img.style.opacity = '1';
-            }
-          });
-      });
     </script>
-
-    <style is:global>
-      .site-header {
-        view-transition-name: site-header;
-      }
-
-      @media (prefers-reduced-motion: no-preference) {
-        ::view-transition-old(site-header),
-        ::view-transition-new(site-header) {
-          animation-duration: 0.5s;
-          animation-timing-function: ease-in-out;
-        }
-      }
-    </style>
   </body>
 </html>

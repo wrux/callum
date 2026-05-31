@@ -20,18 +20,10 @@ const w = (n: number) => `${containerMaxWidth / n}px`;
 
 const sizes = [
   `(max-width: 767px) 100vw, ${w(1)}px`, // one image
-  `(max-width: 767px) 100vw, (max-width: 1535px) calc(50vw - 5rem), ${w(
-    2,
-  )}`, // two images
-  `(max-width: 767px) 100vw, (max-width: 1535px) calc(33vw - 6rem), ${w(
-    3,
-  )}`, // three images
-  `(max-width: 767px) 100vw, (max-width: 1535px) calc(25vw - 7rem), ${w(
-    4,
-  )}`, // four images
-  `(max-width: 767px) 100vw, (max-width: 1535px) calc(20vw - 8rem), ${w(
-    5,
-  )}`, // five images
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(50vw - 5rem), ${w(2)}`, // two images
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(33vw - 6rem), ${w(3)}`, // three images
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(25vw - 7rem), ${w(4)}`, // four images
+  `(max-width: 767px) 100vw, (max-width: 1535px) calc(20vw - 8rem), ${w(5)}`, // five images
 ];
 
 const imageSizes = sizes?.[images.length] || sizes[5];
@@ -39,12 +31,12 @@ const imageSizes = sizes?.[images.length] || sizes[5];
 
 <Section width="mobile-full" data-block="inline-images">
   <div
-    class="grid grid-cols-1 md:grid-cols-dynamic items-center justify-center gap-4"
+    class="md:grid-cols-dynamic grid grid-cols-1 items-center justify-center gap-4"
     style={`--column-count: ${images.length};`}
   >
     {
       images.map(({ caption, image }) => (
-        <div class="md:rounded-xl overflow-hidden shadow-lg border-0 md:border border-gray-800 relative">
+        <div class="relative overflow-hidden border-0 border-gray-800 shadow-lg md:rounded-xl md:border">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
@@ -53,13 +45,17 @@ const imageSizes = sizes?.[images.length] || sizes[5];
               height: 'auto',
             }}
             sizes={imageSizes}
+            widths={[320, 480, 640, 800, 960]}
+            sources={[{ options: { quality: 76 } }]}
             img={{
               alt: image.asset.alt || caption || '',
+              decoding: 'async',
+              loading: 'lazy',
             }}
           />
           {caption && (
-            <div class="absolute bottom-0 left-0 p-4 max-w-[calc(100%-1rem)]">
-              <div class="rounded-lg text-white py-3 px-4 text-sm leading-5 bg-black/30 backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+            <div class="absolute bottom-0 left-0 max-w-[calc(100%-1rem)] p-4">
+              <div class="rounded-lg bg-black/30 px-4 py-3 text-sm leading-5 text-white backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                 {caption}
               </div>
             </div>

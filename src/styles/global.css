@@ -1,47 +1,54 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../../tailwind.config.js';
+
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+}
 
 /* Typography utility classes */
 @layer utilities {
   .type-h1 {
-    @apply font-sans font-bold leading-tight tracking-tight text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+    @apply font-sans text-4xl leading-tight font-bold tracking-tight md:text-5xl lg:text-6xl xl:text-7xl;
   }
 
   .type-h2 {
-    @apply font-sans font-bold leading-tight tracking-tight text-3xl md:text-4xl lg:text-5xl;
+    @apply font-sans text-3xl leading-tight font-bold tracking-tight md:text-4xl lg:text-5xl;
   }
 
   .type-h3 {
-    @apply font-sans font-bold leading-tight tracking-tight text-2xl md:text-3xl lg:text-4xl;
+    @apply font-sans text-2xl leading-tight font-bold tracking-tight md:text-3xl lg:text-4xl;
   }
 
   .type-h4 {
-    @apply font-sans font-bold leading-tight tracking-tight text-xl md:text-2xl lg:text-3xl;
+    @apply font-sans text-xl leading-tight font-bold tracking-tight md:text-2xl lg:text-3xl;
   }
 
   .type-h5 {
-    @apply font-sans font-bold leading-tight text-lg md:text-xl uppercase tracking-wider;
+    @apply font-sans text-lg leading-tight font-bold tracking-wider uppercase md:text-xl;
   }
 
   .type-h6 {
-    @apply font-sans font-bold leading-tight tracking-tight text-base md:text-lg;
+    @apply font-sans text-base leading-tight font-bold tracking-tight md:text-lg;
   }
 
   .type-text-xs {
-    @apply font-sans font-normal text-xs lg:text-sm leading-relaxed;
+    @apply font-sans text-xs leading-relaxed font-normal lg:text-sm;
   }
 
   .type-text-sm {
-    @apply font-sans font-normal text-sm lg:text-base leading-relaxed;
+    @apply font-sans text-sm leading-relaxed font-normal lg:text-base;
   }
 
   .type-text-md {
-    @apply font-sans font-normal text-base lg:text-lg leading-relaxed;
+    @apply font-sans text-base leading-relaxed font-normal lg:text-lg;
   }
 
   .type-text-lg {
-    @apply font-sans font-normal text-lg lg:text-xl xl:text-2xl leading-relaxed;
+    @apply font-sans text-lg leading-relaxed font-normal lg:text-xl xl:text-2xl;
   }
 
   .type-text-muted {
