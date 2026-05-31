@@ -80,6 +80,28 @@ const isHomepage = Astro.url.pathname === '/';
     class="bg-gray-950 text-gray-50 antialiased"
     data-is-homepage={isHomepage}
   >
+    <svg
+      class="svg-filter-definitions"
+      width="0"
+      height="0"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <filter id="buttonFilter" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"
+          ></feGaussianBlur>
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="goo"></feColorMatrix>
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"
+          ></feComposite>
+        </filter>
+      </defs>
+    </svg>
+
     <header
       class="site-header sticky top-0 z-50 border-b border-transparent bg-gray-950/85 backdrop-blur-xl transition-colors duration-200 data-[is-stuck=true]:border-gray-800"
       data-is-homepage={isHomepage}
