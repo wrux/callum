@@ -7,8 +7,11 @@ const { date } = Astro.props;
 
 const dateObject = new Date(date);
 const dateIso = dateObject.toISOString();
-const dateString = dateObject.toLocaleDateString();
+const dateString = dateObject.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 ---
 
-<time class="tracking-wider font-semibold" datetime={dateIso}>{dateString}</time
->
+<time class="font-semibold" datetime={dateIso}>{dateString}</time>

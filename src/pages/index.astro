@@ -14,8 +14,7 @@ const heroImageBuilder = createImageUrlBuilder(sanityClient)
   .fit('crop')
   .format('webp');
 const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
-const heroImageHeightForWidth = (width: number) =>
-  Math.round((width * 10) / 16);
+const heroImageHeightForWidth = (width: number) => Math.round(width / 2);
 const heroImageSrc =
   heroImage &&
   heroImageBuilder
@@ -148,12 +147,44 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
   }
 </BaseLayout>
 
+<script>
+  function initHomeHeroImageFade() {
+    const images = document.querySelectorAll('.home-hero-image');
+
+    images.forEach((image) => {
+      if (!(image instanceof HTMLImageElement)) {
+        return;
+      }
+
+      const markLoaded = () => {
+        requestAnimationFrame(() => {
+          image.dataset.isLoaded = 'true';
+          image
+            .closest('.home-hero-media')
+            ?.setAttribute('data-image-loaded', 'true');
+        });
+      };
+
+      if (image.complete && image.naturalWidth > 0) {
+        markLoaded();
+        return;
+      }
+
+      image.addEventListener('load', markLoaded, { once: true });
+    });
+  }
+
+  initHomeHeroImageFade();
+  document.addEventListener('astro:page-load', initHomeHeroImageFade);
+</script>
+
 <style>
   .home-hero {
+    --hero-image-aspect-ratio: 2 / 1;
+
     position: relative;
     isolation: isolate;
     display: grid;
-    min-height: 40rem;
     overflow: hidden;
     background:
       radial-gradient(
@@ -164,49 +195,71 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
       var(--color-gray-950);
   }
 
+  .home-hero::before {
+    display: block;
+    grid-area: 1 / 1;
+    width: 100%;
+    aspect-ratio: var(--hero-image-aspect-ratio);
+    content: '';
+  }
+
   .home-hero-media,
   .home-hero-overlay {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: var(--hero-image-aspect-ratio);
   }
 
   .home-hero-media {
     margin: 0;
     z-index: -2;
+    overflow: hidden;
+    mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    opacity: 0;
+    transition: opacity 720ms ease;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+  }
+
+  .home-hero-media[data-image-loaded='true'] {
+    opacity: 0.8;
   }
 
   .home-hero-image {
     width: 100%;
     height: 100%;
+    filter: brightness(0.56);
     object-fit: cover;
-    opacity: 0.72;
   }
 
   .home-hero-overlay {
     z-index: -1;
-    background:
-      linear-gradient(
-        90deg,
-        rgb(3 7 18 / 0.92),
-        rgb(3 7 18 / 0.64) 44%,
-        rgb(3 7 18 / 0.16)
-      ),
-      linear-gradient(
-        180deg,
-        rgb(3 7 18 / 0.38),
-        transparent 38%,
-        rgb(3 7 18 / 0.9)
-      );
+    background: rgb(3 7 18 / 0.18);
   }
 
   .home-hero-inner {
-    position: relative;
+    position: absolute;
+    inset: 0;
     display: flex;
-    min-height: inherit;
     flex-direction: column;
     justify-content: space-between;
     gap: 3.5rem;
-    padding-block: 7.75rem 2.75rem;
+    padding-block: 6rem 2.5rem;
   }
 
   .home-hero-brand {
@@ -240,7 +293,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
   .home-hero-title {
     margin: 0;
     color: var(--color-gray-50);
-    font-size: 3.05rem;
+    font-size: clamp(2.75rem, 6vw, 4.75rem);
     font-weight: 800;
     line-height: 0.98;
     letter-spacing: 0;
@@ -442,26 +495,14 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
   }
 
   @media (width >= 48rem) {
-    .home-hero {
-      min-height: 42rem;
-    }
-
-    .home-hero-title {
-      font-size: 4rem;
-    }
-
     .home-hero-summary {
       font-size: 1.125rem;
     }
   }
 
   @media (width >= 64rem) {
-    .home-hero {
-      min-height: 45rem;
-    }
-
     .home-hero-inner {
-      padding-block: 8.5rem 3.25rem;
+      padding-block: 8.75rem 2.5rem;
     }
 
     .home-hero-main {
@@ -478,29 +519,15 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
       font-size: 3rem;
     }
 
-    .home-hero-title {
-      font-size: 4.75rem;
-    }
-
     .home-hero-latest {
       justify-self: end;
     }
   }
 
-  @media (width >= 80rem) {
-    .home-hero-title {
-      font-size: 5.25rem;
-    }
-  }
-
   @media (width < 48rem) {
-    .home-hero {
-      min-height: 40rem;
-    }
-
     .home-hero-inner {
       gap: 2.75rem;
-      padding-block: 6.5rem 2rem;
+      padding-block: 5.75rem 2rem;
     }
 
     .home-hero-logo {
@@ -509,10 +536,6 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 
     .home-hero-wordmark {
       font-size: 2.55rem;
-    }
-
-    .home-hero-title {
-      font-size: 2.65rem;
     }
 
     .home-hero-latest {

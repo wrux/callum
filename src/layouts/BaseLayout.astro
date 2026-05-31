@@ -27,6 +27,8 @@ const image = meta?.image || 'https://callum.co.uk/callum-social-image.webp';
 
 const thisYear = new Date().getFullYear();
 const isHomepage = Astro.url.pathname === '/';
+const isArticlePage = Astro.url.pathname.startsWith('/article/');
+const usesHeroHeader = isHomepage || isArticlePage;
 ---
 
 <html lang="en">
@@ -79,6 +81,8 @@ const isHomepage = Astro.url.pathname === '/';
   <body
     class="bg-gray-950 text-gray-50 antialiased"
     data-is-homepage={isHomepage}
+    data-is-article-page={isArticlePage}
+    data-uses-hero-header={usesHeroHeader}
   >
     <svg
       class="svg-filter-definitions"
@@ -105,6 +109,8 @@ const isHomepage = Astro.url.pathname === '/';
     <header
       class="site-header"
       data-is-homepage={isHomepage}
+      data-is-article-page={isArticlePage}
+      data-uses-hero-header={usesHeroHeader}
       data-is-stuck="false"
       transition:name="site-header"
       transition:persist
@@ -164,7 +170,7 @@ const isHomepage = Astro.url.pathname === '/';
 
     <slot name="header" />
 
-    <main class="flex-1">
+    <main class="site-main flex-1">
       <slot />
     </main>
 
@@ -254,9 +260,18 @@ const isHomepage = Astro.url.pathname === '/';
           const backLink = document.querySelector('[data-header-back-link]');
           const logoLink = document.querySelector('[data-header-logo-link]');
           const isHomepage = window.location.pathname === '/';
+          const isArticlePage =
+            window.location.pathname.startsWith('/article/');
+          const usesHeroHeader = isHomepage || isArticlePage;
+
+          document.body.dataset.isHomepage = String(isHomepage);
+          document.body.dataset.isArticlePage = String(isArticlePage);
+          document.body.dataset.usesHeroHeader = String(usesHeroHeader);
 
           if (header) {
             header.dataset.isHomepage = String(isHomepage);
+            header.dataset.isArticlePage = String(isArticlePage);
+            header.dataset.usesHeroHeader = String(usesHeroHeader);
             header.dataset.isStuck = String(window.scrollY > 0);
           }
 
@@ -310,8 +325,9 @@ const isHomepage = Astro.url.pathname === '/';
     --site-header-gradient-from: rgb(3 7 18 / 0.78);
     --site-header-gradient-to: rgb(3 7 18 / 0.78);
 
-    position: sticky;
-    top: 0;
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
     z-index: 50;
     width: 100%;
     background: linear-gradient(
@@ -327,13 +343,10 @@ const isHomepage = Astro.url.pathname === '/';
       box-shadow 220ms ease;
   }
 
-  .site-header[data-is-homepage='true'] {
+  .site-header[data-uses-hero-header='true'] {
     --site-header-gradient-from: rgb(3 7 18 / 0.78);
     --site-header-gradient-to: rgb(3 7 18 / 0);
 
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline: 0;
     backdrop-filter: none;
     box-shadow: none;
   }
@@ -346,8 +359,12 @@ const isHomepage = Astro.url.pathname === '/';
     box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.18);
   }
 
-  .site-header[data-is-homepage='true'][data-is-stuck='true'] {
-    position: fixed;
+  .site-main {
+    padding-block-start: 4.75rem;
+  }
+
+  body[data-uses-hero-header='true'] .site-main {
+    padding-block-start: 0;
   }
 
   .site-header-shell {
@@ -510,6 +527,10 @@ const isHomepage = Astro.url.pathname === '/';
   }
 
   @media (width < 36rem) {
+    .site-main {
+      padding-block-start: 4.25rem;
+    }
+
     .site-header-shell {
       min-height: 4.25rem;
     }
