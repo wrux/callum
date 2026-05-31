@@ -53,18 +53,18 @@ const featuredPostHeroMediaTransitionName = featuredPost
 >
   <section
     id="hero-section"
-    class="home-hero"
+    class="home-hero relative isolate grid grid-cols-[minmax(0,1fr)] overflow-hidden before:col-start-1 before:row-start-1 before:block before:aspect-[2/1] before:w-full before:content-['']"
     data-has-image={heroImageSrc ? 'true' : 'false'}
   >
     {
       heroImageSrc && (
         <figure
-          class="home-hero-media"
+          class="home-hero-media absolute inset-0 z-[-2] m-0 h-full w-full overflow-hidden opacity-0 transition-opacity duration-700 data-[image-loaded=true]:opacity-80"
           transition:name={featuredPostHeroMediaTransitionName}
           transition:animate="none"
         >
           <img
-            class="home-hero-image"
+            class="h-full w-full object-cover brightness-50"
             src={heroImageSrc}
             srcset={heroImageSrcSet}
             sizes="100vw"
@@ -78,18 +78,20 @@ const featuredPostHeroMediaTransitionName = featuredPost
         </figure>
       )
     }
-    <div class="home-hero-overlay" aria-hidden="true"></div>
+    <div class="absolute inset-0 z-[-1] h-full w-full bg-gray-950/20" aria-hidden="true"></div>
 
-    <div class="home-hero-inner container max-w-6xl">
-      <div class="home-hero-brand">
-        <Logo class="home-hero-logo" />
-        <Wordmark class="home-hero-wordmark" />
+    <div class="container relative col-start-1 row-start-1 flex w-full min-w-0 max-w-6xl flex-col justify-between gap-11 pt-24 pb-8 md:gap-14 md:pt-24 md:pb-10 lg:pt-36">
+      <div class="flex w-fit flex-col gap-2.5">
+        <Logo class="type-home-logo-mark text-gray-50 opacity-95" />
+        <Wordmark class="type-home-wordmark text-gray-50 opacity-95" />
       </div>
 
-      <div class="home-hero-main">
-        <div class="home-hero-content">
-          <h1 class="home-hero-title">Journeys beyond the obvious</h1>
-          <p class="home-hero-summary">
+      <div class="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:items-end lg:gap-16">
+        <div class="min-w-0 max-w-3xl">
+          <h1 class="type-hero-title m-0 text-balance text-gray-50">
+            Journeys beyond the obvious
+          </h1>
+          <p class="type-hero-summary mt-5 mb-0 max-w-xl text-gray-200">
             Photographs and field notes from less travelled places, shaped by
             curiosity, wandering, and a preference for the unusual route.
           </p>
@@ -98,37 +100,35 @@ const featuredPostHeroMediaTransitionName = featuredPost
         {
           featuredPost && (
             <aside
-              class="home-hero-latest"
+              class="home-hero-latest group/latest relative isolate flex min-w-0 max-w-md flex-col items-start gap-2 border-t border-white/30 pt-4 text-gray-50 md:gap-2.5 lg:justify-self-end"
               aria-labelledby="home-hero-latest-title"
             >
-              <p class="home-hero-latest-label">Latest story</p>
-              <h2 class="home-hero-latest-title" id="home-hero-latest-title">
+              <p class="type-overline m-0 text-gray-400 transition-all duration-500 ease-out">
+                Latest story
+              </p>
+              <h2
+                class="type-feature-title m-0 whitespace-normal text-gray-50 transition-colors duration-200 group-hover/latest:text-brand-light group-focus-within/latest:text-brand-light"
+                id="home-hero-latest-title"
+              >
                 {featuredPost.title}
               </h2>
               {featuredPost.excerpt && (
-                <p class="home-hero-latest-excerpt">{featuredPost.excerpt}</p>
+                <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-gray-300">
+                  {featuredPost.excerpt}
+                </p>
               )}
               <a
-                class="home-hero-latest-link"
+                class="type-action bubble-arrow-link mt-2"
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
-                <span class="home-hero-latest-link-button">
-                  <span
-                    class="home-hero-latest-link-surface"
-                    aria-hidden="true"
-                  />
-                  <span class="home-hero-latest-link-text">Read article</span>
-                  <span
-                    class="home-hero-latest-link-icon-wrap"
-                    aria-hidden="true"
-                  >
-                    <Icon
-                      name="mdi:arrow-top-right"
-                      class="home-hero-latest-link-icon"
-                    />
-                  </span>
-                </span>
+                <span class="bubble-arrow-link__surface" aria-hidden="true" />
+                Read article
+                <Icon
+                  name="mdi:arrow-top-right"
+                  class="bubble-arrow-link__icon"
+                  aria-hidden="true"
+                />
               </a>
             </aside>
           )
@@ -139,7 +139,7 @@ const featuredPostHeroMediaTransitionName = featuredPost
 
   {
     gridPosts.length > 0 && (
-      <section class="home-posts">
+      <section class="pt-16 pb-24 md:pt-20 md:pb-32 lg:pb-40">
         <TeaserGrid>
           {gridPosts.map((post, index) => (
             <ArticleTeaser
@@ -156,13 +156,6 @@ const featuredPostHeroMediaTransitionName = featuredPost
 
 <style>
   .home-hero {
-    --hero-image-aspect-ratio: 2 / 1;
-
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    overflow: hidden;
     background:
       radial-gradient(
         circle at 20% 25%,
@@ -172,26 +165,7 @@ const featuredPostHeroMediaTransitionName = featuredPost
       var(--color-gray-950);
   }
 
-  .home-hero::before {
-    display: block;
-    grid-area: 1 / 1;
-    width: 100%;
-    aspect-ratio: var(--hero-image-aspect-ratio);
-    content: '';
-  }
-
-  .home-hero-media,
-  .home-hero-overlay {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
   .home-hero-media {
-    margin: 0;
-    z-index: -2;
-    overflow: hidden;
     mask-image: linear-gradient(
       180deg,
       rgb(0 0 0) 0%,
@@ -200,8 +174,6 @@ const featuredPostHeroMediaTransitionName = featuredPost
     );
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
-    opacity: 0;
-    transition: opacity 720ms ease;
     -webkit-mask-image: linear-gradient(
       180deg,
       rgb(0 0 0) 0%,
@@ -210,325 +182,5 @@ const featuredPostHeroMediaTransitionName = featuredPost
     );
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
-  }
-
-  .home-hero-media[data-image-loaded='true'] {
-    opacity: 0.8;
-  }
-
-  .home-hero-image {
-    width: 100%;
-    height: 100%;
-    filter: brightness(0.56);
-    object-fit: cover;
-  }
-
-  .home-hero-overlay {
-    z-index: -1;
-    background: rgb(3 7 18 / 0.18);
-  }
-
-  .home-hero-inner {
-    position: relative;
-    grid-area: 1 / 1;
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 3.5rem;
-    padding-block: 6rem 2.5rem;
-  }
-
-  .home-hero-brand {
-    display: flex;
-    width: fit-content;
-    flex-direction: column;
-    gap: 0.65rem;
-  }
-
-  .home-hero-logo {
-    color: var(--color-gray-50);
-    font-size: 3.9rem;
-    opacity: 0.96;
-  }
-
-  .home-hero-wordmark {
-    color: var(--color-gray-50);
-    font-size: 2.45rem;
-    opacity: 0.96;
-  }
-
-  .home-hero-main {
-    display: grid;
-    min-width: 0;
-    gap: 2.5rem;
-  }
-
-  .home-hero-content {
-    min-width: 0;
-    max-width: 44rem;
-  }
-
-  .home-hero-title {
-    margin: 0;
-    color: var(--color-gray-50);
-    font-size: clamp(2.75rem, 6vw, 4.75rem);
-    font-weight: 800;
-    line-height: 0.98;
-    letter-spacing: 0;
-  }
-
-  .home-hero-summary {
-    max-width: 34rem;
-    margin-block: 1.15rem 0;
-    color: var(--color-gray-200);
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .home-hero-latest {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    min-width: 0;
-    max-width: 25rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.65rem;
-    border-top: 1px solid rgb(255 255 255 / 0.28);
-    padding-block-start: 1.1rem;
-    color: var(--color-gray-50);
-  }
-
-  .home-hero-latest-label {
-    margin: 0;
-    color: var(--color-gray-400);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    line-height: 1.2;
-    text-transform: uppercase;
-    transition:
-      color 220ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .home-hero-latest-title {
-    margin: 0;
-    color: var(--color-gray-50);
-    font-size: 1.25rem;
-    font-weight: 750;
-    line-height: 1.22;
-    transition: color 220ms ease;
-  }
-
-  .home-hero-latest:has(.home-hero-latest-link:hover) .home-hero-latest-title,
-  .home-hero-latest:has(.home-hero-latest-link:focus-visible)
-    .home-hero-latest-title {
-    color: var(--color-brand-light);
-  }
-
-  .home-hero-latest-excerpt {
-    display: -webkit-box;
-    margin: 0;
-    overflow: hidden;
-    color: var(--color-gray-300);
-    font-size: 0.9375rem;
-    line-height: 1.55;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .home-hero-latest-link {
-    --home-hero-latest-link-height: 44px;
-    --home-hero-latest-link-main-padding: 18px;
-    --home-hero-latest-link-circle-overlap: 6px;
-    --home-hero-latest-link-circle-offset: calc(
-      var(--home-hero-latest-link-height) -
-        var(--home-hero-latest-link-circle-overlap)
-    );
-    --home-hero-latest-link-circle-rest-translate: 4px;
-    --home-hero-latest-link-circle-hover-translate: calc(
-      var(--home-hero-latest-link-circle-rest-translate) + 18px
-    );
-    --home-hero-latest-link-icon-size: 23px;
-
-    display: inline-flex;
-    margin-block-start: 0.45rem;
-    color: var(--color-gray-50);
-    font-size: 1rem;
-    font-weight: 740;
-    line-height: 1;
-    text-decoration: none;
-  }
-
-  .home-hero-latest-link::before {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    content: '';
-  }
-
-  .home-hero-latest-link:focus-visible {
-    outline: none;
-  }
-
-  .home-hero-latest-link-button {
-    position: relative;
-    isolation: isolate;
-    display: inline-flex;
-    height: var(--home-hero-latest-link-height);
-    align-items: center;
-    padding-inline: var(--home-hero-latest-link-main-padding)
-      calc(
-        var(--home-hero-latest-link-main-padding) +
-          var(--home-hero-latest-link-circle-offset)
-      );
-  }
-
-  .home-hero-latest-link-surface {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    filter: url(#buttonFilter);
-  }
-
-  .home-hero-latest-link-surface::before,
-  .home-hero-latest-link-surface::after {
-    position: absolute;
-    content: '';
-    background: var(--color-brand-medium);
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .home-hero-latest-link-surface::before {
-    inset: 0 var(--home-hero-latest-link-circle-offset) 0 0;
-    border-radius: 999px;
-  }
-
-  .home-hero-latest-link-surface::after {
-    top: 50%;
-    right: 0;
-    width: var(--home-hero-latest-link-height);
-    height: var(--home-hero-latest-link-height);
-    border-radius: 999px;
-    transform: translate(var(--home-hero-latest-link-circle-rest-translate))
-      translateY(-50%);
-  }
-
-  .home-hero-latest-link-text {
-    position: relative;
-    z-index: 1;
-  }
-
-  .home-hero-latest-link-icon-wrap {
-    position: absolute;
-    top: 50%;
-    right: calc(
-      (
-          var(--home-hero-latest-link-height) -
-            var(--home-hero-latest-link-icon-size)
-        ) /
-        2
-    );
-    z-index: 1;
-    display: grid;
-    width: var(--home-hero-latest-link-icon-size);
-    aspect-ratio: 1;
-    place-items: center;
-    transform: translate(var(--home-hero-latest-link-circle-rest-translate))
-      translateY(-50%);
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .home-hero-latest-link-icon-wrap :global(.home-hero-latest-link-icon) {
-    width: 100%;
-    height: 100%;
-    transform: rotate(0);
-    transform-origin: center;
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .home-hero-latest-link:hover .home-hero-latest-link-surface::after,
-  .home-hero-latest-link:focus-visible .home-hero-latest-link-surface::after {
-    transform: translate(var(--home-hero-latest-link-circle-hover-translate))
-      translateY(-50%);
-  }
-
-  .home-hero-latest-link:hover .home-hero-latest-link-icon-wrap,
-  .home-hero-latest-link:focus-visible .home-hero-latest-link-icon-wrap {
-    transform: translate(var(--home-hero-latest-link-circle-hover-translate))
-      translateY(-50%);
-  }
-
-  .home-hero-latest-link:hover
-    .home-hero-latest-link-icon-wrap
-    :global(.home-hero-latest-link-icon),
-  .home-hero-latest-link:focus-visible
-    .home-hero-latest-link-icon-wrap
-    :global(.home-hero-latest-link-icon) {
-    transform: rotate(45deg);
-  }
-
-  .home-posts {
-    padding-block: 5rem clamp(6rem, 10vw, 10rem);
-  }
-
-  @media (width >= 48rem) {
-    .home-hero-summary {
-      font-size: 1.125rem;
-    }
-  }
-
-  @media (width >= 64rem) {
-    .home-hero-inner {
-      padding-block: 8.75rem 2.5rem;
-    }
-
-    .home-hero-main {
-      grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
-      align-items: end;
-      gap: 4rem;
-    }
-
-    .home-hero-logo {
-      font-size: 4.8rem;
-    }
-
-    .home-hero-wordmark {
-      font-size: 3rem;
-    }
-
-    .home-hero-latest {
-      justify-self: end;
-    }
-  }
-
-  @media (width < 48rem) {
-    .home-hero-inner {
-      gap: 2.75rem;
-      padding-block: 5.75rem 2rem;
-    }
-
-    .home-hero-logo {
-      font-size: 4.25rem;
-    }
-
-    .home-hero-wordmark {
-      font-size: 2.55rem;
-    }
-
-    .home-hero-latest {
-      gap: 0.5rem;
-    }
-
-    .home-hero-latest-title {
-      white-space: normal;
-    }
-
-    .home-posts {
-      padding-block-start: 4rem;
-    }
   }
 </style>

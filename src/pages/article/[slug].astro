@@ -150,21 +150,21 @@ const showTableOfContents = tableOfContents.length > 1;
       imageBuilder.image(post.mainImage).width(1600).height(900).url(),
   }}
 >
-  <article class="article-page">
+  <article class="article-page bg-gray-950">
     <header
-      class="article-hero"
+      class="article-hero relative isolate grid grid-cols-[minmax(0,1fr)] overflow-hidden before:col-start-1 before:row-start-1 before:block before:aspect-[2/1] before:w-full before:content-['']"
       data-has-image={heroImageSrc ? 'true' : 'false'}
     >
       {
         heroImageSrc && (
           <figure
-            class="article-hero-media"
+            class="article-hero-media absolute top-0 right-0 left-0 z-[-2] m-0 aspect-[2/1] h-auto w-full overflow-hidden opacity-0 transition-opacity duration-700 data-[image-loaded=true]:opacity-80"
             style={`--article-hero-image-position: ${heroImagePosition};`}
             transition:name={postHeroMediaTransitionName}
             transition:animate="none"
           >
             <img
-              class="article-hero-image"
+              class="h-full w-full object-cover brightness-50 [object-position:var(--article-hero-image-position,50%_50%)]"
               src={heroImageSrc}
               srcset={heroImageSrcSet}
               sizes="100vw"
@@ -182,53 +182,71 @@ const showTableOfContents = tableOfContents.length > 1;
         )
       }
 
-      <div class="article-hero-overlay" aria-hidden="true"></div>
+      <div
+        class="absolute top-0 right-0 left-0 z-[-1] aspect-[2/1] h-auto w-full bg-gray-950/20"
+        aria-hidden="true"
+      >
+      </div>
 
-      <div class="article-hero-inner container max-w-6xl">
-        <div class="article-hero-copy">
+      <div class="container relative col-start-1 row-start-1 flex w-full min-w-0 max-w-6xl items-start pt-24 pb-8 md:pt-24 md:pb-10 lg:pt-36">
+        <div class="w-full min-w-0 max-w-4xl">
           {
             countryNames && (
-              <p class="article-hero-countries" aria-label="Countries">
-                <span class="article-hero-country">
+              <p
+                class="m-0 mb-5 flex w-fit max-w-full md:[filter:url(#buttonFilter)]"
+                aria-label="Countries"
+              >
+                <span class="type-pill inline-flex min-h-8 max-w-full items-center gap-1 rounded-full bg-brand-medium py-1.5 pr-3 pl-2.5 text-gray-50">
                   <Icon
                     name="mdi:map-marker"
-                    class="article-hero-country-icon"
+                    class="size-3.5"
                   />
-                  <span>{countryNames}</span>
+                  <span class="min-w-0">{countryNames}</span>
                 </span>
               </p>
             )
           }
 
-          <h1 class="article-hero-title">
+          <h1 class="type-hero-title m-0 max-w-4xl text-balance text-gray-50">
             {post.title}
           </h1>
 
-          {post?.excerpt && <p class="article-hero-excerpt">{post.excerpt}</p>}
+          {
+            post?.excerpt && (
+              <p class="type-hero-summary mt-5 mb-0 max-w-2xl text-gray-200">
+                {post.excerpt}
+              </p>
+            )
+          }
 
           {
             (post?.publishedAt || hasReadingTime) && (
-              <div class="article-hero-details" aria-label="Article details">
+              <div
+                class="mt-5 flex w-full min-w-0 max-w-full flex-wrap items-center gap-2"
+                aria-label="Article details"
+              >
                 {post?.publishedAt && (
-                  <p class="article-hero-detail">
+                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
                     <Icon
                       name="mdi:calendar-blank-outline"
-                      class="article-hero-detail-icon"
+                      class="box-content size-3.5 flex-none rounded-full bg-brand-medium p-1.5 text-gray-50"
                     />
-                    <span>
+                    <span class="min-w-0">
                       Published on <DateTime date={post.publishedAt} />
                     </span>
                   </p>
                 )}
 
                 {hasReadingTime && (
-                  <p class="article-hero-detail">
+                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
                     <Icon
                       name="mdi:book-open-page-variant-outline"
-                      class="article-hero-detail-icon"
+                      class="box-content size-3.5 flex-none rounded-full bg-brand-medium p-1.5 text-gray-50"
                     />
-                    <span>
-                      Estimated <strong>{post.readingTime} min read</strong>
+                    <span class="min-w-0">
+                      Estimated <strong class="type-meta-emphasis">
+                        {post.readingTime} min read
+                      </strong>
                     </span>
                   </p>
                 )}
@@ -238,8 +256,10 @@ const showTableOfContents = tableOfContents.length > 1;
 
           {
             showTableOfContents && (
-              <nav class="article-hero-toc" aria-label="Table of contents">
-                <p class="article-hero-toc-overline">Table of Contents</p>
+              <nav class="mt-6 max-w-xl" aria-label="Table of contents">
+                <p class="type-overline m-0 mb-3 text-brand-light">
+                  Table of Contents
+                </p>
                 <TableOfContentsList items={tableOfContentsTree} />
               </nav>
             )
@@ -248,7 +268,7 @@ const showTableOfContents = tableOfContents.length > 1;
       </div>
     </header>
 
-    <div class="article-content">
+    <div class="pt-12 pb-4 md:pt-16 lg:pt-20">
       <PortableText value={post.content} />
     </div>
   </article>
@@ -266,13 +286,6 @@ const showTableOfContents = tableOfContents.length > 1;
   }
 
   .article-hero {
-    --hero-image-aspect-ratio: 2 / 1;
-
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    overflow: hidden;
     background:
       radial-gradient(
         circle at 18% 22%,
@@ -282,29 +295,7 @@ const showTableOfContents = tableOfContents.length > 1;
       var(--color-gray-950);
   }
 
-  .article-hero::before {
-    display: block;
-    grid-area: 1 / 1;
-    width: 100%;
-    aspect-ratio: var(--hero-image-aspect-ratio);
-    content: '';
-  }
-
-  .article-hero-media,
-  .article-hero-overlay {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    aspect-ratio: var(--hero-image-aspect-ratio);
-  }
-
   .article-hero-media {
-    z-index: -2;
-    margin: 0;
-    overflow: hidden;
     mask-image: linear-gradient(
       180deg,
       rgb(0 0 0) 0%,
@@ -313,8 +304,6 @@ const showTableOfContents = tableOfContents.length > 1;
     );
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
-    opacity: 0;
-    transition: opacity 720ms ease;
     -webkit-mask-image: linear-gradient(
       180deg,
       rgb(0 0 0) 0%,
@@ -323,175 +312,5 @@ const showTableOfContents = tableOfContents.length > 1;
     );
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
-  }
-
-  .article-hero-media[data-image-loaded='true'] {
-    opacity: 0.8;
-  }
-
-  .article-hero-image {
-    width: 100%;
-    height: 100%;
-    filter: brightness(0.56);
-    object-fit: cover;
-    object-position: var(--article-hero-image-position, 50% 50%);
-  }
-
-  .article-hero-overlay {
-    z-index: -1;
-    background: rgb(3 7 18 / 0.18);
-  }
-
-  .article-hero-inner {
-    position: relative;
-    grid-area: 1 / 1;
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    align-items: flex-start;
-    padding-block: 6rem 2.5rem;
-  }
-
-  .article-hero-copy {
-    width: 100%;
-    min-width: 0;
-    max-width: 58rem;
-  }
-
-  .article-hero-countries {
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 0 1.25rem;
-    filter: url(#buttonFilter);
-  }
-
-  .article-hero-country {
-    display: inline-flex;
-    max-width: 100%;
-    min-height: 1.9rem;
-    align-items: center;
-    gap: 0.28rem;
-    border-radius: 999px;
-    background: var(--color-brand-medium);
-    padding-block: 0.42rem;
-    padding-inline: 0.62rem 0.72rem;
-    color: var(--color-gray-50);
-    font-size: 0.75rem;
-    font-weight: 750;
-    line-height: 1.15;
-  }
-
-  .article-hero-country :global(.article-hero-country-icon) {
-    width: 0.82rem;
-    height: 0.82rem;
-  }
-
-  .article-hero-country span {
-    min-width: 0;
-  }
-
-  .article-hero-title {
-    max-width: 14ch;
-    margin: 0;
-    color: var(--color-gray-50);
-    font-size: clamp(2.75rem, 6vw, 4.75rem);
-    font-weight: 850;
-    line-height: 0.92;
-    letter-spacing: 0;
-  }
-
-  .article-hero-excerpt {
-    max-width: 42rem;
-    margin: 1.35rem 0 0;
-    color: var(--color-gray-200);
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
-    line-height: 1.62;
-  }
-
-  .article-hero-details {
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 1.15rem 0 0;
-  }
-
-  .article-hero-detail {
-    display: inline-flex;
-    max-width: 100%;
-    align-items: center;
-    gap: 0.45rem;
-    margin: 0;
-    border-radius: 999px;
-    background: rgb(3 7 18 / 0.1);
-    padding: 0.2rem 0.85rem 0.2rem 0.2rem;
-    color: var(--color-gray-200);
-    font-size: 0.9375rem;
-    line-height: 1;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-
-  .article-hero-detail :global(.article-hero-detail-icon) {
-    box-sizing: content-box;
-    flex: 0 0 auto;
-    width: 0.85rem;
-    height: 0.85rem;
-    border-radius: 999px;
-    background: var(--color-brand-medium);
-    padding: 0.35rem;
-    color: var(--color-gray-50);
-  }
-
-  .article-hero-detail :global(time),
-  .article-hero-detail strong {
-    font-weight: 700;
-    letter-spacing: 0;
-  }
-
-  .article-hero-detail span {
-    min-width: 0;
-  }
-
-  .article-hero-toc {
-    max-width: 34rem;
-    margin-block-start: 1.5rem;
-  }
-
-  .article-hero-toc-overline {
-    margin: 0 0 0.8rem;
-    color: var(--color-brand-light);
-    font-size: 0.78rem;
-    font-weight: 760;
-    line-height: 1.1;
-    text-transform: uppercase;
-  }
-
-  .article-content {
-    padding-block: clamp(3rem, 7vw, 5rem) 1rem;
-  }
-
-  @media (width >= 64rem) {
-    .article-hero-inner {
-      padding-block: 8.75rem 2.5rem;
-    }
-  }
-
-  @media (width < 48rem) {
-    .article-hero-inner {
-      padding-block: 5.75rem 2rem;
-    }
-
-    .article-hero-title {
-      max-width: 11ch;
-    }
-
-    .article-hero-countries {
-      filter: none;
-    }
   }
 </style>

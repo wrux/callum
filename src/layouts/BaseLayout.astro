@@ -113,41 +113,46 @@ const usesHeroHeader = isHomepage || isArticlePage;
       data-uses-hero-header={usesHeroHeader}
       data-is-stuck="false"
       transition:name="site-header"
-      transition:persist
+      transition:animate="none"
     >
       <div class="container max-w-6xl">
         <div class="site-header-shell">
-          <nav
-            class="site-header-side site-header-side-start"
-            aria-label="Back navigation"
-          >
-            <a
-              href="/"
-              class="site-header-action site-header-action-back"
-              aria-label="Back to homepage"
-              aria-hidden={isHomepage ? 'true' : 'false'}
-              data-header-back-link
-              hidden={isHomepage}
-            >
-              <Icon
-                name="mdi:keyboard-backspace"
-                class="site-header-action-icon"
-              />
-              <span>Back</span>
-            </a>
-          </nav>
+          <div class="site-header-side site-header-side-start">
+            {
+              !isHomepage && (
+                <a
+                  href="/"
+                  class="type-site-action site-header-action site-header-action-back"
+                  aria-label="Back to homepage"
+                  transition:name="site-header-back"
+                  transition:animate="fade"
+                >
+                  <Icon
+                    name="mdi:keyboard-backspace"
+                    class="site-header-action-icon"
+                  />
+                  <span>Back</span>
+                </a>
+              )
+            }
+          </div>
 
-          <a
-            class="site-header-logo-link"
-            href="/"
-            aria-label="Go to the homepage"
-            aria-hidden={isHomepage ? 'true' : 'false'}
-            data-header-logo-link
-            tabindex={isHomepage ? '-1' : undefined}
-          >
-            <span class="site-header-logo-surface" aria-hidden="true"></span>
-            <Logo class="site-header-logo" />
-          </a>
+          {
+            !isHomepage ? (
+              <a
+                class="site-header-logo-link"
+                href="/"
+                aria-label="Go to the homepage"
+                transition:name="site-header-logo"
+                transition:animate="fade"
+              >
+                <span class="site-header-logo-surface" aria-hidden="true" />
+                <Logo class="type-site-logo-mark site-header-logo" />
+              </a>
+            ) : (
+              <span class="site-header-logo-placeholder" aria-hidden="true" />
+            )
+          }
 
           <nav
             class="site-header-side site-header-side-end"
@@ -156,7 +161,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
             <a
               href="https://wrux.com"
               target="_blank"
-              class="site-header-action site-header-action-external"
+              class="type-site-action site-header-action site-header-action-external"
               aria-label="Visit wrux.com"
               rel="noreferrer"
             >
@@ -170,14 +175,22 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <slot name="header" />
 
-    <main class="site-main flex-1" transition:animate="none">
+    <main
+      class="site-main flex-1"
+      transition:name="site-main"
+      transition:animate="fade"
+    >
       <slot />
     </main>
 
-    <footer class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14">
+    <footer
+      class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14"
+      transition:name="site-footer"
+      transition:animate="fade"
+    >
       <div class="container max-w-6xl">
         <div class="footer-brand">
-          <Logo class="text-[5rem] opacity-90 md:text-[6rem]" />
+          <Logo class="type-footer-logo-mark opacity-90" />
 
           <nav aria-label="External links">
             <ul class="footer-social-list">
@@ -189,8 +202,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   aria-label="View my Instagram profile"
                   rel="noreferrer nofollow"
                 >
-                  <span class="footer-social-link-surface" aria-hidden="true"
-                  ></span>
                   <Icon name="mdi:instagram" class="footer-social-link-icon" />
                 </a>
               </li>
@@ -202,8 +213,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   aria-label="View my GitHub profile"
                   rel="noreferrer nofollow"
                 >
-                  <span class="footer-social-link-surface" aria-hidden="true"
-                  ></span>
                   <Icon name="mdi:github" class="footer-social-link-icon" />
                 </a>
               </li>
@@ -215,8 +224,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   aria-label="View my LinkedIn profile"
                   rel="noreferrer nofollow"
                 >
-                  <span class="footer-social-link-surface" aria-hidden="true"
-                  ></span>
                   <Icon name="mdi:linkedin" class="footer-social-link-icon" />
                 </a>
               </li>
@@ -225,12 +232,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
         </div>
 
         <div class="footer-bottom">
-          <p class="footer-copyright">
+          <p class="type-footer footer-copyright">
             Copyright &copy;{' '}
             <a
               href="https://wrux.com"
               target="_blank"
-              class="link font-medium"
+              class="type-footer-link link"
               aria-label="View my professional profile at wrux.com"
               rel="noreferrer"
             >
@@ -241,7 +248,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
           <a
             href="https://github.com/wrux/callum"
             target="_blank"
-            class="footer-repo-link link font-medium"
+            class="type-footer-link footer-repo-link link"
             rel="noreferrer nofollow"
           >
             <span>source code</span>
@@ -266,47 +273,15 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <script is:inline>
       (() => {
-        const headerInitializedKey = '__callumHeaderSyncInitialized';
+        const chromeInitializedKey = '__callumChromeSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
         const backToTopInitializedKey = '__callumBackToTopInitialized';
 
-        function syncHeaderState() {
+        function syncHeaderScrollState() {
           const header = document.querySelector('.site-header');
-          const backLink = document.querySelector('[data-header-back-link]');
-          const logoLink = document.querySelector('[data-header-logo-link]');
-          const isHomepage = window.location.pathname === '/';
-          const isArticlePage =
-            window.location.pathname.startsWith('/article/');
-          const usesHeroHeader = isHomepage || isArticlePage;
-
-          document.body.dataset.isHomepage = String(isHomepage);
-          document.body.dataset.isArticlePage = String(isArticlePage);
-          document.body.dataset.usesHeroHeader = String(usesHeroHeader);
 
           if (header) {
-            header.dataset.isHomepage = String(isHomepage);
-            header.dataset.isArticlePage = String(isArticlePage);
-            header.dataset.usesHeroHeader = String(usesHeroHeader);
             header.dataset.isStuck = String(window.scrollY > 0);
-          }
-
-          if (backLink) {
-            backLink.hidden = isHomepage;
-            backLink.setAttribute('aria-hidden', String(isHomepage));
-            if (isHomepage) {
-              backLink.setAttribute('tabindex', '-1');
-            } else {
-              backLink.removeAttribute('tabindex');
-            }
-          }
-
-          if (logoLink) {
-            logoLink.setAttribute('aria-hidden', String(isHomepage));
-            if (isHomepage) {
-              logoLink.setAttribute('tabindex', '-1');
-            } else {
-              logoLink.removeAttribute('tabindex');
-            }
           }
         }
 
@@ -354,7 +329,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
         function syncImageLoadStates() {
           document
-            .querySelectorAll('.home-hero-image, .article-hero-image')
+            .querySelectorAll('.home-hero-media img, .article-hero-media img')
             .forEach((image) => {
               if (!(image instanceof HTMLImageElement)) {
                 return;
@@ -435,20 +410,20 @@ const usesHeroHeader = isHomepage || isArticlePage;
           });
         }
 
-        syncHeaderState();
+        syncHeaderScrollState();
         syncBackToTopButton();
         syncImageLoadStates();
 
-        if (!window[headerInitializedKey]) {
-          window[headerInitializedKey] = true;
-          document.addEventListener('astro:page-load', syncHeaderState);
-          document.addEventListener('astro:after-swap', syncHeaderState);
+        if (!window[chromeInitializedKey]) {
+          window[chromeInitializedKey] = true;
+          document.addEventListener('astro:page-load', syncHeaderScrollState);
+          document.addEventListener('astro:after-swap', syncHeaderScrollState);
           document.addEventListener('astro:page-load', syncBackToTopButton);
           document.addEventListener('astro:after-swap', syncBackToTopButton);
           window.addEventListener(
             'scroll',
             () => {
-              syncHeaderState();
+              syncHeaderScrollState();
               syncBackToTopButton();
             },
             { passive: true },
@@ -563,30 +538,23 @@ const usesHeroHeader = isHomepage || isArticlePage;
     justify-content: flex-end;
   }
 
-  .site-header-logo-link {
+  .site-header-logo-link,
+  .site-header-logo-placeholder {
     position: relative;
     isolation: isolate;
     display: grid;
     width: 3.5rem;
     aspect-ratio: 1;
     place-items: center;
+  }
+
+  .site-header-logo-link {
     color: var(--color-gray-50);
     text-decoration: none;
-    opacity: 1;
-    transform: scale(1);
-    transition:
-      opacity 260ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .site-header-logo-link:focus {
     outline: none;
-  }
-
-  .site-header[data-is-homepage='true'] .site-header-logo-link {
-    pointer-events: none;
-    opacity: 0;
-    transform: scale(0.86);
   }
 
   .site-header-logo-surface {
@@ -606,7 +574,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
     color: currentColor;
     position: relative;
     z-index: 1;
-    font-size: 2.55rem;
     transition:
       color 220ms ease,
       transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -626,78 +593,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
   .site-header-logo-link:hover .site-header-logo,
   .site-header-logo-link:focus-visible .site-header-logo {
     transform: scale(0.9);
-  }
-
-  .site-header-action {
-    position: relative;
-    isolation: isolate;
-    display: inline-flex;
-    min-height: 2.5rem;
-    align-items: center;
-    gap: 0.45rem;
-    overflow: hidden;
-    border-radius: 999px;
-    padding-inline: 0.85rem;
-    color: var(--color-gray-200);
-    font-size: 0.875rem;
-    font-weight: 650;
-    line-height: 1;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      color 220ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .site-header-action::before,
-  .site-header-action::after {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    content: '';
-    border-radius: inherit;
-    transition:
-      opacity 260ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .site-header-action::before {
-    background: rgb(255 255 255 / 0.07);
-    transform: scaleX(0.96) scaleY(0.88);
-  }
-
-  .site-header-action::after {
-    background: var(--color-brand-medium);
-    opacity: 0;
-    transform: scale(0.68);
-  }
-
-  .site-header-action:hover,
-  .site-header-action:focus-visible {
-    color: var(--color-gray-50);
-    transform: translateY(-1px);
-  }
-
-  .site-header-action:focus {
-    outline: none;
-  }
-
-  .site-header-action:hover::before,
-  .site-header-action:focus-visible::before {
-    opacity: 0;
-    transform: scale(0.82);
-  }
-
-  .site-header-action:hover::after,
-  .site-header-action:focus-visible::after {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .site-header-action :global(.site-header-action-icon) {
-    flex: 0 0 auto;
-    width: 1rem;
-    height: 1rem;
   }
 
   .back-to-top-button {
@@ -773,17 +668,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
       width: 3.1rem;
     }
 
-    .site-header-logo {
-      font-size: 2.25rem;
-    }
-
-    .site-header-action {
-      min-height: 2.35rem;
-      gap: 0.35rem;
-      padding-inline: 0.7rem;
-      font-size: 0.8125rem;
-    }
-
     .back-to-top-button {
       right: calc(0.85rem + env(safe-area-inset-right));
       bottom: calc(0.85rem + env(safe-area-inset-bottom));
@@ -799,102 +683,9 @@ const usesHeroHeader = isHomepage || isArticlePage;
     gap: 1.4rem;
   }
 
-  .footer-social-list {
-    display: flex;
-    gap: 0.12rem;
-    width: fit-content;
-    filter: url(#buttonFilter);
-  }
-
-  .footer-social-list li {
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .footer-social-list:has(
-      li:nth-child(1) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(n + 2) {
-    transform: translateX(0.7rem);
-  }
-
-  .footer-social-list:has(
-      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(1) {
-    transform: translateX(-0.7rem);
-  }
-
-  .footer-social-list:has(
-      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(3) {
-    transform: translateX(0.7rem);
-  }
-
-  .footer-social-list:has(
-      li:nth-child(3) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(-n + 2) {
-    transform: translateX(-0.7rem);
-  }
-
-  .footer-social-link {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    width: 2.75rem;
-    aspect-ratio: 1;
-    place-items: center;
-    color: var(--color-gray-50);
-    text-decoration: none;
-    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .footer-social-link-surface {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  .footer-social-link-surface::before {
-    position: absolute;
-    inset: 0;
-    content: '';
-    background: var(--color-brand-medium);
-    border-radius: 999px;
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .footer-social-link :global(.footer-social-link-icon) {
-    width: 1.35rem;
-    height: 1.35rem;
-    transition:
-      opacity 240ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .footer-social-link:hover,
-  .footer-social-link:focus-visible {
-    transform: scale(1.03);
-  }
-
-  .footer-social-link:hover .footer-social-link-surface::before,
-  .footer-social-link:focus-visible .footer-social-link-surface::before {
-    transform: scale(1.08);
-  }
-
-  .footer-social-link:hover :global(.footer-social-link-icon),
-  .footer-social-link:focus-visible :global(.footer-social-link-icon) {
-    opacity: 0.95;
-    transform: scale(1.08);
-  }
-
   .footer-copyright {
     margin: 0;
     color: var(--color-gray-500);
-    font-size: 0.8125rem;
-    line-height: 1.6;
     text-align: left;
   }
 
@@ -914,8 +705,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
     gap: 0.3rem;
     flex: none;
     color: var(--color-gray-400);
-    font-size: 0.8125rem;
-    line-height: 1.6;
     text-align: right;
     white-space: nowrap;
   }

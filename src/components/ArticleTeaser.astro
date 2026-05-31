@@ -24,13 +24,13 @@ const loading = lazy ? 'lazy' : 'eager';
 const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
 ---
 
-<article class="article-teaser">
+<article class="article-teaser group relative flex min-w-0 flex-col">
   {
     mainImage && (
-      <figure class="article-teaser-media">
-        <div class="article-teaser-image-frame">
+      <figure class="m-0 overflow-hidden">
+        <div class="relative aspect-video overflow-hidden">
           <SanityPicture
-            class="article-teaser-picture"
+            class="h-full w-full"
             src={mainImage}
             imageUrlBuilder={imageBuilder}
             sizes={sizes}
@@ -38,7 +38,8 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
             sources={[{ options: { quality: 74 } }]}
             img={{
               alt: mainImage.asset.alt || title || '',
-              class: 'article-teaser-image',
+              class:
+                'h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105',
               decoding: 'async',
               fetchpriority: priority ? 'high' : 'auto',
               loading,
@@ -48,253 +49,41 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
       </figure>
     )
   }
-  <div class="article-teaser-content">
+  <div class="flex flex-1 flex-col pt-4 md:pt-5">
     {
       hasReadingTime && (
-        <p class="article-teaser-meta type-text-xs type-text-muted">
+        <p class="type-card-meta type-text-muted mt-0 mb-2">
           {readingTime} min read
         </p>
       )
     }
-    <h2 class="article-teaser-title type-h3">
+    <h2 class="type-h3 mt-0 mb-2 text-left transition-colors duration-300 group-hover:text-brand-light group-focus-within:text-brand-light">
       {title}
     </h2>
-    {excerpt && <p class="article-teaser-summary type-text-sm">{excerpt}</p>}
-    <div class="article-teaser-action">
+    {
+      excerpt && (
+        <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-left text-gray-400">
+          {excerpt}
+        </p>
+      )
+    }
+    <div class="mt-auto pt-5">
       <a
-        class="article-teaser-link"
+        class="type-action article-card-link"
         href={`/article/${slug}`}
         title={`Read article ${title}`}
         aria-label={`Read article ${title}`}
       >
-        <span class="article-teaser-link-button">
-          <span class="article-teaser-link-surface" aria-hidden="true"></span>
-          <span class="article-teaser-link-text">Read article</span>
-          <span class="article-teaser-link-icon-wrap" aria-hidden="true">
-            <Icon name="mdi:arrow-top-right" class="article-teaser-link-icon" />
-          </span>
+        <span class="bubble-arrow-link">
+          <span class="bubble-arrow-link__surface" aria-hidden="true"></span>
+          Read article
+          <Icon
+            name="mdi:arrow-top-right"
+            class="bubble-arrow-link__icon"
+            aria-hidden="true"
+          />
         </span>
       </a>
     </div>
   </div>
 </article>
-
-<style>
-  .article-teaser {
-    position: relative;
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-  }
-
-  .article-teaser-media {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  .article-teaser-image-frame {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-  }
-
-  .article-teaser :global(.article-teaser-picture) {
-    width: 100%;
-    height: 100%;
-  }
-
-  .article-teaser :global(.article-teaser-image) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-teaser:hover :global(.article-teaser-image) {
-    transform: scale(1.045);
-  }
-
-  .article-teaser-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding-block-start: 1rem;
-  }
-
-  .article-teaser-meta {
-    margin-block: 0 0.5rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .article-teaser-title {
-    margin-block: 0 0.5rem;
-    text-align: left;
-    transition: color 250ms ease;
-  }
-
-  .article-teaser:hover .article-teaser-title,
-  .article-teaser:focus-within .article-teaser-title {
-    color: var(--color-brand-light);
-  }
-
-  .article-teaser-summary {
-    display: -webkit-box;
-    margin-block: 0;
-    overflow: hidden;
-    color: var(--color-gray-400);
-    text-align: left;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .article-teaser-action {
-    margin-block-start: auto;
-    padding-block-start: 1.25rem;
-  }
-
-  .article-teaser-link {
-    --article-teaser-link-height: 44px;
-    --article-teaser-link-main-padding: 18px;
-    --article-teaser-link-circle-overlap: 6px;
-    --article-teaser-link-circle-offset: calc(
-      var(--article-teaser-link-height) -
-        var(--article-teaser-link-circle-overlap)
-    );
-    --article-teaser-link-circle-rest-translate: 4px;
-    --article-teaser-link-circle-hover-translate: calc(
-      var(--article-teaser-link-circle-rest-translate) + 20px
-    );
-    --article-teaser-link-icon-size: 23px;
-    --article-teaser-link-colour: var(--color-brand-medium);
-    --article-teaser-link-text-colour: var(--color-gray-50);
-
-    display: inline-flex;
-    color: var(--article-teaser-link-text-colour);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
-    text-decoration: none;
-  }
-
-  .article-teaser-link::before {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    content: '';
-    cursor: pointer;
-  }
-
-  .article-teaser-link:focus-visible {
-    outline: none;
-  }
-
-  .article-teaser-link-button {
-    position: relative;
-    isolation: isolate;
-    z-index: 3;
-    display: inline-flex;
-    height: var(--article-teaser-link-height);
-    align-items: center;
-    padding-inline: var(--article-teaser-link-main-padding)
-      calc(
-        var(--article-teaser-link-main-padding) +
-          var(--article-teaser-link-circle-offset)
-      );
-  }
-
-  .article-teaser-link-surface {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    filter: url(#buttonFilter);
-  }
-
-  .article-teaser-link-surface::before,
-  .article-teaser-link-surface::after {
-    position: absolute;
-    content: '';
-    background: var(--article-teaser-link-colour);
-    transition:
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 240ms ease;
-  }
-
-  .article-teaser-link-surface::before {
-    inset: 0 var(--article-teaser-link-circle-offset) 0 0;
-    border-radius: 999px;
-  }
-
-  .article-teaser-link-surface::after {
-    top: 50%;
-    right: 0;
-    width: var(--article-teaser-link-height);
-    height: var(--article-teaser-link-height);
-    border-radius: 999px;
-    transform: translateX(var(--article-teaser-link-circle-rest-translate))
-      translateY(-50%);
-  }
-
-  .article-teaser-link-text {
-    position: relative;
-    z-index: 1;
-  }
-
-  .article-teaser-link-icon-wrap {
-    position: absolute;
-    top: 50%;
-    right: calc(
-      (
-          var(--article-teaser-link-height) -
-            var(--article-teaser-link-icon-size)
-        ) /
-        2
-    );
-    z-index: 1;
-    display: grid;
-    width: var(--article-teaser-link-icon-size);
-    aspect-ratio: 1;
-    place-items: center;
-    transform: translateX(var(--article-teaser-link-circle-rest-translate))
-      translateY(-50%);
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-teaser-link-icon-wrap :global(.article-teaser-link-icon) {
-    width: 100%;
-    height: 100%;
-    transform: rotate(0deg);
-    transform-origin: center;
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .article-teaser-link:hover .article-teaser-link-surface::after,
-  .article-teaser-link:focus-visible .article-teaser-link-surface::after {
-    transform: translateX(var(--article-teaser-link-circle-hover-translate))
-      translateY(-50%);
-  }
-
-  .article-teaser-link:hover .article-teaser-link-icon-wrap,
-  .article-teaser-link:focus-visible .article-teaser-link-icon-wrap {
-    transform: translateX(var(--article-teaser-link-circle-hover-translate))
-      translateY(-50%);
-  }
-
-  .article-teaser-link:hover
-    .article-teaser-link-icon-wrap
-    :global(.article-teaser-link-icon),
-  .article-teaser-link:focus-visible
-    .article-teaser-link-icon-wrap
-    :global(.article-teaser-link-icon) {
-    transform: rotate(45deg);
-  }
-
-  @media (width >= 48rem) {
-    .article-teaser-content {
-      padding-block-start: 1.25rem;
-    }
-  }
-</style>

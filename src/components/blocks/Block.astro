@@ -36,11 +36,11 @@ const headingAttrs = headingId ? { ...attrs, id: attrs.id ?? headingId } : attrs
       <slot />
     </blockquote>
   ) : styleIs('normal') ? (
-    <p class="type-text-md my-5 first:mt-0 last:mb-0 leading-relaxed" {...attrs}>
+    <p class="type-text-md my-5 first:mt-0 last:mb-0" {...attrs}>
       <slot />
     </p>
   ) : (
-    <p class="type-text-md my-5 first:mt-0 last:mb-0 leading-relaxed" {...props}>
+    <p class="type-text-md my-5 first:mt-0 last:mb-0" {...props}>
       <slot />
     </p>
   )
