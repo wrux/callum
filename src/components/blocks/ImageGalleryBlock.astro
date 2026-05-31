@@ -250,14 +250,22 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       }
       mainSwiperEl.dataset.swiperInitialized = 'true';
 
+      const slides = mainSwiperEl.querySelectorAll('.swiper-slide');
+      const hasMultipleSlides = slides.length > 1;
+      const canLoopMain = slides.length >= 4;
+
       // Initialize thumbnails swiper first (required for Thumbs module)
       let thumbsSwiper: Swiper | null = null;
+      let thumbsLoop = false;
       if (thumbsSwiperEl) {
+        const thumbsSlides = thumbsSwiperEl.querySelectorAll('.swiper-slide');
+        thumbsLoop = thumbsSlides.length > 5;
+
         thumbsSwiper = new Swiper(thumbsSwiperEl, {
           spaceBetween: 12,
           slidesPerView: 3,
-          centeredSlides: true,
-          loop: true,
+          centeredSlides: thumbsLoop,
+          loop: thumbsLoop,
           freeMode: false,
           watchSlidesProgress: true,
           slideToClickedSlide: true,
@@ -270,9 +278,6 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       }
 
       // Initialize main swiper with Thumbs module
-      const slides = mainSwiperEl.querySelectorAll('.swiper-slide');
-      const hasMultipleSlides = slides.length > 1;
-
       const modules = [];
       if (thumbsSwiper) modules.push(Thumbs);
       if (hasMultipleSlides) modules.push(Navigation);
@@ -281,8 +286,9 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
         modules: modules,
         spaceBetween: 16,
         autoHeight: true,
-        loop: true,
-        loopAdditionalSlides: 2,
+        loop: canLoopMain,
+        loopAdditionalSlides: canLoopMain ? 2 : 0,
+        rewind: hasMultipleSlides && !canLoopMain,
         navigation: hasMultipleSlides
           ? {
               nextEl: `.gallery-nav-next-${galleryId}`,
@@ -299,8 +305,12 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       // Ensure thumbnails center the active slide when main swiper changes
       if (thumbsSwiper && mainSwiper) {
         mainSwiper.on('slideChange', () => {
-          const realIndex = mainSwiper.realIndex;
-          thumbsSwiper.slideToLoop(realIndex);
+          const realIndex = mainSwiper.realIndex ?? mainSwiper.activeIndex;
+          if (thumbsLoop) {
+            thumbsSwiper.slideToLoop(realIndex);
+          } else {
+            thumbsSwiper.slideTo(realIndex);
+          }
         });
       }
     });
