@@ -251,10 +251,24 @@ const usesHeroHeader = isHomepage || isArticlePage;
       </div>
     </footer>
 
+    <button
+      type="button"
+      class="back-to-top-button"
+      aria-label="Back to top"
+      aria-hidden="true"
+      data-back-to-top-button
+      data-is-visible="false"
+      disabled
+      tabindex="-1"
+    >
+      <Icon name="mdi:arrow-up" class="back-to-top-button-icon" />
+    </button>
+
     <script is:inline>
       (() => {
         const headerInitializedKey = '__callumHeaderSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
+        const backToTopInitializedKey = '__callumBackToTopInitialized';
 
         function syncHeaderState() {
           const header = document.querySelector('.site-header');
@@ -394,14 +408,54 @@ const usesHeroHeader = isHomepage || isArticlePage;
             });
         }
 
+        function syncBackToTopButton() {
+          const button = document.querySelector('[data-back-to-top-button]');
+
+          if (!(button instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          const threshold = Math.max(420, window.innerHeight * 0.65);
+          const isVisible = window.scrollY > threshold;
+
+          button.dataset.isVisible = String(isVisible);
+          button.disabled = !isVisible;
+          button.tabIndex = isVisible ? 0 : -1;
+          button.setAttribute('aria-hidden', String(!isVisible));
+        }
+
+        function scrollToPageTop() {
+          const prefersReducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches;
+
+          window.scrollTo({
+            top: 0,
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+          });
+        }
+
         syncHeaderState();
+        syncBackToTopButton();
         syncImageLoadStates();
 
         if (!window[headerInitializedKey]) {
           window[headerInitializedKey] = true;
           document.addEventListener('astro:page-load', syncHeaderState);
           document.addEventListener('astro:after-swap', syncHeaderState);
-          window.addEventListener('scroll', syncHeaderState, { passive: true });
+          document.addEventListener('astro:page-load', syncBackToTopButton);
+          document.addEventListener('astro:after-swap', syncBackToTopButton);
+          window.addEventListener(
+            'scroll',
+            () => {
+              syncHeaderState();
+              syncBackToTopButton();
+            },
+            { passive: true },
+          );
+          window.addEventListener('resize', syncBackToTopButton, {
+            passive: true,
+          });
         }
 
         if (!window[imageInitializedKey]) {
@@ -409,6 +463,19 @@ const usesHeroHeader = isHomepage || isArticlePage;
           document.addEventListener('astro:after-swap', syncImageLoadStates);
           document.addEventListener('astro:page-load', syncImageLoadStates);
           window.addEventListener('pageshow', syncImageLoadStates);
+        }
+
+        if (!window[backToTopInitializedKey]) {
+          window[backToTopInitializedKey] = true;
+          document.addEventListener('click', (event) => {
+            const trigger = event.target?.closest?.(
+              '[data-back-to-top-button]',
+            );
+
+            if (trigger) {
+              scrollToPageTop();
+            }
+          });
         }
       })();
     </script>
@@ -633,6 +700,66 @@ const usesHeroHeader = isHomepage || isArticlePage;
     height: 1rem;
   }
 
+  .back-to-top-button {
+    position: fixed;
+    right: calc(1rem + env(safe-area-inset-right));
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    z-index: 60;
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background:
+      linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02)),
+      rgb(3 7 18 / 0.78);
+    box-shadow:
+      0 1.25rem 2.5rem rgb(0 0 0 / 0.3),
+      inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    color: var(--color-gray-50);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.65rem) scale(0.94);
+    transition:
+      background 220ms ease,
+      box-shadow 220ms ease,
+      opacity 220ms ease,
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .back-to-top-button[data-is-visible='true'] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  .back-to-top-button:hover,
+  .back-to-top-button:focus-visible {
+    background: var(--color-brand-medium);
+    box-shadow:
+      0 1.4rem 2.7rem rgb(0 0 0 / 0.34),
+      inset 0 0 0 1px rgb(255 255 255 / 0.18);
+    transform: translateY(-0.12rem) scale(1);
+  }
+
+  .back-to-top-button:focus {
+    outline: none;
+  }
+
+  .back-to-top-button:disabled {
+    cursor: default;
+  }
+
+  .back-to-top-button :global(.back-to-top-button-icon) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
   @media (width < 36rem) {
     .site-main {
       padding-block-start: 4.25rem;
@@ -655,6 +782,13 @@ const usesHeroHeader = isHomepage || isArticlePage;
       gap: 0.35rem;
       padding-inline: 0.7rem;
       font-size: 0.8125rem;
+    }
+
+    .back-to-top-button {
+      right: calc(0.85rem + env(safe-area-inset-right));
+      bottom: calc(0.85rem + env(safe-area-inset-bottom));
+      width: 2.75rem;
+      height: 2.75rem;
     }
   }
 
