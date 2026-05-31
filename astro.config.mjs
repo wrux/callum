@@ -18,6 +18,9 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
   },
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
   image: {
     remotePatterns: [
       {
