@@ -161,6 +161,7 @@ const featuredPostHeroMediaTransitionName = featuredPost
     position: relative;
     isolation: isolate;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     overflow: hidden;
     background:
       radial-gradient(
@@ -182,10 +183,9 @@ const featuredPostHeroMediaTransitionName = featuredPost
   .home-hero-media,
   .home-hero-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
-    aspect-ratio: var(--hero-image-aspect-ratio);
+    height: 100%;
   }
 
   .home-hero-media {
@@ -229,9 +229,11 @@ const featuredPostHeroMediaTransitionName = featuredPost
   }
 
   .home-hero-inner {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
     display: flex;
+    width: 100%;
+    min-width: 0;
     flex-direction: column;
     justify-content: space-between;
     gap: 3.5rem;
@@ -259,10 +261,12 @@ const featuredPostHeroMediaTransitionName = featuredPost
 
   .home-hero-main {
     display: grid;
+    min-width: 0;
     gap: 2.5rem;
   }
 
   .home-hero-content {
+    min-width: 0;
     max-width: 44rem;
   }
 
@@ -287,6 +291,7 @@ const featuredPostHeroMediaTransitionName = featuredPost
     position: relative;
     isolation: isolate;
     display: flex;
+    min-width: 0;
     max-width: 25rem;
     flex-direction: column;
     align-items: flex-start;
