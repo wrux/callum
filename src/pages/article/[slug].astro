@@ -5,6 +5,7 @@ import { sanityClient } from 'sanity:client';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DateTime, PortableText } from '~/components';
+import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
 
 export async function getStaticPaths() {
@@ -60,6 +61,84 @@ const countryNames = post.countries
   ?.map((country) => country.name)
   .filter(Boolean)
   .join(', ');
+
+type PortableTextChild = {
+  text?: string;
+};
+
+type PortableTextHeadingBlock = {
+  _key?: string;
+  _type?: string;
+  children?: PortableTextChild[];
+  style?: string;
+};
+
+type ArticleContentBlock = {
+  _type?: string;
+  content?: PortableTextHeadingBlock[];
+};
+
+type TableOfContentsItem = {
+  children: TableOfContentsItem[];
+  depth: number;
+  href: string;
+  text: string;
+};
+
+const headingLevels = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+const getHeadingDepth = (style: string) => Number(style.replace('h', '')) || 2;
+const getHeadingText = (block: PortableTextHeadingBlock) =>
+  block.children
+    ?.map((child) => child.text)
+    .filter(Boolean)
+    .join('')
+    .trim() || '';
+
+const tableOfContents = ((post.content || []) as ArticleContentBlock[])
+  .flatMap((contentBlock) => contentBlock.content || [])
+  .filter(
+    (block) =>
+      block._type === 'block' &&
+      block._key &&
+      block.style &&
+      headingLevels.has(block.style) &&
+      getHeadingText(block),
+  )
+  .map((block): TableOfContentsItem => ({
+    children: [],
+    depth: getHeadingDepth(block.style as string),
+    href: `#heading-${block._key}`,
+    text: getHeadingText(block),
+  }));
+
+const buildTableOfContentsTree = (headings: TableOfContentsItem[]) => {
+  const tree: TableOfContentsItem[] = [];
+  const stack: TableOfContentsItem[] = [];
+
+  headings.forEach((heading) => {
+    const item = { ...heading, children: [] };
+
+    while (stack.length > 0 && heading.depth <= stack[stack.length - 1].depth) {
+      stack.pop();
+    }
+
+    const parent = stack[stack.length - 1];
+
+    if (parent) {
+      parent.children.push(item);
+    } else {
+      tree.push(item);
+    }
+
+    stack.push(item);
+  });
+
+  return tree;
+};
+
+const tableOfContentsTree = buildTableOfContentsTree(tableOfContents);
+
+const showTableOfContents = tableOfContents.length > 1;
 ---
 
 <BaseLayout
@@ -156,6 +235,15 @@ const countryNames = post.countries
               </div>
             )
           }
+
+          {
+            showTableOfContents && (
+              <nav class="article-hero-toc" aria-label="Table of contents">
+                <p class="article-hero-toc-overline">Table of Contents</p>
+                <TableOfContentsList items={tableOfContentsTree} />
+              </nav>
+            )
+          }
         </div>
       </div>
     </header>
@@ -205,9 +293,12 @@ const countryNames = post.countries
   .article-hero-media,
   .article-hero-overlay {
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: var(--hero-image-aspect-ratio);
   }
 
   .article-hero-media {
@@ -364,6 +455,20 @@ const countryNames = post.countries
 
   .article-hero-detail span {
     min-width: 0;
+  }
+
+  .article-hero-toc {
+    max-width: 34rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .article-hero-toc-overline {
+    margin: 0 0 0.8rem;
+    color: var(--color-brand-light);
+    font-size: 0.78rem;
+    font-weight: 760;
+    line-height: 1.1;
+    text-transform: uppercase;
   }
 
   .article-content {

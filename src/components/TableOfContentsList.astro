@@ -1,0 +1,75 @@
+---
+export type TableOfContentsItem = {
+  children: TableOfContentsItem[];
+  href: string;
+  text: string;
+};
+
+type Props = {
+  isNested?: boolean;
+  items: TableOfContentsItem[];
+};
+
+const { isNested = false, items } = Astro.props;
+---
+
+<ul
+  class:list={[
+    'article-hero-toc-list',
+    isNested && 'article-hero-toc-list--nested',
+  ]}
+>
+  {
+    items.map((item) => (
+      <li class="article-hero-toc-item">
+        <a class="article-hero-toc-link" href={item.href}>
+          {item.text}
+        </a>
+
+        {item.children.length > 0 && (
+          <Astro.self items={item.children} isNested />
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .article-hero-toc-list {
+    display: grid;
+    gap: 0.42rem;
+    margin: 0;
+    padding: 0 0 0 1.1rem;
+    list-style: disc;
+  }
+
+  .article-hero-toc-list--nested {
+    gap: 0.34rem;
+    margin-block-start: 0.42rem;
+    padding-inline-start: 1.15rem;
+  }
+
+  .article-hero-toc-item {
+    margin: 0;
+  }
+
+  .article-hero-toc-item::marker {
+    color: rgb(255 255 255 / 0.42);
+  }
+
+  .article-hero-toc-link {
+    display: inline-block;
+    color: var(--color-gray-200);
+    font-size: 0.9375rem;
+    font-weight: 680;
+    line-height: 1.35;
+    text-decoration: none;
+    text-wrap: balance;
+    transition: color 180ms ease;
+  }
+
+  .article-hero-toc-link:hover,
+  .article-hero-toc-link:focus-visible {
+    color: var(--color-gray-50);
+  }
+</style>
