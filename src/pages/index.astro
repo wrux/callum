@@ -1,10 +1,44 @@
 ---
 import { ArticleTeaser, Logo, TeaserGrid, Wordmark } from '~/components';
 import { Icon } from 'astro-icon/components';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { sanityClient } from 'sanity:client';
 
 const posts = await getLatestPosts();
+const featuredPost = posts[0];
+const gridPosts = featuredPost ? posts.slice(1) : posts;
+const heroImage = featuredPost?.mainImage;
+const heroImageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
+const heroImageHeightForWidth = (width: number) =>
+  Math.round((width * 10) / 16);
+const heroImageSrc =
+  heroImage &&
+  heroImageBuilder
+    .image(heroImage)
+    .width(1600)
+    .height(heroImageHeightForWidth(1600))
+    .quality(78)
+    .url();
+const heroImageSrcSet =
+  heroImage &&
+  heroImageWidths
+    .map((width) => {
+      const url = heroImageBuilder
+        .image(heroImage)
+        .width(width)
+        .height(heroImageHeightForWidth(width))
+        .quality(78)
+        .url();
+
+      return `${url} ${width}w`;
+    })
+    .join(', ');
+const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 ---
 
 <BaseLayout
@@ -12,63 +46,96 @@ const posts = await getLatestPosts();
     title:
       'Exploring the World | callum.co.uk | Personal Travel Adventures Home',
     description:
-      'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknwon places!',
+      'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknown places!',
   }}
 >
-  <div
+  <section
     id="hero-section"
-    class="flex flex-col items-center justify-center px-4 py-12 text-center md:py-16"
+    class="home-hero"
+    data-has-image={heroImageSrc ? 'true' : 'false'}
   >
-    <div class="mb-10 flex flex-col items-center md:mb-12 lg:mb-14">
-      <Logo class="mb-3 text-[4rem] opacity-90 md:text-[5rem] lg:text-[6rem]" />
-      <Wordmark class:list="text-[3rem] md:text-[4rem] lg:text-[5rem]" />
-    </div>
+    {
+      heroImageSrc && (
+        <figure class="home-hero-media">
+          <img
+            class="home-hero-image"
+            src={heroImageSrc}
+            srcset={heroImageSrcSet}
+            sizes="100vw"
+            alt={heroImageAlt}
+            width="1600"
+            height={heroImageHeightForWidth(1600)}
+            decoding="async"
+            fetchpriority="high"
+            loading="eager"
+          />
+        </figure>
+      )
+    }
+    <div class="home-hero-overlay" aria-hidden="true"></div>
 
-    <div class="mb-12 space-y-5 md:space-y-6 lg:space-y-7">
-      <h1 class="type-h1">
-        Journeys beyond the obvious,
-        <span class="lg:block">shaped by curiosity</span>
-      </h1>
-      <p class="type-text-lg mx-auto max-w-2xl text-gray-300">
-        Stories and photographs from journeys to places less traveled, capturing
-        the essence of alternative destinations around the world.
-      </p>
-    </div>
+    <div class="home-hero-inner container max-w-6xl">
+      <div class="home-hero-brand">
+        <Logo class="home-hero-logo" />
+        <Wordmark class="home-hero-wordmark" />
+      </div>
 
-    <div class="hero-glob-panel mx-auto w-full max-w-3xl">
-      <div class="hero-glob-track">
-        <div class="hero-glob-row">
-          <span class="hero-glob hero-glob-small" aria-hidden="true">
-            <span class="hero-glob-surface"></span>
-            <Icon
-              name="mdi:airplane"
-              class="hero-glob-icon hero-glob-icon-plane"
-            />
-          </span>
-          <span class="hero-glob hero-glob-large" aria-hidden="true">
-            <span class="hero-glob-surface"></span>
-            <Icon
-              name="mdi:map-marker"
-              class="hero-glob-icon hero-glob-icon-marker"
-            />
-          </span>
-          <span class="hero-glob hero-glob-small" aria-hidden="true">
-            <span class="hero-glob-surface"></span>
-            <Icon
-              name="mdi:camera"
-              class="hero-glob-icon hero-glob-icon-camera"
-            />
-          </span>
+      <div class="home-hero-main">
+        <div class="home-hero-content">
+          <h1 class="home-hero-title">Journeys beyond the obvious</h1>
+          <p class="home-hero-summary">
+            Photographs and field notes from less travelled places, shaped by
+            curiosity, wandering, and a preference for the unusual route.
+          </p>
         </div>
+
+        {
+          featuredPost && (
+            <aside
+              class="home-hero-latest"
+              aria-labelledby="home-hero-latest-title"
+            >
+              <p class="home-hero-latest-label">Latest story</p>
+              <h2 class="home-hero-latest-title" id="home-hero-latest-title">
+                {featuredPost.title}
+              </h2>
+              {featuredPost.excerpt && (
+                <p class="home-hero-latest-excerpt">{featuredPost.excerpt}</p>
+              )}
+              <a
+                class="home-hero-latest-link"
+                href={`/article/${featuredPost.slug}`}
+                aria-label={`Read article ${featuredPost.title}`}
+              >
+                <span class="home-hero-latest-link-button">
+                  <span
+                    class="home-hero-latest-link-surface"
+                    aria-hidden="true"
+                  />
+                  <span class="home-hero-latest-link-text">Read article</span>
+                  <span
+                    class="home-hero-latest-link-icon-wrap"
+                    aria-hidden="true"
+                  >
+                    <Icon
+                      name="mdi:arrow-top-right"
+                      class="home-hero-latest-link-icon"
+                    />
+                  </span>
+                </span>
+              </a>
+            </aside>
+          )
+        }
       </div>
     </div>
-  </div>
+  </section>
 
   {
-    posts.length > 0 && (
+    gridPosts.length > 0 && (
       <section class="home-posts">
         <TeaserGrid>
-          {posts.map((post, index) => (
+          {gridPosts.map((post, index) => (
             <ArticleTeaser
               {...post}
               lazy={index >= 3 ? index : undefined}
@@ -82,126 +149,382 @@ const posts = await getLatestPosts();
 </BaseLayout>
 
 <style>
-  .hero-glob-panel {
-    background: var(--color-gray-950);
-  }
-
-  .hero-glob-track {
+  .home-hero {
     position: relative;
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-glob-track::before {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline: 0;
-    height: 1px;
-    content: '';
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--color-gray-700),
-      transparent
-    );
-  }
-
-  .hero-glob-row {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    padding-inline: 1.5rem;
-  }
-
-  .hero-glob {
-    --hero-glob-size: 3rem;
-    --hero-glob-icon-size: 1.25rem;
-
-    position: relative;
+    isolation: isolate;
     display: grid;
-    width: var(--hero-glob-size);
-    aspect-ratio: 1;
-    place-items: center;
-    color: var(--color-gray-50);
-    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    min-height: 40rem;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 20% 25%,
+        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        transparent 24rem
+      ),
+      var(--color-gray-950);
   }
 
-  .hero-glob-small {
-    --hero-glob-size: 2.75rem;
-    --hero-glob-icon-size: 1.15rem;
-  }
-
-  .hero-glob-large {
-    --hero-glob-size: 4rem;
-    --hero-glob-icon-size: 1.75rem;
-  }
-
-  .hero-glob-surface {
+  .home-hero-media,
+  .home-hero-overlay {
     position: absolute;
     inset: 0;
-    z-index: 0;
+  }
+
+  .home-hero-media {
+    margin: 0;
+    z-index: -2;
+  }
+
+  .home-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.72;
+  }
+
+  .home-hero-overlay {
+    z-index: -1;
+    background:
+      linear-gradient(
+        90deg,
+        rgb(3 7 18 / 0.92),
+        rgb(3 7 18 / 0.64) 44%,
+        rgb(3 7 18 / 0.16)
+      ),
+      linear-gradient(
+        180deg,
+        rgb(3 7 18 / 0.38),
+        transparent 38%,
+        rgb(3 7 18 / 0.9)
+      );
+  }
+
+  .home-hero-inner {
+    position: relative;
+    display: flex;
+    min-height: inherit;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3.5rem;
+    padding-block: 7.75rem 2.75rem;
+  }
+
+  .home-hero-brand {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .home-hero-logo {
+    color: var(--color-gray-50);
+    font-size: 3.9rem;
+    opacity: 0.96;
+  }
+
+  .home-hero-wordmark {
+    color: var(--color-gray-50);
+    font-size: 2.45rem;
+    opacity: 0.96;
+  }
+
+  .home-hero-main {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .home-hero-content {
+    max-width: 44rem;
+  }
+
+  .home-hero-title {
+    margin: 0;
+    color: var(--color-gray-50);
+    font-size: 3.05rem;
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .home-hero-summary {
+    max-width: 34rem;
+    margin-block: 1.15rem 0;
+    color: var(--color-gray-200);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .home-hero-latest {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    max-width: 25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    border-top: 1px solid rgb(255 255 255 / 0.28);
+    padding-block-start: 1.1rem;
+    color: var(--color-gray-50);
+  }
+
+  .home-hero-latest-label {
+    margin: 0;
+    color: var(--color-gray-400);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    transition:
+      color 220ms ease,
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .home-hero-latest-title {
+    margin: 0;
+    color: var(--color-gray-50);
+    font-size: 1.25rem;
+    font-weight: 750;
+    line-height: 1.22;
+    transition: color 220ms ease;
+  }
+
+  .home-hero-latest:has(.home-hero-latest-link:hover) .home-hero-latest-title,
+  .home-hero-latest:has(.home-hero-latest-link:focus-visible)
+    .home-hero-latest-title {
+    color: var(--color-brand-light);
+  }
+
+  .home-hero-latest-excerpt {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-gray-300);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .home-hero-latest-link {
+    --home-hero-latest-link-height: 44px;
+    --home-hero-latest-link-main-padding: 18px;
+    --home-hero-latest-link-circle-overlap: 6px;
+    --home-hero-latest-link-circle-offset: calc(
+      var(--home-hero-latest-link-height) -
+        var(--home-hero-latest-link-circle-overlap)
+    );
+    --home-hero-latest-link-circle-rest-translate: 4px;
+    --home-hero-latest-link-circle-hover-translate: calc(
+      var(--home-hero-latest-link-circle-rest-translate) + 18px
+    );
+    --home-hero-latest-link-icon-size: 23px;
+
+    display: inline-flex;
+    margin-block-start: 0.45rem;
+    color: var(--color-gray-50);
+    font-size: 1rem;
+    font-weight: 740;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .home-hero-latest-link::before {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    content: '';
+  }
+
+  .home-hero-latest-link:focus-visible {
+    outline: none;
+  }
+
+  .home-hero-latest-link-button {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    height: var(--home-hero-latest-link-height);
+    align-items: center;
+    padding-inline: var(--home-hero-latest-link-main-padding)
+      calc(
+        var(--home-hero-latest-link-main-padding) +
+          var(--home-hero-latest-link-circle-offset)
+      );
+  }
+
+  .home-hero-latest-link-surface {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     pointer-events: none;
     filter: url(#buttonFilter);
   }
 
-  .hero-glob-surface::before,
-  .hero-glob-surface::after {
+  .home-hero-latest-link-surface::before,
+  .home-hero-latest-link-surface::after {
     position: absolute;
     content: '';
     background: var(--color-brand-medium);
-    border-radius: 999px;
     transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hero-glob-surface::before {
-    inset: 0;
+  .home-hero-latest-link-surface::before {
+    inset: 0 var(--home-hero-latest-link-circle-offset) 0 0;
+    border-radius: 999px;
   }
 
-  .hero-glob-surface::after {
-    inset-block-start: 0.12rem;
-    inset-inline-end: -0.22rem;
-    width: 42%;
-    aspect-ratio: 1;
+  .home-hero-latest-link-surface::after {
+    top: 50%;
+    right: 0;
+    width: var(--home-hero-latest-link-height);
+    height: var(--home-hero-latest-link-height);
+    border-radius: 999px;
+    transform: translate(var(--home-hero-latest-link-circle-rest-translate))
+      translateY(-50%);
   }
 
-  .hero-glob :global(.hero-glob-icon) {
+  .home-hero-latest-link-text {
     position: relative;
     z-index: 1;
-    width: var(--hero-glob-icon-size);
-    height: var(--hero-glob-icon-size);
+  }
+
+  .home-hero-latest-link-icon-wrap {
+    position: absolute;
+    top: 50%;
+    right: calc(
+      (
+          var(--home-hero-latest-link-height) -
+            var(--home-hero-latest-link-icon-size)
+        ) /
+        2
+    );
+    z-index: 1;
+    display: grid;
+    width: var(--home-hero-latest-link-icon-size);
+    aspect-ratio: 1;
+    place-items: center;
+    transform: translate(var(--home-hero-latest-link-circle-rest-translate))
+      translateY(-50%);
     transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hero-glob :global(.hero-glob-icon-plane),
-  .hero-glob :global(.hero-glob-icon-camera) {
-    transform: rotate(-15deg);
+  .home-hero-latest-link-icon-wrap :global(.home-hero-latest-link-icon) {
+    width: 100%;
+    height: 100%;
+    transform: rotate(0);
+    transform-origin: center;
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hero-glob:hover {
-    transform: translateY(-3px);
+  .home-hero-latest-link:hover .home-hero-latest-link-surface::after,
+  .home-hero-latest-link:focus-visible .home-hero-latest-link-surface::after {
+    transform: translate(var(--home-hero-latest-link-circle-hover-translate))
+      translateY(-50%);
   }
 
-  .hero-glob:hover .hero-glob-surface::after {
-    transform: translate(4px, -3px);
+  .home-hero-latest-link:hover .home-hero-latest-link-icon-wrap,
+  .home-hero-latest-link:focus-visible .home-hero-latest-link-icon-wrap {
+    transform: translate(var(--home-hero-latest-link-circle-hover-translate))
+      translateY(-50%);
   }
 
-  .hero-glob:hover :global(.hero-glob-icon-plane),
-  .hero-glob:hover :global(.hero-glob-icon-camera) {
-    transform: translateX(2px) rotate(-28deg);
-  }
-
-  .hero-glob:hover :global(.hero-glob-icon-marker) {
-    transform: translateY(-2px) scale(1.08);
+  .home-hero-latest-link:hover
+    .home-hero-latest-link-icon-wrap
+    :global(.home-hero-latest-link-icon),
+  .home-hero-latest-link:focus-visible
+    .home-hero-latest-link-icon-wrap
+    :global(.home-hero-latest-link-icon) {
+    transform: rotate(45deg);
   }
 
   .home-posts {
-    padding-block-end: clamp(6rem, 10vw, 10rem);
+    padding-block: 5rem clamp(6rem, 10vw, 10rem);
   }
 
   @media (width >= 48rem) {
-    .hero-glob-row {
-      gap: 1.5rem;
+    .home-hero {
+      min-height: 42rem;
+    }
+
+    .home-hero-title {
+      font-size: 4rem;
+    }
+
+    .home-hero-summary {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .home-hero {
+      min-height: 45rem;
+    }
+
+    .home-hero-inner {
+      padding-block: 8.5rem 3.25rem;
+    }
+
+    .home-hero-main {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+      align-items: end;
+      gap: 4rem;
+    }
+
+    .home-hero-logo {
+      font-size: 4.8rem;
+    }
+
+    .home-hero-wordmark {
+      font-size: 3rem;
+    }
+
+    .home-hero-title {
+      font-size: 4.75rem;
+    }
+
+    .home-hero-latest {
+      justify-self: end;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .home-hero-title {
+      font-size: 5.25rem;
+    }
+  }
+
+  @media (width < 48rem) {
+    .home-hero {
+      min-height: 40rem;
+    }
+
+    .home-hero-inner {
+      gap: 2.75rem;
+      padding-block: 6.5rem 2rem;
+    }
+
+    .home-hero-logo {
+      font-size: 4.25rem;
+    }
+
+    .home-hero-wordmark {
+      font-size: 2.55rem;
+    }
+
+    .home-hero-title {
+      font-size: 2.65rem;
+    }
+
+    .home-hero-latest {
+      gap: 0.5rem;
+    }
+
+    .home-hero-latest-title {
+      white-space: normal;
+    }
+
+    .home-posts {
+      padding-block-start: 4rem;
     }
   }
 </style>
