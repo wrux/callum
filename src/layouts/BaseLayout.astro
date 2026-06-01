@@ -109,21 +109,21 @@ const usesHeroHeader = isHomepage || isArticlePage;
             }
           </div>
 
-          {
-            !isHomepage ? (
-              <a
-                class="site-header-logo-link"
-                href="/"
-                aria-label="Go to the homepage"
-                transition:name="site-header-logo"
-              >
-                <span class="site-header-logo-surface" aria-hidden="true" />
-                <Logo class="t-logo-md site-header-logo" />
-              </a>
-            ) : (
-              <span class="site-header-logo-placeholder" aria-hidden="true" />
-            )
-          }
+          <a
+            class:list={[
+              'site-header-logo-link',
+              isHomepage && 'site-header-logo-link-home',
+            ]}
+            href="/"
+            aria-label="Go to the homepage"
+            aria-hidden={isHomepage ? 'true' : undefined}
+            tabindex={isHomepage ? '-1' : undefined}
+            data-homepage-header-logo={isHomepage ? 'true' : undefined}
+            transition:name="site-header-logo"
+          >
+            <span class="site-header-logo-surface" aria-hidden="true"></span>
+            <Logo class="t-logo-md site-header-logo" />
+          </a>
 
           <nav
             class="site-header-side site-header-side-end"
@@ -240,9 +240,20 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
         function syncHeaderScrollState() {
           const header = document.querySelector('.site-header');
+          const homepageLogo = document.querySelector(
+            '[data-homepage-header-logo]',
+          );
+          const isStuck = window.scrollY > 0;
+          const showHomepageLogo = isStuck;
 
           if (header) {
-            header.dataset.isStuck = String(window.scrollY > 0);
+            header.dataset.isStuck = String(isStuck);
+            header.dataset.showHomepageLogo = String(showHomepageLogo);
+          }
+
+          if (homepageLogo instanceof HTMLAnchorElement) {
+            homepageLogo.tabIndex = showHomepageLogo ? 0 : -1;
+            homepageLogo.setAttribute('aria-hidden', String(!showHomepageLogo));
           }
         }
 
@@ -498,14 +509,16 @@ const usesHeroHeader = isHomepage || isArticlePage;
     justify-content: flex-end;
   }
 
-  .site-header-logo-link,
-  .site-header-logo-placeholder {
+  .site-header-logo-link {
     position: relative;
     isolation: isolate;
     display: grid;
     width: 3.5rem;
     aspect-ratio: 1;
     place-items: center;
+    transition:
+      opacity 320ms ease,
+      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .site-header-logo-link {
@@ -515,6 +528,19 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
   .site-header-logo-link:focus {
     outline: none;
+  }
+
+  .site-header-logo-link-home {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.25rem) scale(0.96);
+  }
+
+  .site-header[data-is-homepage='true'][data-show-homepage-logo='true']
+    .site-header-logo-link-home {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
   }
 
   .site-header-logo-surface {
