@@ -1,7 +1,10 @@
 ---
-import { ArticleTeaser, Logo, TeaserGrid, Wordmark } from '~/components';
 import { Icon } from 'astro-icon/components';
 import { createImageUrlBuilder } from '@sanity/image-url';
+import ArticleTeaser from '~/components/ArticleTeaser.astro';
+import Logo from '~/components/Logo.astro';
+import TeaserGrid from '~/components/TeaserGrid.astro';
+import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { sanityClient } from 'sanity:client';
@@ -53,18 +56,18 @@ const featuredPostHeroMediaTransitionName = featuredPost
 >
   <section
     id="hero-section"
-    class="home-hero relative isolate grid grid-cols-[minmax(0,1fr)] overflow-hidden before:col-start-1 before:row-start-1 before:block before:aspect-[2/1] before:w-full before:content-['']"
+    class="home-hero media-hero"
     data-has-image={heroImageSrc ? 'true' : 'false'}
   >
     {
       heroImageSrc && (
         <figure
-          class="home-hero-media absolute inset-0 z-[-2] m-0 h-full w-full overflow-hidden opacity-0 transition-opacity duration-700 data-[image-loaded=true]:opacity-80"
+          class="home-hero-media media-hero-asset media-hero-asset-home"
           transition:name={featuredPostHeroMediaTransitionName}
           transition:animate="none"
         >
           <img
-            class="h-full w-full object-cover brightness-50"
+            class="media-hero-image"
             src={heroImageSrc}
             srcset={heroImageSrcSet}
             sizes="100vw"
@@ -78,16 +81,17 @@ const featuredPostHeroMediaTransitionName = featuredPost
         </figure>
       )
     }
-    <div class="absolute inset-0 z-[-1] h-full w-full bg-gray-950/20" aria-hidden="true"></div>
+    <div class="media-hero-scrim media-hero-scrim-home" aria-hidden="true">
+    </div>
 
-    <div class="container relative col-start-1 row-start-1 flex w-full min-w-0 max-w-6xl flex-col justify-between gap-11 pt-24 pb-8 md:gap-14 md:pt-24 md:pb-10 lg:pt-36">
+    <div class="home-hero-content container">
       <div class="flex w-fit flex-col gap-2.5">
         <Logo class="type-home-logo-mark text-gray-50 opacity-95" />
         <Wordmark class="type-home-wordmark text-gray-50 opacity-95" />
       </div>
 
-      <div class="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:items-end lg:gap-16">
-        <div class="min-w-0 max-w-3xl">
+      <div class="home-hero-grid">
+        <div class="max-w-3xl min-w-0">
           <h1 class="type-hero-title m-0 text-balance text-gray-50">
             Journeys beyond the obvious
           </h1>
@@ -100,14 +104,14 @@ const featuredPostHeroMediaTransitionName = featuredPost
         {
           featuredPost && (
             <aside
-              class="home-hero-latest group/latest relative isolate flex min-w-0 max-w-md flex-col items-start gap-2 border-t border-white/30 pt-4 text-gray-50 md:gap-2.5 lg:justify-self-end"
+              class="home-hero-latest"
               aria-labelledby="home-hero-latest-title"
             >
               <p class="type-overline m-0 text-gray-400 transition-all duration-500 ease-out">
                 Latest story
               </p>
               <h2
-                class="type-feature-title m-0 whitespace-normal text-gray-50 transition-colors duration-200 group-hover/latest:text-brand-light group-focus-within/latest:text-brand-light"
+                class="type-feature-title home-hero-latest-title"
                 id="home-hero-latest-title"
               >
                 {featuredPost.title}

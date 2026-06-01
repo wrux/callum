@@ -4,7 +4,8 @@ import { createImageUrlBuilder } from '@sanity/image-url';
 import { sanityClient } from 'sanity:client';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { DateTime, PortableText } from '~/components';
+import DateTime from '~/components/DateTime.astro';
+import PortableText from '~/components/PortableText.astro';
 import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
 
@@ -104,12 +105,14 @@ const tableOfContents = ((post.content || []) as ArticleContentBlock[])
       headingLevels.has(block.style) &&
       getHeadingText(block),
   )
-  .map((block): TableOfContentsItem => ({
-    children: [],
-    depth: getHeadingDepth(block.style as string),
-    href: `#heading-${block._key}`,
-    text: getHeadingText(block),
-  }));
+  .map(
+    (block): TableOfContentsItem => ({
+      children: [],
+      depth: getHeadingDepth(block.style as string),
+      href: `#heading-${block._key}`,
+      text: getHeadingText(block),
+    }),
+  );
 
 const buildTableOfContentsTree = (headings: TableOfContentsItem[]) => {
   const tree: TableOfContentsItem[] = [];
@@ -152,19 +155,19 @@ const showTableOfContents = tableOfContents.length > 1;
 >
   <article class="article-page bg-gray-950">
     <header
-      class="article-hero relative isolate grid grid-cols-[minmax(0,1fr)] overflow-hidden before:col-start-1 before:row-start-1 before:block before:aspect-[2/1] before:w-full before:content-['']"
+      class="article-hero media-hero"
       data-has-image={heroImageSrc ? 'true' : 'false'}
     >
       {
         heroImageSrc && (
           <figure
-            class="article-hero-media absolute top-0 right-0 left-0 z-[-2] m-0 aspect-[2/1] h-auto w-full overflow-hidden opacity-0 transition-opacity duration-700 data-[image-loaded=true]:opacity-80"
+            class="article-hero-media media-hero-asset media-hero-asset-article"
             style={`--article-hero-image-position: ${heroImagePosition};`}
             transition:name={postHeroMediaTransitionName}
             transition:animate="none"
           >
             <img
-              class="h-full w-full object-cover brightness-50 [object-position:var(--article-hero-image-position,50%_50%)]"
+              class="media-hero-image media-hero-image-article"
               src={heroImageSrc}
               srcset={heroImageSrcSet}
               sizes="100vw"
@@ -182,25 +185,18 @@ const showTableOfContents = tableOfContents.length > 1;
         )
       }
 
-      <div
-        class="absolute top-0 right-0 left-0 z-[-1] aspect-[2/1] h-auto w-full bg-gray-950/20"
-        aria-hidden="true"
-      >
-      </div>
+      <div class="media-hero-scrim" aria-hidden="true"></div>
 
-      <div class="container relative col-start-1 row-start-1 flex w-full min-w-0 max-w-6xl items-start pt-24 pb-8 md:pt-24 md:pb-10 lg:pt-36">
-        <div class="w-full min-w-0 max-w-4xl">
+      <div class="article-hero-content container">
+        <div class="w-full max-w-4xl min-w-0">
           {
             countryNames && (
               <p
-                class="m-0 mb-5 flex w-fit max-w-full md:[filter:url(#buttonFilter)]"
+                class="goo-filter-md m-0 mb-5 flex w-fit max-w-full"
                 aria-label="Countries"
               >
-                <span class="type-pill inline-flex min-h-8 max-w-full items-center gap-1 rounded-full bg-brand-medium py-1.5 pr-3 pl-2.5 text-gray-50">
-                  <Icon
-                    name="mdi:map-marker"
-                    class="size-3.5"
-                  />
+                <span class="type-pill bg-brand-medium inline-flex min-h-8 max-w-full items-center gap-1 rounded-full py-1.5 pr-3 pl-2.5 text-gray-50">
+                  <Icon name="mdi:map-marker" class="size-3.5" />
                   <span class="min-w-0">{countryNames}</span>
                 </span>
               </p>
@@ -222,14 +218,14 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             (post?.publishedAt || hasReadingTime) && (
               <div
-                class="mt-5 flex w-full min-w-0 max-w-full flex-wrap items-center gap-2"
+                class="mt-5 flex w-full max-w-full min-w-0 flex-wrap items-center gap-2"
                 aria-label="Article details"
               >
                 {post?.publishedAt && (
                   <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
                     <Icon
                       name="mdi:calendar-blank-outline"
-                      class="box-content size-3.5 flex-none rounded-full bg-brand-medium p-1.5 text-gray-50"
+                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
                     />
                     <span class="min-w-0">
                       Published on <DateTime date={post.publishedAt} />
@@ -241,10 +237,11 @@ const showTableOfContents = tableOfContents.length > 1;
                   <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
                     <Icon
                       name="mdi:book-open-page-variant-outline"
-                      class="box-content size-3.5 flex-none rounded-full bg-brand-medium p-1.5 text-gray-50"
+                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
                     />
                     <span class="min-w-0">
-                      Estimated <strong class="type-meta-emphasis">
+                      Estimated{' '}
+                      <strong class="type-meta-emphasis">
                         {post.readingTime} min read
                       </strong>
                     </span>
@@ -257,7 +254,7 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             showTableOfContents && (
               <nav class="mt-6 max-w-xl" aria-label="Table of contents">
-                <p class="type-overline m-0 mb-3 text-brand-light">
+                <p class="type-overline text-brand-light m-0 mb-3">
                   Table of Contents
                 </p>
                 <TableOfContentsList items={tableOfContentsTree} />

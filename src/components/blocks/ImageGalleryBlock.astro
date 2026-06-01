@@ -129,7 +129,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
             <div class="swiper-wrapper">
               {images.map(({ image, caption }) => (
                 <div class="swiper-slide">
-                  <div class="gallery-thumbnail aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-gray-800 opacity-60 transition-all hover:opacity-100">
+                  <div class="gallery-thumbnail">
                     <SanityPicture
                       src={image}
                       imageUrlBuilder={imageBuilder}
@@ -411,10 +411,6 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   .mobile-gallery .swiper-button-prev:hover,
   .mobile-gallery .swiper-button-next:hover {
     background: rgba(0, 0, 0, 0.7);
-  }
-
-  .mobile-gallery .gallery-thumbnail {
-    transition: all 0.3s ease;
   }
 
   .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {

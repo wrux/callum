@@ -15,9 +15,6 @@ export default defineConfig({
     },
   }),
   output: 'static',
-  build: {
-    inlineStylesheets: 'always',
-  },
   prefetch: {
     defaultStrategy: 'hover',
   },

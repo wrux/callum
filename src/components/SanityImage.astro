@@ -10,7 +10,9 @@ export interface Props {
 
 const { className, image, ...props } = Astro.props;
 
-const imageBuilder = createImageUrlBuilder(sanityClient).fit('max').format('webp');
+const imageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('max')
+  .format('webp');
 
 function urlFor(source: ImageWithMeta) {
   return imageBuilder.image(source).url();
@@ -19,10 +21,7 @@ function urlFor(source: ImageWithMeta) {
 
 <img
   alt={image?.alt || ''}
-  class:list={[
-    'max-h-[95vh] object-cover bg-gray-900',
-    className,
-  ]}
+  class:list={['sanity-image-media', className]}
   src={urlFor(image)}
   title={image?.alt}
   width={image.asset.metadata?.dimensions?.width}

@@ -2,7 +2,7 @@
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
-import { Logo } from '~/components';
+import Logo from '~/components/Logo.astro';
 
 import '../styles/link.css';
 import '../styles/global.css';
@@ -125,7 +125,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   class="type-site-action site-header-action site-header-action-back"
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
-                  transition:animate="fade"
+                  transition:animate="none"
                 >
                   <Icon
                     name="mdi:keyboard-backspace"
@@ -144,7 +144,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                 href="/"
                 aria-label="Go to the homepage"
                 transition:name="site-header-logo"
-                transition:animate="fade"
+                transition:animate="none"
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
                 <Logo class="type-site-logo-mark site-header-logo" />
@@ -178,7 +178,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <main
       class="site-main flex-1"
       transition:name="site-main"
-      transition:animate="fade"
+      transition:animate="none"
     >
       <slot />
     </main>
@@ -186,7 +186,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <footer
       class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14"
       transition:name="site-footer"
-      transition:animate="fade"
+      transition:animate="none"
     >
       <div class="container max-w-6xl">
         <div class="footer-brand">
