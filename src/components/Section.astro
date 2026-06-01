@@ -1,6 +1,6 @@
 ---
 type SectionSpacing = 'sm' | 'md' | 'lg' | 'none';
-type SectionWidth = 'default' | 'article' | 'lg' | 'full' | 'mobile-full';
+type SectionWidth = 'default' | 'article';
 
 export type Props = {
   spacing?: SectionSpacing;
@@ -17,10 +17,6 @@ const sectionSpacing: Record<SectionSpacing, string> = {
 const sectionWidth: Record<SectionWidth, string> = {
   default: 'u-container u-container-screen-xl',
   article: 'u-container u-container-6xl',
-  lg: 'u-container u-container-screen-2xl',
-  full: 'u-full u-px-responsive',
-  'mobile-full':
-    'u-full u-container-from-md u-container-screen-2xl u-px-responsive',
 };
 
 const { spacing, width, ...props } = Astro.props;

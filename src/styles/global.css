@@ -49,14 +49,6 @@
     max-width: 96rem;
   }
 
-  .u-container-from-md {
-    @media (width >= 48rem) {
-      width: min(100%, 96rem);
-      margin-inline: auto;
-      padding-inline: clamp(1rem, 6.25vw, 6rem);
-    }
-  }
-
   .u-prose {
     max-width: 65ch;
   }
@@ -151,10 +143,6 @@
 
   .l-section-lg {
     margin-block: clamp(4rem, -1rem + 10.4vw, 8rem);
-  }
-
-  .u-px-responsive {
-    padding-inline: clamp(1rem, 3vw, 2rem);
   }
 }
 
