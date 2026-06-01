@@ -17,6 +17,7 @@ export default defineConfig({
   },
   build: {
     concurrency: 2,
+    inlineStylesheets: 'always',
   },
   vite: {
     build: {

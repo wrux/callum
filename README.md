@@ -21,4 +21,4 @@ All commands are run from the root of the project, from a terminal:
 | `npm run studio:deploy` | Deploys the Studio directly to Sanity             |
 | `npm run astro --help`  | Get help using the Astro CLI                       |
 
-The site does not embed the Studio at `/studio`. Use `npm run dev` to start Astro at `localhost:4322` and Studio at `localhost:3333`. Keeping Astro off `localhost:4321` leaves that port available for the Sanity CLI login callback. Use `npm run studio:deploy` to publish the Studio to Sanity hosting.
+The site does not embed the Studio at `/studio`. Use `npm run dev` to start Astro at `localhost:4322` and Studio at `localhost:3333`. Keeping Astro off `localhost:4321` leaves that port available for the Sanity CLI login callback. Use `npm run studio:deploy` to publish the Studio to Sanity hosting at [callum.sanity.studio](https://callum.sanity.studio/).

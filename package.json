@@ -10,7 +10,7 @@
     "astro": "astro",
     "studio:dev": "sanity dev --host=localhost --port=3333",
     "studio:build": "sanity build",
-    "studio:deploy": "sanity deploy"
+    "studio:deploy": "sanity deploy --url callum.sanity.studio"
   },
   "browserslist": [
     "last 2 Chrome versions",
