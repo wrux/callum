@@ -107,7 +107,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     </div>
 
     <div class="home-hero-content container max-w-6xl">
-      <div class="flex w-fit flex-col gap-2.5">
+      <div class="flex w-fit flex-col gap-2">
         <Logo
           class:list={[
             typeStyle({ variant: 'homeLogoMark' }),
@@ -135,7 +135,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
           <p
             class:list={[
               typeStyle({ variant: 'heroSummary' }),
-              'mt-5 mb-0 max-w-xl text-gray-200',
+              'mt-4 mb-0 max-w-xl text-gray-200',
             ]}
           >
             Photographs and field notes from less travelled places, shaped by
@@ -170,7 +170,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
                 <p
                   class:list={[
                     typeStyle({ variant: 'cardSummary' }),
-                    'm-0 line-clamp-3 overflow-hidden text-gray-300',
+                    'home-hero-latest-summary',
                   ]}
                 >
                   {featuredPost.excerpt}
@@ -233,6 +233,15 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     transition:
       color 500ms cubic-bezier(0, 0, 0.2, 1),
       opacity 500ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .home-hero-latest-summary {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: oklch(87.2% 0.01 258.338);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .home-hero-media {

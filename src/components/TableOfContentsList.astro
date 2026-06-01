@@ -16,10 +16,7 @@ const { isNested = false, items } = Astro.props;
 ---
 
 <ul
-  class:list={[
-    'm-0 grid list-disc gap-2 pl-5',
-    isNested && 'mt-2 gap-1.5 pl-5',
-  ]}
+  class:list={['m-0 grid list-disc gap-2 pl-4', isNested && 'mt-2 gap-2 pl-4']}
 >
   {
     items.map((item) => (

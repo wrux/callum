@@ -191,7 +191,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
       <slot />
     </main>
 
-    <footer class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14">
+    <footer class="site-footer">
       <div class="container max-w-6xl">
         <div class="footer-brand">
           <Logo
@@ -557,18 +557,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
 </html>
 
 <style>
-  @property --site-header-gradient-from {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(3 7 18 / 0.78);
-  }
-
-  @property --site-header-gradient-to {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(3 7 18 / 0.78);
-  }
-
   .site-header {
     --site-header-gradient-from: rgb(3 7 18 / 0.78);
     --site-header-gradient-to: rgb(3 7 18 / 0.78);
@@ -585,8 +573,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     );
     backdrop-filter: blur(18px);
     transition:
-      --site-header-gradient-from 260ms ease,
-      --site-header-gradient-to 260ms ease,
+      background 260ms ease,
       backdrop-filter 220ms ease,
       box-shadow 220ms ease;
   }
@@ -782,6 +769,17 @@ const usesHeroHeader = isHomepage || isArticlePage;
     flex-direction: column;
     align-items: center;
     gap: 1.4rem;
+  }
+
+  .site-footer {
+    margin-top: 2rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid oklch(27.8% 0.033 256.848);
+    background: oklch(13% 0.028 261.692);
+
+    @media (width >= 48rem) {
+      padding-block: 3.5rem;
+    }
   }
 
   .footer-copyright {

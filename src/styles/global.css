@@ -1,4 +1,10 @@
-@import 'tailwindcss';
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* prettier-ignore */
+@source not inline("backdrop-filter blur border contents filter outline transform transition");
 
 @font-face {
   font-family: 'InterVariable';
@@ -51,6 +57,59 @@
 
 @utility grid-cols-dynamic {
   grid-template-columns: repeat(var(--column-count), 1fr);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    --tw-translate-y: 0;
+    --tw-border-style: solid;
+    --tw-outline-style: solid;
+
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    line-height: 1.5;
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  img,
+  picture,
+  svg,
+  video,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    background: none;
+    border: 0;
+  }
+
+  a {
+    color: inherit;
+  }
 }
 
 @layer components {

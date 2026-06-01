@@ -204,7 +204,9 @@ const showTableOfContents = tableOfContents.length > 1;
               />
             </picture>
             {post.mainImage?.alt && (
-              <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
+              <figcaption class="hero-image-caption">
+                {post.mainImage.alt}
+              </figcaption>
             )}
           </figure>
         )
@@ -217,16 +219,16 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             countryNames && (
               <p
-                class="goo-filter-md m-0 mb-5 flex w-fit max-w-full"
+                class="goo-filter-md article-location-wrap"
                 aria-label="Countries"
               >
                 <span
                   class:list={[
                     typeStyle({ variant: 'pill' }),
-                    'bg-brand-medium inline-flex min-h-8 max-w-full items-center gap-1 rounded-full py-1.5 pr-3 pl-2.5 text-gray-50',
+                    'article-location-pill',
                   ]}
                 >
-                  <Icon name="mdi:map-marker" class="size-3.5" />
+                  <Icon name="mdi:map-marker" class="article-location-icon" />
                   <span class="min-w-0">{countryNames}</span>
                 </span>
               </p>
@@ -247,7 +249,7 @@ const showTableOfContents = tableOfContents.length > 1;
               <p
                 class:list={[
                   typeStyle({ variant: 'heroSummary' }),
-                  'mt-5 mb-0 max-w-2xl text-gray-200',
+                  'mt-4 mb-0 max-w-2xl text-gray-200',
                 ]}
               >
                 {post.excerpt}
@@ -258,7 +260,7 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             (post?.publishedAt || hasReadingTime) && (
               <div
-                class="mt-5 flex w-full max-w-full min-w-0 flex-wrap items-center gap-2"
+                class="mt-4 flex w-full max-w-full min-w-0 flex-wrap items-center gap-2"
                 aria-label="Article details"
               >
                 {post?.publishedAt && (
@@ -270,7 +272,7 @@ const showTableOfContents = tableOfContents.length > 1;
                   >
                     <Icon
                       name="mdi:calendar-blank-outline"
-                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
+                      class="article-meta-icon"
                     />
                     <span class="min-w-0">
                       Published on <DateTime date={post.publishedAt} />
@@ -287,7 +289,7 @@ const showTableOfContents = tableOfContents.length > 1;
                   >
                     <Icon
                       name="mdi:book-open-page-variant-outline"
-                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
+                      class="article-meta-icon"
                     />
                     <span class="min-w-0">
                       Estimated{' '}
@@ -347,6 +349,18 @@ const showTableOfContents = tableOfContents.length > 1;
       oklch(13% 0.028 261.692);
   }
 
+  .hero-image-caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
   .article-meta-pill {
     display: inline-flex;
     align-items: center;
@@ -360,6 +374,42 @@ const showTableOfContents = tableOfContents.length > 1;
     background: oklch(13% 0.028 261.692 / 0.1);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+  }
+
+  .article-location-wrap {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 1rem;
+  }
+
+  .article-location-pill {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-height: 2rem;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem 0.375rem 0.625rem;
+    border-radius: 999px;
+    color: oklch(98.5% 0.002 247.839);
+    background: hsl(225 80% 50%);
+  }
+
+  .article-location-icon {
+    flex: 0 0 auto;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .article-meta-icon {
+    box-sizing: content-box;
+    flex: 0 0 auto;
+    width: 0.875rem;
+    height: 0.875rem;
+    padding: 0.375rem;
+    border-radius: 999px;
+    color: oklch(98.5% 0.002 247.839);
+    background: hsl(225 80% 50%);
   }
 
   .article-hero-media {

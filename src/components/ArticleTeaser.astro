@@ -50,7 +50,7 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
       </figure>
     )
   }
-  <div class="flex flex-1 flex-col pt-4 md:pt-5">
+  <div class="flex flex-1 flex-col pt-4">
     {
       hasReadingTime && (
         <p
@@ -76,14 +76,14 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
         <p
           class:list={[
             typeStyle({ variant: 'cardSummary' }),
-            'm-0 line-clamp-3 overflow-hidden text-left text-gray-400',
+            'article-teaser-summary m-0 text-left text-gray-400',
           ]}
         >
           {excerpt}
         </p>
       )
     }
-    <div class="mt-auto pt-5">
+    <div class="mt-auto pt-4">
       <a
         class:list={[typeStyle({ variant: 'action' }), 'article-card-link']}
         href={`/article/${slug}`}
@@ -107,6 +107,13 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
 <style>
   .article-teaser-title {
     transition: color 300ms ease;
+  }
+
+  .article-teaser-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .article-teaser:hover .article-teaser-title,
