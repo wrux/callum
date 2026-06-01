@@ -4,7 +4,6 @@ import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
 import FooterSocialSurface from '~/components/FooterSocialSurface.astro';
 import Logo from '~/components/Logo.astro';
-import { wruxChromeFadeTransition } from '~/utils/viewTransitions';
 
 import '../styles/link.css';
 import '../styles/global.css';
@@ -125,7 +124,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   class="t-site-action site-header-action site-header-action-back"
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
-                  transition:animate={wruxChromeFadeTransition}
                 >
                   <Icon name="mdi:keyboard-backspace" />
                   <span>Back</span>
@@ -141,7 +139,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                 href="/"
                 aria-label="Go to the homepage"
                 transition:name="site-header-logo"
-                transition:animate={wruxChromeFadeTransition}
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
                 <Logo class="t-site-logo-mark site-header-logo" />
@@ -260,7 +257,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
       disabled
       tabindex="-1"
     >
-      <Icon name="mdi:arrow-up" class="back-to-top-button-icon" />
+      <Icon name="mdi:arrow-up" />
     </button>
 
     <script is:inline>
@@ -529,24 +526,13 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
 <style is:global>
   .site-header {
-    --site-header-gradient-from: rgb(3 7 18 / 0.78);
-    --site-header-gradient-to: rgb(3 7 18 / 0.78);
-
     position: fixed;
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 50;
     width: 100%;
-    background: linear-gradient(
-      180deg,
-      var(--site-header-gradient-from),
-      var(--site-header-gradient-to)
-    );
-    backdrop-filter: blur(18px);
-    transition:
-      background 260ms ease,
-      backdrop-filter 220ms ease,
-      box-shadow 220ms ease;
+    background: rgb(3 7 18 / 0.78);
+    transition: background 220ms ease;
   }
 
   .site-body {
@@ -557,19 +543,11 @@ const usesHeroHeader = isHomepage || isArticlePage;
   }
 
   .site-header[data-uses-hero-header='true'] {
-    --site-header-gradient-from: rgb(3 7 18 / 0.78);
-    --site-header-gradient-to: rgb(3 7 18 / 0);
-
-    backdrop-filter: none;
-    box-shadow: none;
+    background: transparent;
   }
 
   .site-header[data-is-stuck='true'] {
-    --site-header-gradient-from: rgb(3 7 18 / 0.78);
-    --site-header-gradient-to: rgb(3 7 18 / 0.78);
-
-    backdrop-filter: blur(18px);
-    box-shadow: 0 1rem 2.5rem rgb(0 0 0 / 0.18);
+    background: rgb(3 7 18 / 0.78);
   }
 
   .site-main {
@@ -663,60 +641,43 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
   .back-to-top-button {
     position: fixed;
-    right: calc(1rem + env(safe-area-inset-right));
-    bottom: calc(1rem + env(safe-area-inset-bottom));
+    right: 1rem;
+    bottom: 1rem;
     z-index: 60;
     display: inline-flex;
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     align-items: center;
     justify-content: center;
-    border: 0;
     border-radius: 999px;
-    background:
-      linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02)),
-      rgb(3 7 18 / 0.78);
-    box-shadow:
-      0 1.25rem 2.5rem rgb(0 0 0 / 0.3),
-      inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    background: rgb(3 7 18 / 0.78);
     color: var(--color-gray-50);
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(0.65rem) scale(0.94);
+    transform: translateY(0.65rem);
     transition:
       background 220ms ease,
-      box-shadow 220ms ease,
       opacity 220ms ease,
-      transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+      transform 220ms ease;
   }
 
   .back-to-top-button[data-is-visible='true'] {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 
-  .back-to-top-button:hover,
-  .back-to-top-button:focus-visible {
+  .back-to-top-button:is(:hover, :focus-visible) {
     background: hsl(225 80% 50%);
-    box-shadow:
-      0 1.4rem 2.7rem rgb(0 0 0 / 0.34),
-      inset 0 0 0 1px rgb(255 255 255 / 0.18);
-    transform: translateY(-0.12rem) scale(1);
+    transform: translateY(-0.12rem);
   }
 
   .back-to-top-button:focus {
     outline: none;
   }
 
-  .back-to-top-button:disabled {
-    cursor: default;
-  }
-
-  .back-to-top-button .back-to-top-button-icon {
+  .back-to-top-button svg {
     width: 1.2rem;
     height: 1.2rem;
   }
@@ -732,13 +693,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     .site-header-logo-link {
       width: 3.1rem;
-    }
-
-    .back-to-top-button {
-      right: calc(0.85rem + env(safe-area-inset-right));
-      bottom: calc(0.85rem + env(safe-area-inset-bottom));
-      width: 2.75rem;
-      height: 2.75rem;
     }
   }
 

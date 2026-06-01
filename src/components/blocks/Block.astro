@@ -100,15 +100,19 @@ const headingAttrs = headingId
     font-style: italic;
   }
 
-  .content-block-heading:first-child,
-  .content-block-copy:first-child,
-  .content-block-quote:first-child {
+  :where(
+    .content-block-heading,
+    .content-block-copy,
+    .content-block-quote
+  ):first-child {
     margin-top: 0;
   }
 
-  .content-block-heading:last-child,
-  .content-block-copy:last-child,
-  .content-block-quote:last-child {
+  :where(
+    .content-block-heading,
+    .content-block-copy,
+    .content-block-quote
+  ):last-child {
     margin-bottom: 0;
   }
 </style>

@@ -246,34 +246,6 @@
 }
 
 @layer components {
-  .t-h1,
-  .t-h2,
-  .t-h3,
-  .t-h4,
-  .t-h5,
-  .t-h6,
-  .t-hero-title,
-  .t-hero-summary,
-  .t-feature-title,
-  .t-overline,
-  .t-card-meta,
-  .t-card-summary,
-  .t-action,
-  .t-pill,
-  .t-meta,
-  .t-toc-link,
-  .t-caption,
-  .t-figure-caption,
-  .t-footer,
-  .t-footer-link,
-  .t-site-action,
-  .t-text-xs,
-  .t-text-sm,
-  .t-text-md,
-  .t-text-lg {
-    font-family: var(--font-sans);
-  }
-
   .t-h1 {
     font-size: clamp(2.25rem, 1.31rem + 4.69vw, 4.5rem);
     line-height: 1.25;
@@ -416,22 +388,18 @@
   }
 
   .t-site-logo-mark {
-    font-family: var(--font-sans);
     font-size: clamp(2.25rem, 1.94rem + 1.56vw, 3rem);
   }
 
   .t-home-logo-mark {
-    font-family: var(--font-sans);
     font-size: clamp(3.75rem, 3.44rem + 1.56vw, 4.5rem);
   }
 
   .t-home-wordmark {
-    font-family: var(--font-sans);
     font-size: clamp(2.25rem, 1.94rem + 1.56vw, 3rem);
   }
 
   .t-footer-logo-mark {
-    font-family: var(--font-sans);
     font-size: clamp(4.5rem, 3.88rem + 3.13vw, 6rem);
   }
 
@@ -919,58 +887,4 @@ body {
 ::-moz-selection {
   background-color: hsl(225, 80%, 50%);
   color: white;
-}
-
-@keyframes wrux-view-fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes wrux-view-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition {
-    background: oklch(13% 0.028 261.692);
-  }
-
-  ::view-transition-group(root),
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-old(root) {
-    opacity: 0;
-  }
-
-  ::view-transition-new(root) {
-    opacity: 1;
-  }
-
-  ::view-transition-image-pair(root),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    mix-blend-mode: normal;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
 }

@@ -31,10 +31,7 @@ const imageSizes = sizes?.[images.length] || sizes[5];
 ---
 
 <Section width="mobile-full" data-block="inline-images">
-  <div
-    class="inline-images-grid"
-    style={`--column-count: ${images.length};`}
-  >
+  <div class="inline-images-grid" style={`--column-count: ${images.length};`}>
     {
       images.map(({ caption, image }) => (
         <figure class="article-image-frame u-relative">
@@ -61,7 +58,7 @@ const imageSizes = sizes?.[images.length] || sizes[5];
   </div>
 </Section>
 
-<style>
+<style is:global>
   .inline-images-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
