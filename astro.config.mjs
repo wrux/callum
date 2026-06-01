@@ -1,13 +1,18 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
-import sanity from '@sanity/astro';
-import react from '@astrojs/react';
 import icon from 'astro-icon';
 import { dataset, projectId } from './src/sanity/config';
 
-const shouldEmbedStudio =
-  process.env.ENABLE_SANITY_STUDIO === 'true' || !process.env.VERCEL;
+const studioIntegrations = [
+  (await import('@sanity/astro')).default({
+    projectId,
+    dataset,
+    useCdn: false,
+    studioBasePath: '/studio',
+  }),
+  (await import('@astrojs/react')).default(),
+];
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,17 +38,7 @@ export default defineConfig({
     ],
   },
   integrations: [
-    ...(shouldEmbedStudio
-      ? [
-          sanity({
-            projectId,
-            dataset,
-            useCdn: false,
-            studioBasePath: '/studio',
-          }),
-        ]
-      : []),
-    ...(shouldEmbedStudio ? [react()] : []),
+    ...studioIntegrations,
     sitemap(),
     icon({
       include: {
