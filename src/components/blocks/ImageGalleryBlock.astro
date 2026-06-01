@@ -23,7 +23,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     {
       images.map(({ caption, image }) => (
         <div
-          class="masonry-item relative overflow-hidden rounded-xl border border-gray-800 shadow-lg"
+          class="masonry-item media-frame-bordered relative"
           style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
         >
           <SanityPicture
@@ -62,12 +62,12 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
         {/* Main Swiper */}
         <div
-          class={`swiper gallery-main-${galleryId} relative mb-3 overflow-hidden md:rounded-xl`}
+          class={`swiper gallery-main-${galleryId} media-frame-bordered relative mb-3`}
         >
           <div class="swiper-wrapper">
             {images.map(({ caption, image }, index) => (
               <div class="swiper-slide">
-                <div class="relative overflow-hidden border-0 shadow-lg md:border md:border-gray-800">
+                <div class="relative">
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}

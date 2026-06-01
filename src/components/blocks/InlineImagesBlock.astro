@@ -36,7 +36,7 @@ const imageSizes = sizes?.[images.length] || sizes[5];
   >
     {
       images.map(({ caption, image }) => (
-        <div class="relative overflow-hidden border-0 border-gray-800 shadow-lg md:rounded-xl md:border">
+        <div class="media-frame-bordered relative">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}

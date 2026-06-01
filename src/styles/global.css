@@ -479,9 +479,17 @@
   }
 
   .sanity-image-media {
-    @apply bg-gray-900 object-cover;
+    @apply overflow-hidden rounded-lg bg-gray-900 object-cover;
 
     max-height: 95vh;
+  }
+
+  .media-frame {
+    @apply overflow-hidden rounded-lg;
+  }
+
+  .media-frame-bordered {
+    @apply overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-lg;
   }
 
   .goo-filter-md {
@@ -572,7 +580,7 @@
   }
 
   .gallery-thumbnail {
-    @apply aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-gray-800 opacity-60 transition-all;
+    @apply aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-gray-800 bg-gray-900 opacity-60 transition-all;
 
     transition-duration: 300ms;
     transition-timing-function: ease;
