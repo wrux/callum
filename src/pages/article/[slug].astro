@@ -1,49 +1,13 @@
 ---
 import { imageBuilder } from '~/sanity/image';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { sanityClient } from 'sanity:client';
-import SanityPicture from 'astro-sanity-picture';
+import { sanityClient } from '~/sanity/client';
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { DateTime, PortableText } from '~/components';
+import DateTime from '~/components/DateTime.astro';
+import PortableText from '~/components/PortableText.astro';
+import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
-
-// Create a cropped image builder for main images with fixed 16:9 aspect ratio
-const baseCroppedBuilder = createImageUrlBuilder(sanityClient)
-  .fit('crop')
-  .format('webp');
-
-// Create a proxy wrapper to ensure 16:9 aspect ratio is maintained
-const croppedImageBuilder = new Proxy(baseCroppedBuilder, {
-  get(target, prop) {
-    if (prop === 'image') {
-      return (source: any) => {
-        const builder = target.image(source);
-        // Override width/height methods to maintain 16:9 aspect ratio
-        const originalWidth = builder.width.bind(builder);
-        const originalHeight = builder.height.bind(builder);
-
-        builder.width = function (width: number) {
-          originalWidth(width);
-          // Calculate height to maintain 16:9 aspect ratio
-          const height = Math.round((width * 9) / 16);
-          originalHeight(height);
-          return this;
-        };
-
-        builder.height = function (height: number) {
-          originalHeight(height);
-          // Calculate width to maintain 16:9 aspect ratio
-          const width = Math.round((height * 16) / 9);
-          originalWidth(width);
-          return this;
-        };
-
-        return builder;
-      };
-    }
-    return (target as any)[prop];
-  },
-});
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -56,6 +20,127 @@ export async function getStaticPaths() {
 export type Props = Article;
 
 const post = Astro.props as Article;
+const heroImageHotspot = post.mainImage?.hotspot as
+  | { x?: number; y?: number }
+  | undefined;
+const heroImagePosition =
+  heroImageHotspot?.x != null && heroImageHotspot?.y != null
+    ? `${heroImageHotspot.x * 100}% ${heroImageHotspot.y * 100}%`
+    : '50% 50%';
+const heroImageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
+const heroImageHeightForWidth = (width: number) => Math.round(width / 2);
+const heroImageSrc =
+  post.mainImage &&
+  heroImageBuilder
+    .image(post.mainImage)
+    .width(1600)
+    .height(heroImageHeightForWidth(1600))
+    .quality(78)
+    .url();
+const heroImageSrcSet =
+  post.mainImage &&
+  heroImageWidths
+    .map((width) => {
+      const url = heroImageBuilder
+        .image(post.mainImage)
+        .width(width)
+        .height(heroImageHeightForWidth(width))
+        .quality(78)
+        .url();
+
+      return `${url} ${width}w`;
+    })
+    .join(', ');
+const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
+const hasReadingTime =
+  typeof post.readingTime === 'number' && post.readingTime > 0;
+const countryNames = post.countries
+  ?.map((country) => country.name)
+  .filter(Boolean)
+  .join(', ');
+
+type PortableTextChild = {
+  text?: string;
+};
+
+type PortableTextHeadingBlock = {
+  _key?: string;
+  _type?: string;
+  children?: PortableTextChild[];
+  style?: string;
+};
+
+type ArticleContentBlock = {
+  _type?: string;
+  content?: PortableTextHeadingBlock[];
+};
+
+type TableOfContentsItem = {
+  children: TableOfContentsItem[];
+  depth: number;
+  href: string;
+  text: string;
+};
+
+const headingLevels = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']);
+const getHeadingDepth = (style: string) => Number(style.replace('h', '')) || 2;
+const getHeadingText = (block: PortableTextHeadingBlock) =>
+  block.children
+    ?.map((child) => child.text)
+    .filter(Boolean)
+    .join('')
+    .trim() || '';
+
+const tableOfContents = ((post.content || []) as ArticleContentBlock[])
+  .flatMap((contentBlock) => contentBlock.content || [])
+  .filter(
+    (block) =>
+      block._type === 'block' &&
+      block._key &&
+      block.style &&
+      headingLevels.has(block.style) &&
+      getHeadingText(block),
+  )
+  .map(
+    (block): TableOfContentsItem => ({
+      children: [],
+      depth: getHeadingDepth(block.style as string),
+      href: `#heading-${block._key}`,
+      text: getHeadingText(block),
+    }),
+  );
+
+const buildTableOfContentsTree = (headings: TableOfContentsItem[]) => {
+  const tree: TableOfContentsItem[] = [];
+  const stack: TableOfContentsItem[] = [];
+
+  headings.forEach((heading) => {
+    const item = { ...heading, children: [] };
+
+    while (stack.length > 0 && heading.depth <= stack[stack.length - 1].depth) {
+      stack.pop();
+    }
+
+    const parent = stack[stack.length - 1];
+
+    if (parent) {
+      parent.children.push(item);
+    } else {
+      tree.push(item);
+    }
+
+    stack.push(item);
+  });
+
+  return tree;
+};
+
+const tableOfContentsTree = buildTableOfContentsTree(tableOfContents);
+
+const showTableOfContents = tableOfContents.length > 1;
 ---
 
 <BaseLayout
@@ -67,79 +152,159 @@ const post = Astro.props as Article;
       imageBuilder.image(post.mainImage).width(1600).height(900).url(),
   }}
 >
-  <article class="pt-24 md:pt-0">
-    <section class="mb-12 md:mb-16 lg:mb-20">
-      <div class="container">
-        <div class="mx-auto max-w-4xl py-6 text-center md:py-8 lg:py-12">
+  <article class="article-page bg-gray-950">
+    <header
+      class="article-hero media-hero"
+      data-has-image={heroImageSrc ? 'true' : 'false'}
+    >
+      {
+        heroImageSrc && (
+          <figure
+            class="article-hero-media media-hero-asset media-hero-asset-article"
+            style={`--article-hero-image-position: ${heroImagePosition};`}
+          >
+            <img
+              class="media-hero-image media-hero-image-article"
+              src={heroImageSrc}
+              srcset={heroImageSrcSet}
+              sizes="100vw"
+              alt={heroImageAlt}
+              width="1600"
+              height={heroImageHeightForWidth(1600)}
+              decoding="async"
+              fetchpriority="high"
+              loading="eager"
+            />
+            {post.mainImage?.alt && (
+              <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
+            )}
+          </figure>
+        )
+      }
+
+      <div class="media-hero-scrim" aria-hidden="true"></div>
+
+      <div class="article-hero-content container max-w-6xl">
+        <div class="w-full max-w-4xl min-w-0">
           {
-            (post?.imageCount || post?.readingTime) && (
-              <p class="type-text-sm type-text-muted mb-4 tracking-wide uppercase lg:mb-6">
-                {[
-                  post?.readingTime && `${post.readingTime} min read`,
-                  post?.imageCount &&
-                    `${post.imageCount} image${post.imageCount > 1 ? 's' : ''}`,
-                ]
-                  .filter(Boolean)
-                  .join(' • ')}
+            countryNames && (
+              <p
+                class="goo-filter-md m-0 mb-5 flex w-fit max-w-full"
+                aria-label="Countries"
+              >
+                <span class="type-pill bg-brand-medium inline-flex min-h-8 max-w-full items-center gap-1 rounded-full py-1.5 pr-3 pl-2.5 text-gray-50">
+                  <Icon name="mdi:map-marker" class="size-3.5" />
+                  <span class="min-w-0">{countryNames}</span>
+                </span>
               </p>
             )
           }
-          {
-            post?.countries && (
-              <div class="mb-6 flex flex-wrap justify-center gap-2 lg:mb-8">
-                <span class="sr-only">Countries: </span>
-                {post.countries.map((country) => (
-                  <span class="inline-block rounded-full border border-gray-700 bg-gray-800 px-4 py-1.5 text-sm font-medium text-gray-300">
-                    {country.name}
-                  </span>
-                ))}
-              </div>
-            )
-          }
-          <h1 class="type-h1 mb-6 lg:mb-8">
+
+          <h1 class="type-hero-title m-0 max-w-4xl text-balance text-gray-50">
             {post.title}
           </h1>
+
           {
             post?.excerpt && (
-              <p class="type-text-lg mx-auto mb-8 max-w-3xl text-gray-300 lg:mb-10">
+              <p class="type-hero-summary mt-5 mb-0 max-w-2xl text-gray-200">
                 {post.excerpt}
               </p>
             )
           }
-          <p class="type-text-sm type-text-muted">
-            Published <DateTime date={post.publishedAt} />
-          </p>
+
+          {
+            (post?.publishedAt || hasReadingTime) && (
+              <div
+                class="mt-5 flex w-full max-w-full min-w-0 flex-wrap items-center gap-2"
+                aria-label="Article details"
+              >
+                {post?.publishedAt && (
+                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
+                    <Icon
+                      name="mdi:calendar-blank-outline"
+                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
+                    />
+                    <span class="min-w-0">
+                      Published on <DateTime date={post.publishedAt} />
+                    </span>
+                  </p>
+                )}
+
+                {hasReadingTime && (
+                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
+                    <Icon
+                      name="mdi:book-open-page-variant-outline"
+                      class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
+                    />
+                    <span class="min-w-0">
+                      Estimated{' '}
+                      <strong class="type-meta-emphasis">
+                        {post.readingTime} min read
+                      </strong>
+                    </span>
+                  </p>
+                )}
+              </div>
+            )
+          }
+
+          {
+            showTableOfContents && (
+              <nav class="mt-6 max-w-xl" aria-label="Table of contents">
+                <p class="type-overline text-brand-light m-0 mb-3">
+                  Table of Contents
+                </p>
+                <TableOfContentsList items={tableOfContentsTree} />
+              </nav>
+            )
+          }
         </div>
       </div>
-      <div class="mt-8 w-full md:container md:max-w-screen-2xl lg:mt-12">
-        {
-          post?.mainImage && (
-            <figure class="overflow-hidden border-0 border-gray-800 shadow-2xl md:rounded-2xl md:border">
-              <div class="relative aspect-[16/9] overflow-hidden">
-                <SanityPicture
-                  src={post.mainImage}
-                  imageUrlBuilder={croppedImageBuilder}
-                  sizes="(max-width: 767px) 100vw, (max-width: 1535px) 90vw, 1344px"
-                  widths={[640, 960, 1280, 1600, 1920]}
-                  sources={[{ options: { quality: 76 } }]}
-                  img={{
-                    alt: post.mainImage.asset.alt || post.title || '',
-                    class: 'w-full h-full object-cover',
-                    decoding: 'async',
-                    fetchpriority: 'high',
-                    loading: 'eager',
-                  }}
-                />
-              </div>
-              {post.mainImage?.alt && (
-                <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
-              )}
-            </figure>
-          )
-        }
-      </div>
-    </section>
+    </header>
 
-    <PortableText value={post.content} />
+    <div class="pt-12 pb-4 md:pt-16 lg:pt-20">
+      <PortableText value={post.content} />
+    </div>
   </article>
 </BaseLayout>
+
+<style>
+  .article-page {
+    background:
+      radial-gradient(
+        circle at 88% 14%,
+        color-mix(in srgb, var(--color-brand-medium) 18%, transparent),
+        transparent 21rem
+      ),
+      var(--color-gray-950);
+  }
+
+  .article-hero {
+    background:
+      radial-gradient(
+        circle at 18% 22%,
+        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        transparent 25rem
+      ),
+      var(--color-gray-950);
+  }
+
+  .article-hero-media {
+    mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+  }
+</style>

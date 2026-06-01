@@ -1,16 +1,47 @@
 ---
-import {
-  ArticleTeaser,
-  Logo,
-  Section,
-  TeaserGrid,
-  Wordmark,
-} from '~/components';
 import { Icon } from 'astro-icon/components';
+import { createImageUrlBuilder } from '@sanity/image-url';
+import ArticleTeaser from '~/components/ArticleTeaser.astro';
+import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
+import Logo from '~/components/Logo.astro';
+import TeaserGrid from '~/components/TeaserGrid.astro';
+import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { sanityClient } from '~/sanity/client';
 
 const posts = await getLatestPosts();
+const featuredPost = posts[0];
+const gridPosts = featuredPost ? posts.slice(1) : posts;
+const heroImage = featuredPost?.mainImage;
+const heroImageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
+const heroImageHeightForWidth = (width: number) => Math.round(width / 2);
+const heroImageSrc =
+  heroImage &&
+  heroImageBuilder
+    .image(heroImage)
+    .width(1600)
+    .height(heroImageHeightForWidth(1600))
+    .quality(78)
+    .url();
+const heroImageSrcSet =
+  heroImage &&
+  heroImageWidths
+    .map((width) => {
+      const url = heroImageBuilder
+        .image(heroImage)
+        .width(width)
+        .height(heroImageHeightForWidth(width))
+        .quality(78)
+        .url();
+
+      return `${url} ${width}w`;
+    })
+    .join(', ');
+const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 ---
 
 <BaseLayout
@@ -18,78 +49,136 @@ const posts = await getLatestPosts();
     title:
       'Exploring the World | callum.co.uk | Personal Travel Adventures Home',
     description:
-      'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknwon places!',
+      'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknown places!',
   }}
 >
-  <div
+  <section
     id="hero-section"
-    class="flex flex-col items-center justify-center px-4 py-12 text-center md:py-16"
+    class="home-hero media-hero"
+    data-has-image={heroImageSrc ? 'true' : 'false'}
   >
-    <div class="mb-10 flex flex-col items-center md:mb-12 lg:mb-14">
-      <Logo class="mb-3 text-[4rem] opacity-90 md:text-[5rem] lg:text-[6rem]" />
-      <Wordmark class:list="text-[3rem] md:text-[4rem] lg:text-[5rem]" />
+    {
+      heroImageSrc && (
+        <figure class="home-hero-media media-hero-asset media-hero-asset-home">
+          <img
+            class="media-hero-image"
+            src={heroImageSrc}
+            srcset={heroImageSrcSet}
+            sizes="100vw"
+            alt={heroImageAlt}
+            width="1600"
+            height={heroImageHeightForWidth(1600)}
+            decoding="async"
+            fetchpriority="high"
+            loading="eager"
+          />
+        </figure>
+      )
+    }
+    <div class="media-hero-scrim media-hero-scrim-home" aria-hidden="true">
     </div>
 
-    <div class="mb-12 space-y-5 md:space-y-6 lg:space-y-7">
-      <h1 class="type-h1">
-        Journeys beyond the obvious,
-        <span class="lg:block">shaped by curiosity</span>
-      </h1>
-      <p class="type-text-lg mx-auto max-w-2xl text-gray-300">
-        Stories and photographs from journeys to places less traveled, capturing
-        the essence of alternative destinations around the world.
-      </p>
-    </div>
+    <div class="home-hero-content container max-w-6xl">
+      <div class="flex w-fit flex-col gap-2.5">
+        <Logo class="type-home-logo-mark text-gray-50 opacity-95" />
+        <Wordmark class="type-home-wordmark text-gray-50 opacity-95" />
+      </div>
 
-    <div class="mx-auto w-full max-w-3xl bg-gray-950">
-      <div class="relative flex items-center justify-center">
-        <div class="absolute inset-0 flex items-center">
-          <div
-            class="h-px w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent"
-          >
-          </div>
+      <div class="home-hero-grid">
+        <div class="max-w-3xl min-w-0">
+          <h1 class="type-hero-title m-0 text-balance text-gray-50">
+            Journeys beyond the obvious
+          </h1>
+          <p class="type-hero-summary mt-5 mb-0 max-w-xl text-gray-200">
+            Photographs and field notes from less travelled places, shaped by
+            curiosity, wandering, and a preference for the unusual route.
+          </p>
         </div>
-        <div class="relative flex items-center gap-5 px-6 md:gap-6">
-          <div
-            class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-12 md:w-12"
-          >
-            <Icon
-              name="mdi:airplane"
-              class="h-3 w-3 rotate-[-15deg] text-white transition-transform duration-300 group-hover:rotate-[-25deg] md:h-5 md:w-5"
-            />
-          </div>
-          <div
-            class="group flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-16 md:w-16"
-          >
-            <Icon
-              name="mdi:map-marker"
-              class="h-6 w-6 text-white transition-transform duration-300 group-hover:scale-110 md:h-7 md:w-7"
-            />
-          </div>
-          <div
-            class="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-gray-950 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-md md:h-12 md:w-12"
-          >
-            <Icon
-              name="mdi:camera"
-              class="h-3 w-3 rotate-[-15deg] text-white transition-transform duration-300 group-hover:rotate-[-25deg] md:h-5 md:w-5"
-            />
-          </div>
-        </div>
+
+        {
+          featuredPost && (
+            <aside
+              class="home-hero-latest"
+              aria-labelledby="home-hero-latest-title"
+            >
+              <p class="type-overline m-0 text-gray-400 transition-all duration-500 ease-out">
+                Latest story
+              </p>
+              <h2
+                class="type-feature-title home-hero-latest-title"
+                id="home-hero-latest-title"
+              >
+                {featuredPost.title}
+              </h2>
+              {featuredPost.excerpt && (
+                <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-gray-300">
+                  {featuredPost.excerpt}
+                </p>
+              )}
+              <a
+                class="type-action bubble-arrow-link mt-2"
+                href={`/article/${featuredPost.slug}`}
+                aria-label={`Read article ${featuredPost.title}`}
+              >
+                <BubbleArrowSurface />
+                Read article
+                <Icon
+                  name="mdi:arrow-top-right"
+                  class="bubble-arrow-link__icon"
+                  aria-hidden="true"
+                />
+              </a>
+            </aside>
+          )
+        }
       </div>
     </div>
-  </div>
+  </section>
 
   {
-    posts.length > 0 && (
-      <TeaserGrid>
-        {posts.map((post, index) => (
-          <ArticleTeaser
-            {...post}
-            lazy={index >= 3 ? index : undefined}
-            priority={index === 0}
-          />
-        ))}
-      </TeaserGrid>
+    gridPosts.length > 0 && (
+      <section class="pt-16 pb-24 md:pt-20 md:pb-32 lg:pb-40">
+        <TeaserGrid>
+          {gridPosts.map((post, index) => (
+            <ArticleTeaser
+              {...post}
+              lazy={index >= 3 ? index : undefined}
+              priority={index === 0}
+            />
+          ))}
+        </TeaserGrid>
+      </section>
     )
   }
 </BaseLayout>
+
+<style>
+  .home-hero {
+    background:
+      radial-gradient(
+        circle at 20% 25%,
+        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        transparent 24rem
+      ),
+      var(--color-gray-950);
+  }
+
+  .home-hero-media {
+    mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgb(0 0 0) 0%,
+      rgb(0 0 0) calc(100% - 200px),
+      rgb(0 0 0 / 0) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+  }
+</style>

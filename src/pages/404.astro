@@ -1,5 +1,7 @@
 ---
-import { ArticleTeaser, Section, TeaserGrid } from '~/components';
+import ArticleTeaser from '~/components/ArticleTeaser.astro';
+import Section from '~/components/Section.astro';
+import TeaserGrid from '~/components/TeaserGrid.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 
@@ -15,14 +17,14 @@ const posts = await getLatestPosts(2);
 >
   <Section spacing="md">
     <div class="container">
-      <div class="max-w-2xl text-center mx-auto">
+      <div class="mx-auto max-w-2xl text-center">
         <h1 class="type-h1 mb-6 lg:mb-8">404: Page not found!</h1>
-        <p class="type-text-lg mb-6 lg:mb-8 text-gray-400">
+        <p class="type-text-lg mb-6 text-gray-400 lg:mb-8">
           Oops! It seems you've taken a detour to the unknown. But don't worry,
           getting lost is all part of the adventure.
         </p>
         <p>
-          <a class="link font-medium text-lg" href="/">Go to the home page</a>
+          <a class="type-action link" href="/">Go to the home page</a>
         </p>
       </div>
     </div>

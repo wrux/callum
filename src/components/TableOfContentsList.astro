@@ -1,0 +1,38 @@
+---
+export type TableOfContentsItem = {
+  children: TableOfContentsItem[];
+  href: string;
+  text: string;
+};
+
+type Props = {
+  isNested?: boolean;
+  items: TableOfContentsItem[];
+};
+
+const { isNested = false, items } = Astro.props;
+---
+
+<ul
+  class:list={[
+    'm-0 grid list-disc gap-2 pl-5',
+    isNested && 'mt-2 gap-1.5 pl-5',
+  ]}
+>
+  {
+    items.map((item) => (
+      <li class="m-0 marker:text-white/40">
+        <a
+          class="type-toc-link link link-on-hover text-balance text-gray-200"
+          href={item.href}
+        >
+          {item.text}
+        </a>
+
+        {item.children.length > 0 && (
+          <Astro.self items={item.children} isNested />
+        )}
+      </li>
+    ))
+  }
+</ul>

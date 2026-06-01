@@ -3,6 +3,7 @@ import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 import { Icon } from 'astro-icon/components';
+import ImageCaptionButton from './ImageCaptionButton.astro';
 
 export interface Props {
   node: {
@@ -22,8 +23,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   <div class="masonry-grid hidden md:block">
     {
       images.map(({ caption, image }) => (
-        <div
-          class="masonry-item relative overflow-hidden rounded-xl border border-gray-800 shadow-lg"
+        <figure
+          class="masonry-item article-image-frame relative"
           style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
         >
           <SanityPicture
@@ -44,14 +45,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               loading: 'lazy',
             }}
           />
-          {caption && (
-            <div class="absolute bottom-0 left-0 max-w-[calc(100%-1rem)] p-4">
-              <div class="rounded-lg bg-black/30 px-4 py-3 text-sm leading-5 text-white backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
-                {caption}
-              </div>
-            </div>
-          )}
-        </div>
+          <ImageCaptionButton caption={caption} />
+        </figure>
       ))
     }
   </div>
@@ -61,13 +56,11 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     images.length > 0 && (
       <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
         {/* Main Swiper */}
-        <div
-          class={`swiper gallery-main-${galleryId} relative mb-3 overflow-hidden md:rounded-xl`}
-        >
+        <div class={`swiper gallery-main-${galleryId} relative mb-3`}>
           <div class="swiper-wrapper">
             {images.map(({ caption, image }, index) => (
               <div class="swiper-slide">
-                <div class="relative overflow-hidden border-0 shadow-lg md:border md:border-gray-800">
+                <figure class="article-image-frame relative">
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
@@ -86,15 +79,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                       loading: index === 0 ? 'eager' : 'lazy',
                     }}
                   />
-                  {/* Caption overlay */}
-                  {caption && (
-                    <div class="absolute bottom-0 left-0 max-w-[calc(100%-1rem)] p-4">
-                      <div class="rounded-lg bg-black/30 px-4 py-3 text-sm leading-5 text-white backdrop-blur-[8px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
-                        {caption}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  <ImageCaptionButton caption={caption} />
+                </figure>
               </div>
             ))}
           </div>
@@ -104,18 +90,20 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               <button
                 class:list={[
                   `navigate-prev gallery-nav-prev-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-[8px] transition-all duration-500 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70',
+                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
+                aria-label="Previous image"
               >
                 <Icon name="mdi:chevron-left" size={20} />
               </button>
               <button
                 class:list={[
                   `navigate-next gallery-nav-next-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-[8px] transition-all duration-500 [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:bg-black/70',
+                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
+                aria-label="Next image"
               >
                 <Icon name="mdi:chevron-right" size={20} />
               </button>
@@ -129,7 +117,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
             <div class="swiper-wrapper">
               {images.map(({ image, caption }) => (
                 <div class="swiper-slide">
-                  <div class="gallery-thumbnail aspect-square cursor-pointer overflow-hidden rounded-lg border-2 border-gray-800 opacity-60 transition-all hover:opacity-100">
+                  <div class="gallery-thumbnail">
                     <SanityPicture
                       src={image}
                       imageUrlBuilder={imageBuilder}
@@ -160,15 +148,23 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 </Section>
 
 <script>
-  import Masonry from 'masonry-layout';
-  import Swiper from 'swiper';
-  import { Thumbs, Navigation } from 'swiper/modules';
+  const desktopGalleryMediaQuery = window.matchMedia('(min-width: 768px)');
 
-  function initMasonryGallery() {
+  async function initMasonryGallery() {
+    if (!desktopGalleryMediaQuery.matches) {
+      return;
+    }
+
     // Find this specific gallery grid
     const galleryGrids = document.querySelectorAll(
       '[data-block="image-gallery"] .masonry-grid',
     );
+
+    if (galleryGrids.length === 0) {
+      return;
+    }
+
+    const { default: Masonry } = await import('masonry-layout');
 
     galleryGrids.forEach((gridElement) => {
       const grid = gridElement as HTMLElement;
@@ -228,8 +224,21 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     });
   }
 
-  function initMobileGallery() {
+  async function initMobileGallery() {
+    if (desktopGalleryMediaQuery.matches) {
+      return;
+    }
+
     const mobileGalleries = document.querySelectorAll('.mobile-gallery');
+
+    if (mobileGalleries.length === 0) {
+      return;
+    }
+
+    const [{ default: Swiper }, { Navigation, Thumbs }] = await Promise.all([
+      import('swiper'),
+      import('swiper/modules'),
+    ]);
 
     mobileGalleries.forEach((gallery) => {
       const galleryId = gallery.getAttribute('data-gallery-id');
@@ -255,7 +264,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       const canLoopMain = slides.length >= 4;
 
       // Initialize thumbnails swiper first (required for Thumbs module)
-      let thumbsSwiper: Swiper | null = null;
+      let thumbsSwiper: InstanceType<typeof Swiper> | null = null;
       let thumbsLoop = false;
       if (thumbsSwiperEl) {
         const thumbsSlides = thumbsSwiperEl.querySelectorAll('.swiper-slide');
@@ -317,8 +326,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   }
 
   function init() {
-    initMasonryGallery();
-    initMobileGallery();
+    void initMasonryGallery();
+    void initMobileGallery();
   }
 
   // Initialize when DOM is ready
@@ -330,6 +339,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 
   // Also initialize on view transitions (Astro)
   document.addEventListener('astro:after-swap', init);
+  desktopGalleryMediaQuery.addEventListener('change', init);
 </script>
 
 <style>
@@ -411,10 +421,6 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   .mobile-gallery .swiper-button-prev:hover,
   .mobile-gallery .swiper-button-next:hover {
     background: rgba(0, 0, 0, 0.7);
-  }
-
-  .mobile-gallery .gallery-thumbnail {
-    transition: all 0.3s ease;
   }
 
   .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {

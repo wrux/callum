@@ -1,10 +1,18 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
-import sanity from '@sanity/astro';
-import react from '@astrojs/react';
 import icon from 'astro-icon';
 import { dataset, projectId } from './src/sanity/config';
+
+const studioIntegrations = [
+  (await import('@sanity/astro')).default({
+    projectId,
+    dataset,
+    useCdn: false,
+    studioBasePath: '/studio',
+  }),
+  (await import('@astrojs/react')).default(),
+];
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,11 +23,11 @@ export default defineConfig({
     },
   }),
   output: 'static',
-  build: {
-    inlineStylesheets: 'always',
-  },
   prefetch: {
     defaultStrategy: 'hover',
+  },
+  build: {
+    concurrency: 2,
   },
   image: {
     remotePatterns: [
@@ -30,13 +38,7 @@ export default defineConfig({
     ],
   },
   integrations: [
-    sanity({
-      projectId,
-      dataset,
-      useCdn: false,
-      studioBasePath: '/studio',
-    }),
-    react(),
+    ...studioIntegrations,
     sitemap(),
     icon({
       include: {

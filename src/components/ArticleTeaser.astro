@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
+import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
@@ -11,7 +12,6 @@ export type Props = ArticleTeaser & {
 
 const {
   excerpt,
-  imageCount,
   lazy = false,
   mainImage,
   priority = false,
@@ -22,16 +22,16 @@ const {
 } = Astro.props;
 
 const loading = lazy ? 'lazy' : 'eager';
+const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
 ---
 
-<article
-  class="link-box group flex flex-col overflow-hidden rounded-2xl border border-gray-800/50 bg-gray-900 shadow-md transition-all duration-500 hover:border-gray-700 hover:shadow-2xl"
->
+<article class="article-teaser group relative flex min-w-0 flex-col">
   {
     mainImage && (
-      <figure class="relative w-full overflow-hidden">
-        <div class="relative aspect-[16/9] overflow-hidden">
+      <figure class="m-0 overflow-hidden">
+        <div class="media-frame relative aspect-video">
           <SanityPicture
+            class="h-full w-full"
             src={mainImage}
             imageUrlBuilder={imageBuilder}
             sizes={sizes}
@@ -40,54 +40,52 @@ const loading = lazy ? 'lazy' : 'eager';
             img={{
               alt: mainImage.asset.alt || title || '',
               class:
-                'transition-transform duration-700 ease-out group-hover:scale-110 w-full h-full object-cover',
+                'h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105',
               decoding: 'async',
               fetchpriority: priority ? 'high' : 'auto',
               loading,
             }}
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
       </figure>
     )
   }
-  <div class="flex flex-grow flex-col p-5 md:p-6 lg:p-8">
+  <div class="flex flex-1 flex-col pt-4 md:pt-5">
     {
-      (imageCount || readingTime) && (
-        <p class="type-text-xs type-text-muted mb-2 font-medium tracking-wider uppercase">
-          {[
-            readingTime && `${readingTime} min read`,
-            imageCount && `${imageCount} image${imageCount > 1 ? 's' : ''}`,
-          ]
-            .filter(Boolean)
-            .join(' • ')}
+      hasReadingTime && (
+        <p class="type-card-meta type-text-muted mt-0 mb-2">
+          {readingTime} min read
         </p>
       )
     }
     <h2
-      class="type-h3 group-hover:text-brand-light mb-2 text-left transition-colors duration-300"
+      class="type-h3 group-hover:text-brand-light group-focus-within:text-brand-light mt-0 mb-2 text-left transition-colors duration-300"
     >
       {title}
     </h2>
     {
       excerpt && (
-        <p class="type-text-sm mb-3 line-clamp-3 text-left leading-relaxed text-gray-400">
+        <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-left text-gray-400">
           {excerpt}
         </p>
       )
     }
-    <div class="mt-auto">
+    <div class="mt-auto pt-5">
       <a
-        class="link link-overlay group/link inline-flex items-center gap-1.5 text-sm font-medium"
+        class="type-action article-card-link"
         href={`/article/${slug}`}
-        title={`Read article: ${title}`}
-        aria-label={`Read article: ${title}`}
+        title={`Read article ${title}`}
+        aria-label={`Read article ${title}`}
       >
-        <span>Read article</span>
-        <Icon
-          name="mdi:chevron-right"
-          class="inline-block h-5 w-5 transition-transform duration-500 group-hover/link:translate-x-1"
-        />
+        <span class="bubble-arrow-link">
+          <BubbleArrowSurface />
+          Read article
+          <Icon
+            name="mdi:arrow-top-right"
+            class="bubble-arrow-link__icon"
+            aria-hidden="true"
+          />
+        </span>
       </a>
     </div>
   </div>
