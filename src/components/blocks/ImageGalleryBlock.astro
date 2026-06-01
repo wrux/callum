@@ -15,136 +15,139 @@ export interface Props {
 }
 
 const { images } = Astro.props.node;
-const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
 <Section width="mobile-full" data-block="image-gallery">
-  {/* Desktop: Masonry grid */}
-  <div class="masonry-grid hidden md:block">
-    {
-      images.map(({ caption, image }) => (
-        <figure
-          class="masonry-item article-image-frame relative"
-          style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
-        >
-          <SanityPicture
-            src={image}
-            imageUrlBuilder={imageBuilder}
+  <div class="article-gallery">
+    {/* Desktop: Masonry grid */}
+    <div class="masonry-grid hidden md:block">
+      {
+        images.map(({ caption, image }) => (
+          <figure
+            class="masonry-item article-image-frame relative"
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
+              aspectRatio: image.asset.metadata?.dimensions?.aspectRatio,
             }}
-            sizes="(max-width: 1535px) calc(50vw - 3rem), 400px"
-            widths={[320, 480, 640, 800]}
-            sources={[{ options: { quality: 74 } }]}
-            img={{
-              alt: image.asset.alt || caption || '',
-              class: 'w-full h-full object-cover',
-              decoding: 'async',
-              loading: 'lazy',
-            }}
-          />
-          <ImageCaptionButton caption={caption} />
-        </figure>
-      ))
-    }
-  </div>
+          >
+            <SanityPicture
+              src={image}
+              imageUrlBuilder={imageBuilder}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+              sizes="(max-width: 1535px) calc(50vw - 3rem), 400px"
+              widths={[320, 480, 640, 800]}
+              sources={[{ options: { quality: 74 } }]}
+              img={{
+                alt: image.asset.alt || caption || '',
+                class: 'w-full h-full object-cover',
+                decoding: 'async',
+                loading: 'lazy',
+              }}
+            />
+            <ImageCaptionButton caption={caption} />
+          </figure>
+        ))
+      }
+    </div>
 
-  {/* Mobile: Swiper gallery with thumbnails */}
-  {
-    images.length > 0 && (
-      <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
-        {/* Main Swiper */}
-        <div class={`swiper gallery-main-${galleryId} relative mb-3`}>
-          <div class="swiper-wrapper">
-            {images.map(({ caption, image }, index) => (
-              <div class="swiper-slide">
-                <figure class="article-image-frame relative">
-                  <SanityPicture
-                    src={image}
-                    imageUrlBuilder={imageBuilder}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                    }}
-                    sizes="100vw"
-                    widths={[480, 640, 800, 960, 1280]}
-                    sources={[{ options: { quality: 76 } }]}
-                    img={{
-                      alt: image.asset.alt || caption || '',
-                      class: 'w-full h-auto',
-                      decoding: 'async',
-                      fetchpriority: index === 0 ? 'high' : 'auto',
-                      loading: index === 0 ? 'eager' : 'lazy',
-                    }}
-                  />
-                  <ImageCaptionButton caption={caption} />
-                </figure>
-              </div>
-            ))}
-          </div>
-          {/* Navigation buttons */}
-          {images.length > 1 && (
-            <div class="absolute top-0 left-0 z-10 flex w-full justify-between p-4">
-              <button
-                class:list={[
-                  `navigate-prev gallery-nav-prev-${galleryId}`,
-                  'gallery-nav-button',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                ]}
-                aria-label="Previous image"
-              >
-                <Icon name="mdi:chevron-left" size={20} />
-              </button>
-              <button
-                class:list={[
-                  `navigate-next gallery-nav-next-${galleryId}`,
-                  'gallery-nav-button',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                ]}
-                aria-label="Next image"
-              >
-                <Icon name="mdi:chevron-right" size={20} />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Thumbnails Swiper */}
-        {images.length > 1 && (
-          <div class={`swiper gallery-thumbs-${galleryId} px-4`}>
+    {/* Mobile: Swiper gallery with thumbnails */}
+    {
+      images.length > 0 && (
+        <div class="mobile-gallery md:hidden">
+          {/* Main Swiper */}
+          <div class="swiper gallery-main relative mb-3">
             <div class="swiper-wrapper">
-              {images.map(({ image, caption }) => (
+              {images.map(({ caption, image }, index) => (
                 <div class="swiper-slide">
-                  <div class="gallery-thumbnail">
+                  <figure class="article-image-frame relative">
                     <SanityPicture
                       src={image}
                       imageUrlBuilder={imageBuilder}
                       style={{
                         width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
+                        height: 'auto',
                       }}
-                      sizes="80px"
-                      widths={[80, 160]}
-                      sources={[{ options: { quality: 70 } }]}
+                      sizes="100vw"
+                      widths={[480, 640, 800, 960, 1280]}
+                      sources={[{ options: { quality: 76 } }]}
                       img={{
                         alt: image.asset.alt || caption || '',
-                        class: 'w-full h-full object-cover',
+                        class: 'w-full h-auto',
                         decoding: 'async',
-                        loading: 'lazy',
+                        fetchpriority: index === 0 ? 'high' : 'auto',
+                        loading: index === 0 ? 'eager' : 'lazy',
                       }}
                     />
-                  </div>
+                    <ImageCaptionButton caption={caption} />
+                  </figure>
                 </div>
               ))}
             </div>
+            {/* Navigation buttons */}
+            {images.length > 1 && (
+              <div class="absolute top-0 left-0 z-10 flex w-full justify-between p-4">
+                <button
+                  class:list={[
+                    'gallery-nav-prev',
+                    'gallery-nav-button',
+                    'disabled:cursor-not-allowed disabled:opacity-50',
+                  ]}
+                  aria-label="Previous image"
+                >
+                  <Icon name="mdi:chevron-left" size={20} />
+                </button>
+                <button
+                  class:list={[
+                    'gallery-nav-next',
+                    'gallery-nav-button',
+                    'disabled:cursor-not-allowed disabled:opacity-50',
+                  ]}
+                  aria-label="Next image"
+                >
+                  <Icon name="mdi:chevron-right" size={20} />
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    )
-  }
+
+          {/* Thumbnails Swiper */}
+          {images.length > 1 && (
+            <div class="swiper gallery-thumbs px-4">
+              <div class="swiper-wrapper">
+                {images.map(({ image, caption }) => (
+                  <div class="swiper-slide">
+                    <div class="gallery-thumbnail">
+                      <SanityPicture
+                        src={image}
+                        imageUrlBuilder={imageBuilder}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                        sizes="80px"
+                        widths={[80, 160]}
+                        sources={[{ options: { quality: 70 } }]}
+                        img={{
+                          alt: image.asset.alt || caption || '',
+                          class: 'w-full h-full object-cover',
+                          decoding: 'async',
+                          loading: 'lazy',
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
+  </div>
 </Section>
 
 <script>
@@ -241,14 +244,11 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     ]);
 
     mobileGalleries.forEach((gallery) => {
-      const galleryId = gallery.getAttribute('data-gallery-id');
-      if (!galleryId) return;
-
       const mainSwiperEl = gallery.querySelector(
-        `.gallery-main-${galleryId}`,
+        '.gallery-main',
       ) as HTMLElement;
       const thumbsSwiperEl = gallery.querySelector(
-        `.gallery-thumbs-${galleryId}`,
+        '.gallery-thumbs',
       ) as HTMLElement;
 
       if (!mainSwiperEl) return;
@@ -286,6 +286,9 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
         });
       }
 
+      const nextEl = gallery.querySelector('.gallery-nav-next') as HTMLElement;
+      const prevEl = gallery.querySelector('.gallery-nav-prev') as HTMLElement;
+
       // Initialize main swiper with Thumbs module
       const modules = [];
       if (thumbsSwiper) modules.push(Thumbs);
@@ -300,8 +303,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
         rewind: hasMultipleSlides && !canLoopMain,
         navigation: hasMultipleSlides
           ? {
-              nextEl: `.gallery-nav-next-${galleryId}`,
-              prevEl: `.gallery-nav-prev-${galleryId}`,
+              nextEl,
+              prevEl,
             }
           : undefined,
         thumbs: thumbsSwiper
@@ -342,24 +345,24 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   desktopGalleryMediaQuery.addEventListener('change', init);
 </script>
 
-<style scoped>
-  .masonry-grid {
+<style is:global>
+  .article-gallery .masonry-grid {
     margin: 0 auto;
   }
 
-  .article-image-frame {
+  .article-gallery .article-image-frame {
     margin: 0;
     overflow: hidden;
     background-color: var(--color-gray-900);
   }
 
   @media (min-width: 64rem) {
-    .article-image-frame {
+    .article-gallery .article-image-frame {
       border-radius: var(--radius-lg);
     }
   }
 
-  .masonry-item {
+  .article-gallery .masonry-item {
     width: calc(50% - 8px);
     margin-bottom: 16px;
     break-inside: avoid;
@@ -368,13 +371,13 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   }
 
   @media (max-width: 767px) {
-    .masonry-item {
+    .article-gallery .masonry-item {
       width: 100%;
     }
   }
 
   /* Keep the mobile Swiper layout self-contained. */
-  .mobile-gallery .swiper {
+  .article-gallery .mobile-gallery .swiper {
     position: relative;
     z-index: 1;
     display: block;
@@ -384,7 +387,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     list-style: none;
   }
 
-  .mobile-gallery .swiper-wrapper {
+  .article-gallery .swiper-wrapper {
     position: relative;
     z-index: 1;
     display: flex;
@@ -394,7 +397,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     transition-property: transform;
   }
 
-  .mobile-gallery .swiper-slide {
+  .article-gallery .swiper-slide {
     position: relative;
     display: block;
     flex-shrink: 0;
@@ -403,27 +406,27 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     transition-property: transform;
   }
 
-  .mobile-gallery .swiper-autoheight,
-  .mobile-gallery .swiper-autoheight .swiper-slide {
+  .article-gallery .swiper-autoheight,
+  .article-gallery .swiper-autoheight .swiper-slide {
     height: auto;
   }
 
-  .mobile-gallery .swiper-autoheight .swiper-wrapper {
+  .article-gallery .swiper-autoheight .swiper-wrapper {
     align-items: flex-start;
     transition-property: transform, height;
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] {
+  .article-gallery .gallery-thumbs {
     padding: 4px 1rem;
     overflow: hidden;
     max-width: 100%;
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-wrapper {
+  .article-gallery .gallery-thumbs .swiper-wrapper {
     align-items: center;
   }
 
-  .gallery-thumbnail {
+  .article-gallery .gallery-thumbnail {
     aspect-ratio: 1;
     cursor: pointer;
     overflow: hidden;
@@ -437,11 +440,11 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       transform 0.3s ease;
   }
 
-  .gallery-thumbnail:hover {
+  .article-gallery .gallery-thumbnail:hover {
     opacity: 1;
   }
 
-  .gallery-nav-button {
+  .article-gallery .gallery-nav-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -458,29 +461,29 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       transform 500ms ease;
   }
 
-  .gallery-nav-button:hover {
+  .article-gallery .gallery-nav-button:hover {
     background: rgb(4 13 18 / 0.7);
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
+  .article-gallery .gallery-thumbs .swiper-slide {
     width: calc((100% - 24px) / 3);
     flex-shrink: 0;
   }
 
   @media (min-width: 375px) {
-    .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
+    .article-gallery .gallery-thumbs .swiper-slide {
       width: calc((100% - 48px) / 5);
     }
   }
 
-  .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {
+  .article-gallery .swiper-slide-thumb-active .gallery-thumbnail {
     border-color: white;
     opacity: 1;
     transform: scale(1.05);
   }
 
   @media (min-width: 1280px) {
-    .masonry-item {
+    .article-gallery .masonry-item {
       width: calc(33.333% - 11px);
     }
   }

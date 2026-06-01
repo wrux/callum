@@ -383,98 +383,43 @@
     left: 5.75rem;
   }
 
-  .footer-social-list li {
+  .footer-social-item {
     transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .footer-social-list:has(
-      li:nth-child(1) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(n + 2) {
+  .footer-social-shell.is-social-instagram .footer-social-item-github,
+  .footer-social-shell.is-social-instagram .footer-social-item-linkedin {
     transform: translateX(0.75rem);
   }
 
-  .footer-social-list:has(
-      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(1) {
+  .footer-social-shell.is-social-github .footer-social-item-instagram {
     transform: translateX(-0.75rem);
   }
 
-  .footer-social-list:has(
-      li:nth-child(2) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(3) {
+  .footer-social-shell.is-social-github .footer-social-item-linkedin {
     transform: translateX(0.75rem);
   }
 
-  .footer-social-list:has(
-      li:nth-child(3) .footer-social-link:is(:hover, :focus-visible)
-    )
-    li:nth-child(-n + 2) {
+  .footer-social-shell.is-social-linkedin .footer-social-item-instagram,
+  .footer-social-shell.is-social-linkedin .footer-social-item-github {
     transform: translateX(-0.75rem);
   }
 
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(1)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-instagram,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(2)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-github,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(3)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-linkedin {
+  .footer-social-shell.is-social-instagram .footer-social-shape-instagram,
+  .footer-social-shell.is-social-github .footer-social-shape-github,
+  .footer-social-shell.is-social-linkedin .footer-social-shape-linkedin {
     transform: translate3d(0, 0, 0) scale(1.08);
   }
 
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(1)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-github,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(1)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-linkedin,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(2)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-linkedin {
+  .footer-social-shell.is-social-instagram .footer-social-shape-github,
+  .footer-social-shell.is-social-instagram .footer-social-shape-linkedin,
+  .footer-social-shell.is-social-github .footer-social-shape-linkedin {
     transform: translate3d(0.75rem, 0, 0) scale(1);
   }
 
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(2)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-instagram,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(3)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-instagram,
-  .footer-social-shell:has(
-      .footer-social-list
-        li:nth-child(3)
-        .footer-social-link:is(:hover, :focus-visible)
-    )
-    .footer-social-shape-github {
+  .footer-social-shell.is-social-github .footer-social-shape-instagram,
+  .footer-social-shell.is-social-linkedin .footer-social-shape-instagram,
+  .footer-social-shell.is-social-linkedin .footer-social-shape-github {
     transform: translate3d(-0.75rem, 0, 0) scale(1);
   }
 

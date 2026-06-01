@@ -205,13 +205,14 @@ const usesHeroHeader = isHomepage || isArticlePage;
             <div class="footer-social-shell">
               <FooterSocialSurface />
               <ul class="footer-social-list">
-                <li>
+                <li class="footer-social-item footer-social-item-instagram">
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
+                    data-social-target="instagram"
                   >
                     <Icon
                       name="mdi:instagram"
@@ -219,24 +220,26 @@ const usesHeroHeader = isHomepage || isArticlePage;
                     />
                   </a>
                 </li>
-                <li>
+                <li class="footer-social-item footer-social-item-github">
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my GitHub profile"
                     rel="noreferrer nofollow"
+                    data-social-target="github"
                   >
                     <Icon name="mdi:github" class="footer-social-link-icon" />
                   </a>
                 </li>
-                <li>
+                <li class="footer-social-item footer-social-item-linkedin">
                   <a
                     href="https://www.linkedin.com/in/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my LinkedIn profile"
                     rel="noreferrer nofollow"
+                    data-social-target="linkedin"
                   >
                     <Icon name="mdi:linkedin" class="footer-social-link-icon" />
                   </a>
@@ -296,6 +299,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
         const chromeInitializedKey = '__callumChromeSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
         const backToTopInitializedKey = '__callumBackToTopInitialized';
+        const footerSocialInitializedKey = '__callumFooterSocialInitialized';
         const viewTransitionInitializedKey =
           '__callumViewTransitionInitialized';
 
@@ -432,6 +436,63 @@ const usesHeroHeader = isHomepage || isArticlePage;
           });
         }
 
+        function clearFooterSocialState(shell) {
+          shell.classList.remove(
+            'is-social-instagram',
+            'is-social-github',
+            'is-social-linkedin',
+          );
+        }
+
+        function setFooterSocialState(link) {
+          const shell = link.closest('.footer-social-shell');
+          const target = link.dataset.socialTarget;
+
+          if (!shell || !target) {
+            return;
+          }
+
+          clearFooterSocialState(shell);
+          shell.classList.add(`is-social-${target}`);
+        }
+
+        function syncFooterSocialState() {
+          document.querySelectorAll('.footer-social-shell').forEach((shell) => {
+            if (!(shell instanceof HTMLElement)) {
+              return;
+            }
+
+            if (shell.dataset.socialReady === 'true') {
+              return;
+            }
+
+            shell.dataset.socialReady = 'true';
+            shell
+              .querySelectorAll('[data-social-target]')
+              .forEach((socialLink) => {
+                if (!(socialLink instanceof HTMLElement)) {
+                  return;
+                }
+
+                socialLink.addEventListener('pointerenter', () => {
+                  setFooterSocialState(socialLink);
+                });
+
+                socialLink.addEventListener('pointerleave', () => {
+                  clearFooterSocialState(shell);
+                });
+
+                socialLink.addEventListener('focus', () => {
+                  setFooterSocialState(socialLink);
+                });
+
+                socialLink.addEventListener('blur', () => {
+                  clearFooterSocialState(shell);
+                });
+              });
+          });
+        }
+
         function waitForImageLoad(image) {
           return new Promise((resolve) => {
             let isSettled = false;
@@ -504,6 +565,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
         syncHeaderScrollState();
         syncBackToTopButton();
         syncImageLoadStates();
+        syncFooterSocialState();
 
         if (!window[chromeInitializedKey]) {
           window[chromeInitializedKey] = true;
@@ -542,6 +604,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
               scrollToPageTop();
             }
           });
+        }
+
+        if (!window[footerSocialInitializedKey]) {
+          window[footerSocialInitializedKey] = true;
+          document.addEventListener('astro:after-swap', syncFooterSocialState);
+          document.addEventListener('astro:page-load', syncFooterSocialState);
         }
 
         if (!window[viewTransitionInitializedKey]) {
