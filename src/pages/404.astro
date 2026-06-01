@@ -16,15 +16,15 @@ const posts = await getLatestPosts(2);
   }}
 >
   <Section spacing="md">
-    <div class="container">
-      <div class="mx-auto max-w-2xl text-center">
-        <h1 class="type-h1 mb-6 lg:mb-8">404: Page not found!</h1>
-        <p class="type-text-lg mb-6 text-gray-400 lg:mb-8">
+    <div class="u-container">
+      <div class="not-found-content u-container-2xl">
+        <h1 class="t-h1 not-found-title">404: Page not found!</h1>
+        <p class="t-text-lg not-found-copy u-text-muted">
           Oops! It seems you've taken a detour to the unknown. But don't worry,
           getting lost is all part of the adventure.
         </p>
         <p>
-          <a class="type-action link" href="/">Go to the home page</a>
+          <a class="t-action link" href="/"> Go to the home page </a>
         </p>
       </div>
     </div>
@@ -40,3 +40,15 @@ const posts = await getLatestPosts(2);
     )
   }
 </BaseLayout>
+
+<style>
+  .not-found-title,
+  .not-found-copy {
+    margin-bottom: clamp(1.5rem, 0.875rem + 1.3vw, 2rem);
+  }
+
+  .not-found-content {
+    margin-inline: auto;
+    text-align: center;
+  }
+</style>

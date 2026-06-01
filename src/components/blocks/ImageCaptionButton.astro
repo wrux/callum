@@ -1,6 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components';
-
 export interface Props {
   caption?: string;
 }
@@ -10,71 +8,22 @@ const { caption } = Astro.props;
 
 {
   caption && (
-    <details class="image-caption-popover">
-      <summary class="image-caption-trigger" aria-label="Show image caption">
-        <Icon
-          name="mdi:information-outline"
-          class="size-5"
-          aria-hidden="true"
-        />
-      </summary>
-      <p class="type-caption image-caption-panel">{caption}</p>
-    </details>
+    <figcaption class="t-caption surface-glass image-caption-overlay">
+      {caption}
+    </figcaption>
   )
 }
 
-<script>
-  const initImageCaptions = () => {
-    document
-      .querySelectorAll<HTMLDetailsElement>('.image-caption-popover')
-      .forEach((popover) => {
-        if (popover.dataset.captionReady) {
-          return;
-        }
-
-        popover.dataset.captionReady = 'true';
-      });
-  };
-
-  const closeInactiveImageCaptions = (target: EventTarget | null) => {
-    document
-      .querySelectorAll<HTMLDetailsElement>('.image-caption-popover[open]')
-      .forEach((popover) => {
-        if (target instanceof Node && popover.contains(target)) {
-          return;
-        }
-
-        popover.open = false;
-      });
-  };
-
-  const registerImageCaptionEvents = () => {
-    const windowWithCaptionEvents = window as Window & {
-      imageCaptionEventsReady?: boolean;
-    };
-
-    if (windowWithCaptionEvents.imageCaptionEventsReady) {
-      return;
-    }
-
-    document.addEventListener('pointerdown', (event) => {
-      closeInactiveImageCaptions(event.target);
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeInactiveImageCaptions(null);
-      }
-    });
-
-    document.addEventListener('astro:before-swap', () => {
-      closeInactiveImageCaptions(null);
-    });
-
-    document.addEventListener('astro:after-swap', initImageCaptions);
-    windowWithCaptionEvents.imageCaptionEventsReady = true;
-  };
-
-  registerImageCaptionEvents();
-  initImageCaptions();
-</script>
+<style is:global>
+  .image-caption-overlay {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    z-index: 2;
+    max-width: calc(100% - 1rem);
+    margin: 0;
+    padding: 0.375rem 0.5rem;
+    color: var(--color-gray-50);
+    border-radius: 0.5rem;
+  }
+</style>

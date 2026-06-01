@@ -13,17 +13,12 @@ type Props = {
 const { isNested = false, items } = Astro.props;
 ---
 
-<ul
-  class:list={[
-    'm-0 grid list-disc gap-2 pl-5',
-    isNested && 'mt-2 gap-1.5 pl-5',
-  ]}
->
+<ul class:list={['toc-list u-m-0', isNested && 'u-mt-2']}>
   {
     items.map((item) => (
-      <li class="m-0 marker:text-white/40">
+      <li class="toc-item u-m-0">
         <a
-          class="type-toc-link link link-on-hover text-balance text-gray-200"
+          class="t-toc-link link link-on-hover u-text-balance u-text-soft"
           href={item.href}
         >
           {item.text}
@@ -36,3 +31,16 @@ const { isNested = false, items } = Astro.props;
     ))
   }
 </ul>
+
+<style is:global>
+  .toc-list {
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    list-style: disc;
+  }
+
+  .toc-item::marker {
+    color: rgb(255 255 255 / 0.4);
+  }
+</style>

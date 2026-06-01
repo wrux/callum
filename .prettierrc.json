@@ -1,5 +1,5 @@
 {
-  "plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  "plugins": ["prettier-plugin-astro"],
   "overrides": [
     {
       "files": "*.astro",
@@ -8,7 +8,6 @@
       }
     }
   ],
-  "tailwindFunctions": ["cva"],
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,

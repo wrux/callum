@@ -3,45 +3,116 @@ const props = Astro.props;
 const { node, index, isInline, ...attrs } = props;
 const styleIs = (style: string) => style === node.style;
 const headingId = node?._key ? `heading-${node._key}` : undefined;
-const headingAttrs = headingId ? { ...attrs, id: attrs.id ?? headingId } : attrs;
+const headingAttrs = headingId
+  ? { ...attrs, id: attrs.id ?? headingId }
+  : attrs;
 ---
 
 {
   styleIs('h1') ? (
-    <h1 class="type-h1 mt-12 mb-6 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h1
+      class="t-h1 content-block-heading content-block-heading-1"
+      {...headingAttrs}
+    >
       <slot />
     </h1>
   ) : styleIs('h2') ? (
-    <h2 class="type-h2 mt-10 mb-5 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h2
+      class="t-h2 content-block-heading content-block-heading-2"
+      {...headingAttrs}
+    >
       <slot />
     </h2>
   ) : styleIs('h3') ? (
-    <h3 class="type-h3 mt-8 mb-4 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h3
+      class="t-h3 content-block-heading content-block-heading-3"
+      {...headingAttrs}
+    >
       <slot />
     </h3>
   ) : styleIs('h4') ? (
-    <h4 class="type-h4 mt-6 mb-3 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h4
+      class="t-h4 content-block-heading content-block-heading-4"
+      {...headingAttrs}
+    >
       <slot />
     </h4>
   ) : styleIs('h5') ? (
-    <h5 class="type-h5 mt-6 mb-3 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h5
+      class="t-h5 content-block-heading content-block-heading-4"
+      {...headingAttrs}
+    >
       <slot />
     </h5>
   ) : styleIs('h6') ? (
-    <h6 class="type-h6 mt-6 mb-3 first:mt-0 last:mb-0 scroll-mt-24" {...headingAttrs}>
+    <h6
+      class="t-h6 content-block-heading content-block-heading-4"
+      {...headingAttrs}
+    >
       <slot />
     </h6>
   ) : styleIs('blockquote') ? (
-    <blockquote class="border-l-4 border-brand-light pl-6 py-2 my-6 first:mt-0 last:mb-0 italic text-gray-300" {...attrs}>
+    <blockquote class="content-block-quote" {...attrs}>
       <slot />
     </blockquote>
   ) : styleIs('normal') ? (
-    <p class="type-text-md my-5 first:mt-0 last:mb-0" {...attrs}>
+    <p class="t-text-md content-block-copy" {...attrs}>
       <slot />
     </p>
   ) : (
-    <p class="type-text-md my-5 first:mt-0 last:mb-0" {...props}>
+    <p class="t-text-md content-block-copy" {...props}>
       <slot />
     </p>
   )
 }
+
+<style is:global>
+  .content-block-heading {
+    scroll-margin-top: 6rem;
+  }
+
+  .content-block-heading-1 {
+    margin-block: 3rem 1.5rem;
+  }
+
+  .content-block-heading-2 {
+    margin-block: 2.5rem 1.25rem;
+  }
+
+  .content-block-heading-3 {
+    margin-block: 2rem 1rem;
+  }
+
+  .content-block-heading-4 {
+    margin-block: 1.5rem 0.75rem;
+  }
+
+  .content-block-copy {
+    margin-block: 1.25rem;
+  }
+
+  .content-block-quote {
+    margin-block: 1.5rem;
+    padding-block: 0.5rem;
+    padding-left: 1.5rem;
+    border-left: 4px solid hsl(225 80% 70%);
+    color: oklch(87.2% 0.01 258.338);
+    font-style: italic;
+  }
+
+  :where(
+    .content-block-heading,
+    .content-block-copy,
+    .content-block-quote
+  ):first-child {
+    margin-top: 0;
+  }
+
+  :where(
+    .content-block-heading,
+    .content-block-copy,
+    .content-block-quote
+  ):last-child {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,39 +1,47 @@
 ---
-import { cva, type VariantProps } from 'class-variance-authority';
+type SectionSpacing = 'sm' | 'md' | 'lg' | 'none';
+type SectionWidth = 'default' | 'article';
 
-const sectionVariants = cva([], {
-  variants: {
-    spacing: {
-      sm: ['my-8', 'md:my-12', 'lg:my-16'],
-      md: ['my-12', 'md:my-16', 'lg:my-20'],
-      lg: ['my-16', 'md:my-24', 'lg:my-32'],
-      none: [],
-    },
-    width: {
-      default: 'container max-w-screen-xl',
-      article: 'container max-w-6xl',
-      lg: 'container max-w-screen-2xl',
-      full: 'w-full px-4 md:px-6 lg:px-8',
-      'mobile-full': 'w-full md:container md:max-w-screen-2xl md:px-6 lg:px-8',
-    },
-  },
-  defaultVariants: {
-    spacing: 'sm',
-    width: 'default',
-  },
-});
+export type Props = {
+  spacing?: SectionSpacing;
+  width?: SectionWidth;
+};
 
-export type Props = VariantProps<typeof sectionVariants>;
+const sectionSpacing: Record<SectionSpacing, string> = {
+  sm: 'l-section-sm',
+  md: 'l-section-md',
+  lg: 'l-section-lg',
+  none: '',
+};
+
+const sectionWidth: Record<SectionWidth, string> = {
+  default: 'u-container u-container-screen-xl',
+  article: 'u-container u-container-6xl',
+};
 
 const { spacing, width, ...props } = Astro.props;
 const contentBlockSpacingReset = props['data-block']
-  ? 'first:!mt-0 last:!mb-0'
+  ? 'section-block-spacing-reset'
   : undefined;
 ---
 
 <section
-  class:list={[sectionVariants({ spacing, width }), contentBlockSpacingReset]}
+  class:list={[
+    sectionSpacing[spacing ?? 'sm'],
+    sectionWidth[width ?? 'default'],
+    contentBlockSpacingReset,
+  ]}
   {...props}
 >
   <slot />
 </section>
+
+<style>
+  .section-block-spacing-reset:first-child {
+    margin-top: 0;
+  }
+
+  .section-block-spacing-reset:last-child {
+    margin-bottom: 0;
+  }
+</style>

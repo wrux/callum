@@ -2,11 +2,11 @@
 import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
-import { Icon } from 'astro-icon/components';
 import ImageCaptionButton from './ImageCaptionButton.astro';
 
 export interface Props {
   node: {
+    _key?: string;
     images: {
       caption: string;
       image: ImageWithMeta;
@@ -15,65 +15,40 @@ export interface Props {
 }
 
 const { images } = Astro.props.node;
-const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
+const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<Section width="mobile-full" data-block="image-gallery">
-  {/* Desktop: Masonry grid */}
-  <div class="masonry-grid hidden md:block">
+<Section width="article" data-block="image-gallery">
+  <div class="article-gallery" data-gallery aria-label="Image gallery">
     {
-      images.map(({ caption, image }) => (
-        <figure
-          class="masonry-item article-image-frame relative"
-          style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
-        >
-          <SanityPicture
-            src={image}
-            imageUrlBuilder={imageBuilder}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-            sizes="(max-width: 1535px) calc(50vw - 3rem), 400px"
-            widths={[320, 480, 640, 800]}
-            sources={[{ options: { quality: 74 } }]}
-            img={{
-              alt: image.asset.alt || caption || '',
-              class: 'w-full h-full object-cover',
-              decoding: 'async',
-              loading: 'lazy',
-            }}
-          />
-          <ImageCaptionButton caption={caption} />
-        </figure>
-      ))
-    }
-  </div>
+      images.length > 0 && (
+        <>
+          <div class="gallery-track" data-gallery-track>
+            {images.map(({ caption, image }, index) => {
+              const slideId = `${galleryId}-slide-${index}`;
+              const dimensions = image.asset.metadata?.dimensions;
+              const ratio =
+                dimensions?.width && dimensions?.height
+                  ? `${dimensions.width} / ${dimensions.height}`
+                  : '4 / 3';
 
-  {/* Mobile: Swiper gallery with thumbnails */}
-  {
-    images.length > 0 && (
-      <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
-        {/* Main Swiper */}
-        <div class={`swiper gallery-main-${galleryId} relative mb-3`}>
-          <div class="swiper-wrapper">
-            {images.map(({ caption, image }, index) => (
-              <div class="swiper-slide">
-                <figure class="article-image-frame relative">
+              return (
+                <figure
+                  class="gallery-slide article-image-frame u-relative"
+                  id={slideId}
+                  style={{ '--gallery-slide-ratio': ratio }}
+                  aria-current={index === 0 ? 'true' : 'false'}
+                  data-gallery-slide
+                >
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                    }}
-                    sizes="100vw"
+                    sizes="(max-width: 767px) 88vw, (max-width: 1279px) 72vw, 62vw"
                     widths={[480, 640, 800, 960, 1280]}
                     sources={[{ options: { quality: 76 } }]}
                     img={{
                       alt: image.asset.alt || caption || '',
-                      class: 'w-full h-auto',
+                      class: 'gallery-image',
                       decoding: 'async',
                       fetchpriority: index === 0 ? 'high' : 'auto',
                       loading: index === 0 ? 'eager' : 'lazy',
@@ -81,357 +56,388 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                   />
                   <ImageCaptionButton caption={caption} />
                 </figure>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          {/* Navigation buttons */}
-          {images.length > 1 && (
-            <div class="absolute top-0 left-0 z-10 flex w-full justify-between p-4">
-              <button
-                class:list={[
-                  `navigate-prev gallery-nav-prev-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                ]}
-                aria-label="Previous image"
-              >
-                <Icon name="mdi:chevron-left" size={20} />
-              </button>
-              <button
-                class:list={[
-                  `navigate-next gallery-nav-next-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                ]}
-                aria-label="Next image"
-              >
-                <Icon name="mdi:chevron-right" size={20} />
-              </button>
-            </div>
-          )}
-        </div>
 
-        {/* Thumbnails Swiper */}
-        {images.length > 1 && (
-          <div class={`swiper gallery-thumbs-${galleryId} px-4`}>
-            <div class="swiper-wrapper">
-              {images.map(({ image, caption }) => (
-                <div class="swiper-slide">
-                  <div class="gallery-thumbnail">
-                    <SanityPicture
-                      src={image}
-                      imageUrlBuilder={imageBuilder}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                      sizes="80px"
-                      widths={[80, 160]}
-                      sources={[{ options: { quality: 70 } }]}
-                      img={{
-                        alt: image.asset.alt || caption || '',
-                        class: 'w-full h-full object-cover',
-                        decoding: 'async',
-                        loading: 'lazy',
-                      }}
-                    />
-                  </div>
-                </div>
+          {images.length > 1 && (
+            <div class="gallery-thumbs" aria-label="Gallery thumbnails">
+              {images.map(({ image, caption }, index) => (
+                <button
+                  class="gallery-thumbnail"
+                  type="button"
+                  aria-label={`Show image ${index + 1}`}
+                  aria-current={index === 0 ? 'true' : 'false'}
+                  tabindex={index === 0 ? '0' : '-1'}
+                  data-gallery-thumb
+                  data-target-id={`${galleryId}-slide-${index}`}
+                >
+                  <SanityPicture
+                    src={image}
+                    imageUrlBuilder={imageBuilder}
+                    sizes="72px"
+                    widths={[72, 144]}
+                    sources={[{ options: { quality: 70 } }]}
+                    img={{
+                      alt: image.asset.alt || caption || '',
+                      class: 'gallery-thumbnail-image',
+                      decoding: 'async',
+                      loading: 'lazy',
+                    }}
+                  />
+                </button>
               ))}
             </div>
-          </div>
-        )}
-      </div>
-    )
-  }
+          )}
+        </>
+      )
+    }
+  </div>
 </Section>
 
 <script>
-  const desktopGalleryMediaQuery = window.matchMedia('(min-width: 768px)');
-
-  async function initMasonryGallery() {
-    if (!desktopGalleryMediaQuery.matches) {
-      return;
-    }
-
-    // Find this specific gallery grid
-    const galleryGrids = document.querySelectorAll(
-      '[data-block="image-gallery"] .masonry-grid',
-    );
-
-    if (galleryGrids.length === 0) {
-      return;
-    }
-
-    const { default: Masonry } = await import('masonry-layout');
-
-    galleryGrids.forEach((gridElement) => {
-      const grid = gridElement as HTMLElement;
-      // Skip if already initialized
-      if (grid.dataset.masonryInitialized === 'true') {
+  const syncScrollGalleries = () => {
+    document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+      if (!(gallery instanceof HTMLElement)) {
         return;
       }
-      grid.dataset.masonryInitialized = 'true';
 
-      // Initialize Masonry immediately using aspect ratios
-      // This prevents layout shift since items have aspect ratios set
-      const initMasonry = () => {
-        if (!Masonry) {
-          console.error('Masonry library not available');
-          return;
+      if (gallery.dataset.snapReady === 'true') {
+        return;
+      }
+
+      const track = gallery.querySelector('[data-gallery-track]');
+      const slides = Array.from(
+        gallery.querySelectorAll('[data-gallery-slide]'),
+      );
+      const thumbs = Array.from(
+        gallery.querySelectorAll('[data-gallery-thumb]'),
+      );
+
+      if (!(track instanceof HTMLElement) || slides.length === 0) {
+        return;
+      }
+
+      gallery.dataset.snapReady = 'true';
+
+      let activeIndex = -1;
+      let programmaticScrollTimer = 0;
+      let isProgrammaticScroll = false;
+
+      const prefersReducedMotion = () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const scrollSlideIntoView = (slide, isProgrammatic = true) => {
+        if (isProgrammatic) {
+          isProgrammaticScroll = true;
+          window.clearTimeout(programmaticScrollTimer);
+          programmaticScrollTimer = window.setTimeout(() => {
+            isProgrammaticScroll = false;
+          }, 1200);
         }
 
-        const msnry = new Masonry(gridElement as HTMLElement, {
-          itemSelector: '.masonry-item',
-          columnWidth: '.masonry-item',
-          percentPosition: true,
-          gutter: 16,
-          transitionDuration: '0.3s',
-        });
-
-        if (!msnry) {
-          return;
-        }
-
-        const layoutMethod = msnry.layout;
-        if (!layoutMethod) {
-          return;
-        }
-
-        // Initial layout - items have aspect ratios so this works immediately
-        layoutMethod.call(msnry);
-
-        // Re-layout when images load for fine-tuning (images might have slightly different dimensions)
-        const images = gridElement.querySelectorAll('img');
-        images.forEach((img) => {
-          if (!img.complete) {
-            img.addEventListener(
-              'load',
-              () => {
-                layoutMethod.call(msnry);
-              },
-              { once: true },
-            );
-          }
+        slide.scrollIntoView({
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+          block: 'nearest',
+          inline: 'start',
         });
       };
 
-      // Use requestAnimationFrame to ensure DOM is ready and aspect ratios are applied
-      requestAnimationFrame(() => {
-        initMasonry();
-      });
-    });
-  }
+      const endProgrammaticScroll = () => {
+        window.clearTimeout(programmaticScrollTimer);
+        isProgrammaticScroll = false;
+      };
 
-  async function initMobileGallery() {
-    if (desktopGalleryMediaQuery.matches) {
-      return;
-    }
+      const setActiveItem = (nextActiveIndex, shouldSyncThumb = true) => {
+        if (nextActiveIndex === activeIndex) {
+          return;
+        }
 
-    const mobileGalleries = document.querySelectorAll('.mobile-gallery');
+        activeIndex = nextActiveIndex;
 
-    if (mobileGalleries.length === 0) {
-      return;
-    }
+        slides.forEach((slide, index) => {
+          if (!(slide instanceof HTMLElement)) {
+            return;
+          }
 
-    const [{ default: Swiper }, { Navigation, Thumbs }] = await Promise.all([
-      import('swiper'),
-      import('swiper/modules'),
-    ]);
-
-    mobileGalleries.forEach((gallery) => {
-      const galleryId = gallery.getAttribute('data-gallery-id');
-      if (!galleryId) return;
-
-      const mainSwiperEl = gallery.querySelector(
-        `.gallery-main-${galleryId}`,
-      ) as HTMLElement;
-      const thumbsSwiperEl = gallery.querySelector(
-        `.gallery-thumbs-${galleryId}`,
-      ) as HTMLElement;
-
-      if (!mainSwiperEl) return;
-
-      // Skip if already initialized
-      if (mainSwiperEl.dataset.swiperInitialized === 'true') {
-        return;
-      }
-      mainSwiperEl.dataset.swiperInitialized = 'true';
-
-      const slides = mainSwiperEl.querySelectorAll('.swiper-slide');
-      const hasMultipleSlides = slides.length > 1;
-      const canLoopMain = slides.length >= 4;
-
-      // Initialize thumbnails swiper first (required for Thumbs module)
-      let thumbsSwiper: InstanceType<typeof Swiper> | null = null;
-      let thumbsLoop = false;
-      if (thumbsSwiperEl) {
-        const thumbsSlides = thumbsSwiperEl.querySelectorAll('.swiper-slide');
-        thumbsLoop = thumbsSlides.length > 5;
-
-        thumbsSwiper = new Swiper(thumbsSwiperEl, {
-          spaceBetween: 12,
-          slidesPerView: 3,
-          centeredSlides: thumbsLoop,
-          loop: thumbsLoop,
-          freeMode: false,
-          watchSlidesProgress: true,
-          slideToClickedSlide: true,
-          breakpoints: {
-            375: {
-              slidesPerView: 5,
-            },
-          },
+          slide.setAttribute('aria-current', String(index === activeIndex));
         });
-      }
 
-      // Initialize main swiper with Thumbs module
-      const modules = [];
-      if (thumbsSwiper) modules.push(Thumbs);
-      if (hasMultipleSlides) modules.push(Navigation);
+        thumbs.forEach((thumb, index) => {
+          if (!(thumb instanceof HTMLElement)) {
+            return;
+          }
 
-      const mainSwiper = new Swiper(mainSwiperEl, {
-        modules: modules,
-        spaceBetween: 16,
-        autoHeight: true,
-        loop: canLoopMain,
-        loopAdditionalSlides: canLoopMain ? 2 : 0,
-        rewind: hasMultipleSlides && !canLoopMain,
-        navigation: hasMultipleSlides
-          ? {
-              nextEl: `.gallery-nav-next-${galleryId}`,
-              prevEl: `.gallery-nav-prev-${galleryId}`,
-            }
-          : undefined,
-        thumbs: thumbsSwiper
-          ? {
-              swiper: thumbsSwiper,
-            }
-          : undefined,
-      });
+          thumb.setAttribute('aria-current', String(index === activeIndex));
+          thumb.tabIndex = index === activeIndex ? 0 : -1;
+        });
 
-      // Ensure thumbnails center the active slide when main swiper changes
-      if (thumbsSwiper && mainSwiper) {
-        mainSwiper.on('slideChange', () => {
-          const realIndex = mainSwiper.realIndex ?? mainSwiper.activeIndex;
-          if (thumbsLoop) {
-            thumbsSwiper.slideToLoop(realIndex);
-          } else {
-            thumbsSwiper.slideTo(realIndex);
+        const activeThumb = thumbs[activeIndex];
+
+        if (shouldSyncThumb && activeThumb instanceof HTMLElement) {
+          activeThumb.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      };
+
+      const activateThumb = (thumb, shouldFocus = false) => {
+        const index = thumbs.indexOf(thumb);
+        const targetId = thumb.dataset.targetId;
+        const target = targetId ? document.getElementById(targetId) : null;
+
+        if (!(target instanceof HTMLElement)) {
+          return;
+        }
+
+        if (index >= 0) {
+          setActiveItem(index, false);
+        }
+
+        if (shouldFocus) {
+          thumb.focus({ preventScroll: true });
+          thumb.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+
+        scrollSlideIntoView(target);
+      };
+
+      const activateThumbByIndex = (index) => {
+        const thumb = thumbs[index];
+
+        if (!(thumb instanceof HTMLElement)) {
+          return;
+        }
+
+        activateThumb(thumb, true);
+      };
+
+      const syncActiveItem = () => {
+        const trackStart = track.scrollLeft;
+        let nextActiveIndex = 0;
+        let activeDistance = Number.POSITIVE_INFINITY;
+
+        slides.forEach((slide, index) => {
+          if (!(slide instanceof HTMLElement)) {
+            return;
+          }
+
+          const distance = Math.abs(trackStart - slide.offsetLeft);
+
+          if (distance < activeDistance) {
+            activeDistance = distance;
+            nextActiveIndex = index;
           }
         });
-      }
+
+        setActiveItem(nextActiveIndex);
+      };
+
+      let frame = 0;
+      const requestSync = () => {
+        if (isProgrammaticScroll) {
+          return;
+        }
+
+        window.cancelAnimationFrame(frame);
+        frame = window.requestAnimationFrame(syncActiveItem);
+      };
+
+      thumbs.forEach((thumb) => {
+        if (!(thumb instanceof HTMLElement)) {
+          return;
+        }
+
+        thumb.addEventListener('click', () => {
+          activateThumb(thumb);
+        });
+
+        thumb.addEventListener('keydown', (event) => {
+          const keyMap = {
+            ArrowLeft: -1,
+            ArrowUp: -1,
+            ArrowRight: 1,
+            ArrowDown: 1,
+          };
+          const delta = keyMap[event.key];
+
+          if (delta) {
+            event.preventDefault();
+            const focusedIndex = thumbs.indexOf(thumb);
+            const nextIndex =
+              (focusedIndex + delta + thumbs.length) % thumbs.length;
+
+            activateThumbByIndex(nextIndex);
+            return;
+          }
+
+          if (event.key === 'Home') {
+            event.preventDefault();
+            activateThumbByIndex(0);
+            return;
+          }
+
+          if (event.key === 'End') {
+            event.preventDefault();
+            activateThumbByIndex(thumbs.length - 1);
+          }
+        });
+      });
+
+      slides.forEach((slide) => {
+        if (!(slide instanceof HTMLElement)) {
+          return;
+        }
+
+        slide.addEventListener('click', () => {
+          const index = slides.indexOf(slide);
+
+          if (index >= 0) {
+            setActiveItem(index);
+          }
+
+          scrollSlideIntoView(slide);
+        });
+      });
+
+      track.addEventListener('scroll', requestSync, { passive: true });
+      track.addEventListener('scrollend', endProgrammaticScroll);
+      window.addEventListener('resize', requestSync, { passive: true });
+      syncActiveItem();
     });
-  }
+  };
 
-  function init() {
-    void initMasonryGallery();
-    void initMobileGallery();
-  }
-
-  // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', syncScrollGalleries);
   } else {
-    init();
+    syncScrollGalleries();
   }
 
-  // Also initialize on view transitions (Astro)
-  document.addEventListener('astro:after-swap', init);
-  desktopGalleryMediaQuery.addEventListener('change', init);
+  document.addEventListener('astro:after-swap', syncScrollGalleries);
 </script>
 
-<style>
-  @import 'swiper/css';
-  @import 'swiper/css/navigation';
-  @import 'swiper/css/thumbs';
-</style>
-
-<style scoped>
-  .masonry-grid {
-    margin: 0 auto;
+<style is:global>
+  .article-gallery {
+    display: grid;
+    gap: 1rem;
   }
 
-  .masonry-item {
-    width: calc(50% - 8px);
-    margin-bottom: 16px;
-    break-inside: avoid;
-    position: relative;
-    min-height: 0;
+  .article-gallery .gallery-track {
+    display: flex;
+    gap: 0.75rem;
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    border-radius: var(--gallery-radius);
+    scroll-padding-inline: 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x;
   }
 
-  @media (max-width: 767px) {
-    .masonry-item {
-      width: 100%;
-    }
+  .article-gallery .gallery-track::-webkit-scrollbar {
+    display: none;
   }
 
-  /* Mobile gallery styles */
-  .mobile-gallery .swiper {
+  .article-gallery .gallery-slide {
+    flex: 0 0 auto;
+    width: min(
+      calc(var(--gallery-height) * var(--gallery-slide-ratio)),
+      var(--gallery-slide-max)
+    );
+    height: var(--gallery-height);
+    border-radius: var(--gallery-radius);
+    cursor: pointer;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    transition: opacity 180ms ease;
+  }
+
+  .article-gallery .gallery-slide[aria-current='false'] {
+    opacity: 0.82;
+  }
+
+  .article-gallery .gallery-slide picture,
+  .article-gallery .gallery-slide img,
+  .article-gallery .gallery-image {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .mobile-gallery .swiper-slide {
-    width: 100%;
+  .article-gallery .gallery-thumbs {
+    display: flex;
+    gap: 0.5rem;
+    justify-self: start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    width: min(100%, var(--gallery-thumbs-width));
+    margin-inline: calc(var(--gallery-thumb-focus-space) * -1);
+    padding: 0.375rem var(--gallery-thumb-focus-space);
+    scrollbar-width: none;
+    touch-action: pan-x;
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] {
-    padding: 4px 1rem;
+  .article-gallery .gallery-thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .article-gallery .gallery-thumbnail {
+    flex: 0 0 var(--gallery-thumb-size);
+    aspect-ratio: 1;
     overflow: hidden;
-    max-width: 100%;
+    padding: 0;
+    border: 2px solid var(--color-gray-800);
+    border-radius: 0.5rem;
+    opacity: 0.65;
+    transition:
+      border-color 180ms ease,
+      outline-color 180ms ease,
+      opacity 180ms ease;
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-wrapper {
-    align-items: center;
+  .article-gallery .gallery-thumbnail picture,
+  .article-gallery .gallery-thumbnail img,
+  .article-gallery .gallery-thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
-    width: calc((100% - 24px) / 3); /* 3 slides with 2 gaps of 12px each */
-    flex-shrink: 0;
+  .article-gallery .gallery-thumbnail:is(:hover, :focus-visible),
+  .article-gallery .gallery-thumbnail[aria-current='true'] {
+    border-color: hsl(225 80% 70%);
+    opacity: 1;
   }
 
-  @media (min-width: 375px) {
-    .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
-      width: calc((100% - 48px) / 5); /* 5 slides with 4 gaps of 12px each */
+  .article-gallery .gallery-thumbnail:focus-visible {
+    outline: 3px solid hsl(225 80% 70%);
+    outline-offset: 2px;
+  }
+
+  .article-gallery {
+    --gallery-height: clamp(18rem, 52vw, 34rem);
+    --gallery-radius: 0.5rem;
+    --gallery-slide-max: 100%;
+    --gallery-thumb-focus-space: 0.375rem;
+    --gallery-thumb-size: clamp(3rem, 8vw, 4rem);
+    --gallery-thumbs-width: 100%;
+  }
+
+  @media (width >= 48rem) {
+    .article-gallery {
+      --gallery-height: clamp(22rem, 44vw, 34rem);
     }
   }
 
-  /* Navigation button styles */
-  .mobile-gallery .swiper-button-prev,
-  .mobile-gallery .swiper-button-next {
-    color: white;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-top: 0;
-    top: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-prev {
-    left: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-next {
-    right: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-prev:hover,
-  .mobile-gallery .swiper-button-next:hover {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {
-    border-color: white;
-    opacity: 1;
-    transform: scale(1.05);
-  }
-
-  @media (min-width: 1280px) {
-    .masonry-item {
-      width: calc(33.333% - 11px);
+  @media (width >= 80rem) {
+    .article-gallery {
+      --gallery-height: clamp(26rem, 34vw, 36rem);
     }
   }
 </style>

@@ -29,6 +29,12 @@ export default defineConfig({
   build: {
     concurrency: 2,
   },
+  vite: {
+    build: {
+      target: 'es2022',
+      cssTarget: 'chrome120',
+    },
+  },
   image: {
     remotePatterns: [
       {

@@ -1,61 +1,17 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { createImageUrlBuilder } from '@sanity/image-url';
 import ArticleTeaser from '~/components/ArticleTeaser.astro';
-import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
+import HeroMedia from '~/components/HeroMedia.astro';
 import Logo from '~/components/Logo.astro';
 import TeaserGrid from '~/components/TeaserGrid.astro';
 import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { sanityClient } from '~/sanity/client';
 
 const posts = await getLatestPosts();
 const featuredPost = posts[0];
 const gridPosts = featuredPost ? posts.slice(1) : posts;
 const heroImage = featuredPost?.mainImage;
-const heroImageBuilder = createImageUrlBuilder(sanityClient)
-  .fit('crop')
-  .format('webp');
-const heroImageDesktopWidths = [1280, 1600, 1920, 2400];
-const heroImageTabletWidths = [768, 1024, 1280, 1536];
-const heroImageMobileWidths = [480, 640, 828, 960];
-const heroImageHeightForAspect = (width: number, aspectRatio: number) =>
-  Math.round(width / aspectRatio);
-const heroImageSrcSetForAspect = (widths: number[], aspectRatio: number) =>
-  heroImage &&
-  widths
-    .map((width) => {
-      const url = heroImageBuilder
-        .image(heroImage)
-        .width(width)
-        .height(heroImageHeightForAspect(width, aspectRatio))
-        .quality(78)
-        .url();
-
-      return `${url} ${width}w`;
-    })
-    .join(', ');
-const heroImageSrc =
-  heroImage &&
-  heroImageBuilder
-    .image(heroImage)
-    .width(1600)
-    .height(heroImageHeightForAspect(1600, 2))
-    .quality(78)
-    .url();
-const heroImageMobileSrcSet = heroImageSrcSetForAspect(
-  heroImageMobileWidths,
-  9 / 19.5,
-);
-const heroImageTabletSrcSet = heroImageSrcSetForAspect(
-  heroImageTabletWidths,
-  1,
-);
-const heroImageDesktopSrcSet = heroImageSrcSetForAspect(
-  heroImageDesktopWidths,
-  2,
-);
 const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 ---
 
@@ -67,56 +23,21 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
       'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknown places!',
   }}
 >
-  <section
-    id="hero-section"
-    class="home-hero media-hero"
-    data-has-image={heroImageSrc ? 'true' : 'false'}
-  >
-    {
-      heroImageSrc && (
-        <figure class="home-hero-media media-hero-asset media-hero-asset-home">
-          <picture>
-            <source
-              media="(max-width: 767px)"
-              srcset={heroImageMobileSrcSet}
-              sizes="100vw"
-            />
-            <source
-              media="(max-width: 1023px)"
-              srcset={heroImageTabletSrcSet}
-              sizes="100vw"
-            />
-            <img
-              class="media-hero-image"
-              src={heroImageSrc}
-              srcset={heroImageDesktopSrcSet}
-              sizes="100vw"
-              alt={heroImageAlt}
-              width="1600"
-              height={heroImageHeightForAspect(1600, 2)}
-              decoding="async"
-              fetchpriority="high"
-              loading="eager"
-            />
-          </picture>
-        </figure>
-      )
-    }
-    <div class="media-hero-scrim media-hero-scrim-home" aria-hidden="true">
-    </div>
+  <section id="hero-section" class="home-hero media-hero">
+    <HeroMedia image={heroImage} alt={heroImageAlt} />
 
-    <div class="home-hero-content container max-w-6xl">
-      <div class="flex w-fit flex-col gap-2.5">
-        <Logo class="type-home-logo-mark text-gray-50 opacity-95" />
-        <Wordmark class="type-home-wordmark text-gray-50 opacity-95" />
+    <div class="home-hero-content u-container u-container-6xl">
+      <div class="home-hero-brand u-flex u-flex-col u-gap-2">
+        <Logo class="t-logo-lg u-text-light home-hero-logo" />
+        <Wordmark class="t-logo-md u-text-light home-hero-logo" />
       </div>
 
       <div class="home-hero-grid">
-        <div class="max-w-3xl min-w-0">
-          <h1 class="type-hero-title m-0 text-balance text-gray-50">
+        <div class="home-hero-intro u-min-0">
+          <h1 class="t-hero-title u-m-0 u-text-balance u-text-light">
             Journeys beyond the obvious
           </h1>
-          <p class="type-hero-summary mt-5 mb-0 max-w-xl text-gray-200">
+          <p class="t-hero-summary u-mt-4 u-mb-0 home-hero-summary u-text-soft">
             Photographs and field notes from less travelled places, shaped by
             curiosity, wandering, and a preference for the unusual route.
           </p>
@@ -128,32 +49,27 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
               class="home-hero-latest"
               aria-labelledby="home-hero-latest-title"
             >
-              <p class="type-overline m-0 text-gray-400 transition-all duration-500 ease-out">
-                Latest story
-              </p>
+              <p class="t-overline home-hero-latest-label">Latest story</p>
               <h2
-                class="type-feature-title home-hero-latest-title"
+                class="t-h4 home-hero-latest-title"
                 id="home-hero-latest-title"
               >
                 {featuredPost.title}
               </h2>
               {featuredPost.excerpt && (
-                <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-gray-300">
+                <p class="t-card-summary home-hero-latest-summary">
                   {featuredPost.excerpt}
                 </p>
               )}
               <a
-                class="type-action bubble-arrow-link mt-2"
+                class="t-action btn btn-primary btn-action u-mt-2"
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
-                <BubbleArrowSurface />
-                Read article
-                <Icon
-                  name="mdi:arrow-top-right"
-                  class="bubble-arrow-link__icon"
-                  aria-hidden="true"
-                />
+                <span>Read article</span>
+                <span class="btn-chip" aria-hidden="true">
+                  <Icon name="mdi:arrow-top-right" />
+                </span>
               </a>
             </aside>
           )
@@ -164,7 +80,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 
   {
     gridPosts.length > 0 && (
-      <section class="pt-16 pb-24 md:pt-20 md:pb-32 lg:pb-40">
+      <section class="home-post-list">
         <TeaserGrid>
           {gridPosts.map((post, index) => (
             <ArticleTeaser
@@ -184,28 +100,47 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     background:
       radial-gradient(
         circle at 20% 25%,
-        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        rgb(26 77 230 / 0.34),
         transparent 24rem
       ),
-      var(--color-gray-950);
+      oklch(13% 0.028 261.692);
   }
 
-  .home-hero-media {
-    mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
+  .home-post-list {
+    padding-block: clamp(4rem, 2.75rem + 2.6vw, 5rem)
+      clamp(6rem, 1rem + 10.4vw, 10rem);
+  }
+
+  .home-hero-latest-label {
+    margin: 0;
+    color: oklch(70.7% 0.022 261.325);
+    transition:
+      color 500ms cubic-bezier(0, 0, 0.2, 1),
+      opacity 500ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .home-hero-logo {
+    opacity: 0.95;
+  }
+
+  .home-hero-brand {
+    width: fit-content;
+  }
+
+  .home-hero-summary {
+    max-width: 36rem;
+  }
+
+  .home-hero-intro {
+    max-width: 48rem;
+  }
+
+  .home-hero-latest-summary {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: oklch(87.2% 0.01 258.338);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 </style>

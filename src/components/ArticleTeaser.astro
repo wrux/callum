@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
-import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
@@ -25,13 +24,13 @@ const loading = lazy ? 'lazy' : 'eager';
 const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
 ---
 
-<article class="article-teaser group relative flex min-w-0 flex-col">
+<article class="article-teaser u-relative u-flex u-min-0 u-flex-col">
   {
     mainImage && (
-      <figure class="m-0 overflow-hidden">
-        <div class="media-frame relative aspect-video">
+      <figure class="article-teaser-figure">
+        <div class="media-frame article-teaser-frame u-relative">
           <SanityPicture
-            class="h-full w-full"
+            class="u-h-full u-full"
             src={mainImage}
             imageUrlBuilder={imageBuilder}
             sizes={sizes}
@@ -39,8 +38,7 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
             sources={[{ options: { quality: 74 } }]}
             img={{
               alt: mainImage.asset.alt || title || '',
-              class:
-                'h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105',
+              class: 'article-teaser-image u-h-full u-full u-object-cover',
               decoding: 'async',
               fetchpriority: priority ? 'high' : 'auto',
               loading,
@@ -50,43 +48,82 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
       </figure>
     )
   }
-  <div class="flex flex-1 flex-col pt-4 md:pt-5">
+  <div class="article-teaser-body u-flex u-flex-1 u-flex-col">
     {
       hasReadingTime && (
-        <p class="type-card-meta type-text-muted mt-0 mb-2">
+        <p class="t-card-meta u-text-muted u-mt-0 u-mb-2">
           {readingTime} min read
         </p>
       )
     }
-    <h2
-      class="type-h3 group-hover:text-brand-light group-focus-within:text-brand-light mt-0 mb-2 text-left transition-colors duration-300"
-    >
+    <h2 class="t-h3 article-teaser-title u-mt-0 u-mb-2">
       {title}
     </h2>
     {
       excerpt && (
-        <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-left text-gray-400">
+        <p class="t-card-summary article-teaser-summary u-m-0 u-text-muted">
           {excerpt}
         </p>
       )
     }
-    <div class="mt-auto pt-5">
+    <div class="article-teaser-action">
       <a
-        class="type-action article-card-link"
+        class="t-action article-card-link"
         href={`/article/${slug}`}
         title={`Read article ${title}`}
         aria-label={`Read article ${title}`}
       >
-        <span class="bubble-arrow-link">
-          <BubbleArrowSurface />
-          Read article
-          <Icon
-            name="mdi:arrow-top-right"
-            class="bubble-arrow-link__icon"
-            aria-hidden="true"
-          />
+        <span class="btn btn-primary btn-action">
+          <span>Read article</span>
+          <span class="btn-chip" aria-hidden="true">
+            <Icon name="mdi:arrow-top-right" />
+          </span>
         </span>
       </a>
     </div>
   </div>
 </article>
+
+<style>
+  .article-teaser-title {
+    transition: color 300ms ease;
+  }
+
+  .article-teaser-figure {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .article-teaser-frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .article-teaser-body {
+    padding-top: 1rem;
+  }
+
+  .article-teaser-action {
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .article-teaser-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .article-teaser:hover .article-teaser-title,
+  .article-teaser:focus-within .article-teaser-title {
+    color: hsl(225 80% 70%);
+  }
+
+  .article-teaser :global(.article-teaser-image) {
+    transition: transform 700ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .article-teaser:hover :global(.article-teaser-image) {
+    transform: scale(1.05);
+  }
+</style>

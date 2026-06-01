@@ -6,7 +6,7 @@ import { imageBuilder } from '~/sanity/image';
 const { caption, image } = Astro.props.node;
 ---
 
-<Section data-block="image" width="mobile-full">
+<Section data-block="image" width="article">
   <figure>
     <div class="article-image-frame">
       <SanityPicture
@@ -16,8 +16,8 @@ const { caption, image } = Astro.props.node;
           width: '100%',
           height: 'auto',
         }}
-        sizes="(max-width: 767px) 100vw, (max-width: 1535px) calc(100vw - 4rem), 1400px"
-        widths={[640, 960, 1280, 1600]}
+        sizes="(max-width: 767px) calc(100vw - 2rem), 1152px"
+        widths={[640, 960, 1152, 1280]}
         sources={[{ options: { quality: 76 } }]}
         img={{
           alt: image.asset.alt || caption || '',
@@ -28,14 +28,18 @@ const { caption, image } = Astro.props.node;
     </div>
     {
       caption && (
-        <div class="relative left-1/2 w-screen -translate-x-1/2">
-          <div class="container max-w-6xl">
-            <figcaption class="type-figure-caption article-image-caption max-w-prose">
-              {caption}
-            </figcaption>
-          </div>
-        </div>
+        <figcaption class="t-figure-caption article-image-caption u-prose">
+          {caption}
+        </figcaption>
       )
     }
   </figure>
 </Section>
+
+<style is:global>
+  .article-image-caption {
+    margin-top: clamp(0.75rem, 0.4375rem + 0.65vw, 1rem);
+    color: var(--color-gray-400);
+    text-align: left;
+  }
+</style>
