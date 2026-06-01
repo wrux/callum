@@ -7,8 +7,8 @@ const { caption, image } = Astro.props.node;
 ---
 
 <Section data-block="image" width="mobile-full">
-  <figure class="space-y-3">
-    <div class="media-frame-bordered">
+  <figure>
+    <div class="article-image-frame">
       <SanityPicture
         src={image}
         imageUrlBuilder={imageBuilder}
@@ -28,9 +28,13 @@ const { caption, image } = Astro.props.node;
     </div>
     {
       caption && (
-        <figcaption class="type-figure-caption mx-auto max-w-3xl px-4 text-center text-gray-400 md:px-0">
-          {caption}
-        </figcaption>
+        <div class="relative left-1/2 w-screen -translate-x-1/2">
+          <div class="container max-w-6xl">
+            <figcaption class="type-figure-caption article-image-caption max-w-prose">
+              {caption}
+            </figcaption>
+          </div>
+        </div>
       )
     }
   </figure>

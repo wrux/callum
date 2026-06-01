@@ -2,6 +2,7 @@
 import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
+import ImageCaptionButton from './ImageCaptionButton.astro';
 
 export interface Props {
   node: {
@@ -31,12 +32,12 @@ const imageSizes = sizes?.[images.length] || sizes[5];
 
 <Section width="mobile-full" data-block="inline-images">
   <div
-    class="md:grid-cols-dynamic grid grid-cols-1 items-center justify-center gap-4"
+    class="md:grid-cols-dynamic grid grid-cols-1 items-center justify-center gap-3 md:gap-4"
     style={`--column-count: ${images.length};`}
   >
     {
       images.map(({ caption, image }) => (
-        <div class="media-frame-bordered relative">
+        <figure class="article-image-frame relative">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
@@ -53,14 +54,8 @@ const imageSizes = sizes?.[images.length] || sizes[5];
               loading: 'lazy',
             }}
           />
-          {caption && (
-            <div class="absolute right-0 bottom-0 left-0 p-4">
-              <div class="type-caption rounded-lg bg-black/30 px-4 py-3 text-white backdrop-blur-sm">
-                {caption}
-              </div>
-            </div>
-          )}
-        </div>
+          <ImageCaptionButton caption={caption} />
+        </figure>
       ))
     }
   </div>

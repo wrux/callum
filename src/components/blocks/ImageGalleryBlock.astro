@@ -3,6 +3,7 @@ import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
 import { Icon } from 'astro-icon/components';
+import ImageCaptionButton from './ImageCaptionButton.astro';
 
 export interface Props {
   node: {
@@ -22,8 +23,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   <div class="masonry-grid hidden md:block">
     {
       images.map(({ caption, image }) => (
-        <div
-          class="masonry-item media-frame-bordered relative"
+        <figure
+          class="masonry-item article-image-frame relative"
           style={{ aspectRatio: image.asset.metadata?.dimensions?.aspectRatio }}
         >
           <SanityPicture
@@ -44,14 +45,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               loading: 'lazy',
             }}
           />
-          {caption && (
-            <div class="absolute right-0 bottom-0 left-0 p-4">
-              <div class="type-caption rounded-lg bg-black/30 px-4 py-3 text-white backdrop-blur-sm">
-                {caption}
-              </div>
-            </div>
-          )}
-        </div>
+          <ImageCaptionButton caption={caption} />
+        </figure>
       ))
     }
   </div>
@@ -61,13 +56,11 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     images.length > 0 && (
       <div class="mobile-gallery md:hidden" data-gallery-id={galleryId}>
         {/* Main Swiper */}
-        <div
-          class={`swiper gallery-main-${galleryId} media-frame-bordered relative mb-3`}
-        >
+        <div class={`swiper gallery-main-${galleryId} relative mb-3`}>
           <div class="swiper-wrapper">
             {images.map(({ caption, image }, index) => (
               <div class="swiper-slide">
-                <div class="relative">
+                <figure class="article-image-frame relative">
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
@@ -86,15 +79,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                       loading: index === 0 ? 'eager' : 'lazy',
                     }}
                   />
-                  {/* Caption overlay */}
-                  {caption && (
-                    <div class="absolute right-0 bottom-0 left-0 p-4">
-                      <div class="type-caption rounded-lg bg-black/30 px-4 py-3 text-white backdrop-blur-sm">
-                        {caption}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  <ImageCaptionButton caption={caption} />
+                </figure>
               </div>
             ))}
           </div>
@@ -107,6 +93,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                   'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
+                aria-label="Previous image"
               >
                 <Icon name="mdi:chevron-left" size={20} />
               </button>
@@ -116,6 +103,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
                   'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
+                aria-label="Next image"
               >
                 <Icon name="mdi:chevron-right" size={20} />
               </button>
