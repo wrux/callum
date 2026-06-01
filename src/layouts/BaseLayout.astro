@@ -2,6 +2,7 @@
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
+import FooterSocialSurface from '~/components/FooterSocialSurface.astro';
 import Logo from '~/components/Logo.astro';
 import { wruxChromeFadeTransition } from '~/utils/viewTransitions';
 
@@ -184,41 +185,47 @@ const usesHeroHeader = isHomepage || isArticlePage;
           <Logo class="type-footer-logo-mark opacity-90" />
 
           <nav aria-label="External links">
-            <ul class="footer-social-list">
-              <li>
-                <a
-                  href="https://instagram.com/wrux"
-                  target="_blank"
-                  class="footer-social-link"
-                  aria-label="View my Instagram profile"
-                  rel="noreferrer nofollow"
-                >
-                  <Icon name="mdi:instagram" class="footer-social-link-icon" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/wrux"
-                  target="_blank"
-                  class="footer-social-link"
-                  aria-label="View my GitHub profile"
-                  rel="noreferrer nofollow"
-                >
-                  <Icon name="mdi:github" class="footer-social-link-icon" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/in/wrux"
-                  target="_blank"
-                  class="footer-social-link"
-                  aria-label="View my LinkedIn profile"
-                  rel="noreferrer nofollow"
-                >
-                  <Icon name="mdi:linkedin" class="footer-social-link-icon" />
-                </a>
-              </li>
-            </ul>
+            <div class="footer-social-shell">
+              <FooterSocialSurface />
+              <ul class="footer-social-list">
+                <li>
+                  <a
+                    href="https://instagram.com/wrux"
+                    target="_blank"
+                    class="footer-social-link"
+                    aria-label="View my Instagram profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <Icon
+                      name="mdi:instagram"
+                      class="footer-social-link-icon"
+                    />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/wrux"
+                    target="_blank"
+                    class="footer-social-link"
+                    aria-label="View my GitHub profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <Icon name="mdi:github" class="footer-social-link-icon" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/wrux"
+                    target="_blank"
+                    class="footer-social-link"
+                    aria-label="View my LinkedIn profile"
+                    rel="noreferrer nofollow"
+                  >
+                    <Icon name="mdi:linkedin" class="footer-social-link-icon" />
+                  </a>
+                </li>
+              </ul>
+            </div>
           </nav>
         </div>
 

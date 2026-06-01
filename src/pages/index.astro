@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import ArticleTeaser from '~/components/ArticleTeaser.astro';
+import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import Logo from '~/components/Logo.astro';
 import TeaserGrid from '~/components/TeaserGrid.astro';
 import Wordmark from '~/components/Wordmark.astro';
@@ -58,9 +59,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
   >
     {
       heroImageSrc && (
-        <figure
-          class="home-hero-media media-hero-asset media-hero-asset-home"
-        >
+        <figure class="home-hero-media media-hero-asset media-hero-asset-home">
           <img
             class="media-hero-image"
             src={heroImageSrc}
@@ -121,7 +120,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
-                <span class="bubble-arrow-link__surface" aria-hidden="true" />
+                <BubbleArrowSurface />
                 Read article
                 <Icon
                   name="mdi:arrow-top-right"
