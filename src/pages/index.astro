@@ -8,7 +8,7 @@ import TeaserGrid from '~/components/TeaserGrid.astro';
 import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { sanityClient } from 'sanity:client';
+import { sanityClient } from '~/sanity/client';
 
 const posts = await getLatestPosts();
 const featuredPost = posts[0];

@@ -6,6 +6,9 @@ import react from '@astrojs/react';
 import icon from 'astro-icon';
 import { dataset, projectId } from './src/sanity/config';
 
+const shouldEmbedStudio =
+  process.env.ENABLE_SANITY_STUDIO === 'true' || !process.env.VERCEL;
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://callum.co.uk',
@@ -18,6 +21,9 @@ export default defineConfig({
   prefetch: {
     defaultStrategy: 'hover',
   },
+  build: {
+    concurrency: 2,
+  },
   image: {
     remotePatterns: [
       {
@@ -27,13 +33,17 @@ export default defineConfig({
     ],
   },
   integrations: [
-    sanity({
-      projectId,
-      dataset,
-      useCdn: false,
-      studioBasePath: '/studio',
-    }),
-    react(),
+    ...(shouldEmbedStudio
+      ? [
+          sanity({
+            projectId,
+            dataset,
+            useCdn: false,
+            studioBasePath: '/studio',
+          }),
+        ]
+      : []),
+    ...(shouldEmbedStudio ? [react()] : []),
     sitemap(),
     icon({
       include: {

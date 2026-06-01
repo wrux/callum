@@ -1,5 +1,5 @@
 import groq from 'groq';
-import { sanityClient } from 'sanity:client';
+import { sanityClient } from '~/sanity/client';
 import { articleTeaserFragment } from '../fragments/articleTeaserFragment';
 
 export const getCountries = async () => {
