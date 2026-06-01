@@ -217,10 +217,7 @@ const showTableOfContents = tableOfContents.length > 1;
         <div class="u-full u-container-4xl u-min-0">
           {
             countryNames && (
-              <p
-                class="goo-filter-md article-location-wrap"
-                aria-label="Countries"
-              >
+              <p class="article-location-wrap" aria-label="Countries">
                 <span class="t-pill article-location-pill">
                   <Icon name="mdi:map-marker" class="article-location-icon" />
                   <span class="u-min-0">{countryNames}</span>
@@ -359,8 +356,11 @@ const showTableOfContents = tableOfContents.length > 1;
     margin: 0;
     padding: 0.25rem 0.75rem 0.25rem 0.25rem;
     border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.14);
     color: oklch(92.8% 0.006 264.531);
-    background: oklch(13% 0.028 261.692 / 0.1);
+    background: oklch(13% 0.028 261.692 / 0.56);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
   }
 
   .article-location-wrap {

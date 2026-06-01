@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
-import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import { imageBuilder } from '~/sanity/image';
 
 export type Props = ArticleTeaser & {
@@ -74,14 +73,11 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
         title={`Read article ${title}`}
         aria-label={`Read article ${title}`}
       >
-        <span class="bubble-arrow-link">
-          <BubbleArrowSurface />
-          Read article
-          <Icon
-            name="mdi:arrow-top-right"
-            class="bubble-arrow-link__icon"
-            aria-hidden="true"
-          />
+        <span class="btn btn-primary btn-action">
+          <span>Read article</span>
+          <span class="btn-chip" aria-hidden="true">
+            <Icon name="mdi:arrow-top-right" />
+          </span>
         </span>
       </a>
     </div>

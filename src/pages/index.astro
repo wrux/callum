@@ -2,7 +2,6 @@
 import { Icon } from 'astro-icon/components';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import ArticleTeaser from '~/components/ArticleTeaser.astro';
-import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import Logo from '~/components/Logo.astro';
 import TeaserGrid from '~/components/TeaserGrid.astro';
 import Wordmark from '~/components/Wordmark.astro';
@@ -141,17 +140,14 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
                 </p>
               )}
               <a
-                class="t-action bubble-arrow-link u-mt-2"
+                class="t-action btn btn-primary btn-action u-mt-2"
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
-                <BubbleArrowSurface />
-                Read article
-                <Icon
-                  name="mdi:arrow-top-right"
-                  class="bubble-arrow-link__icon"
-                  aria-hidden="true"
-                />
+                <span>Read article</span>
+                <span class="btn-chip" aria-hidden="true">
+                  <Icon name="mdi:arrow-top-right" />
+                </span>
               </a>
             </aside>
           )

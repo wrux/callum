@@ -2,7 +2,6 @@
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
-import FooterSocialSurface from '~/components/FooterSocialSurface.astro';
 import Logo from '~/components/Logo.astro';
 
 import '../styles/link.css';
@@ -85,28 +84,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
     data-is-article-page={isArticlePage}
     data-uses-hero-header={usesHeroHeader}
   >
-    <svg
-      class="svg-filter-definitions"
-      width="0"
-      height="0"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <filter id="buttonFilter" color-interpolation-filters="sRGB">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur"
-          ></feGaussianBlur>
-          <feColorMatrix
-            in="blur"
-            mode="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-            result="goo"></feColorMatrix>
-          <feComposite in="SourceGraphic" in2="goo" operator="atop"
-          ></feComposite>
-        </filter>
-      </defs>
-    </svg>
-
     <header
       class="site-header"
       data-is-homepage={isHomepage}
@@ -121,7 +98,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
               !isHomepage && (
                 <a
                   href="/"
-                  class="t-site-action site-header-action site-header-action-back"
+                  class="t-site-action btn btn-glass btn-header site-header-action site-header-action-back"
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
                 >
@@ -155,7 +132,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
             <a
               href="https://wrux.com"
               target="_blank"
-              class="t-site-action site-header-action site-header-action-external"
+              class="t-site-action btn btn-glass btn-header site-header-action site-header-action-external"
               aria-label="Visit wrux.com"
               rel="noreferrer"
             >
@@ -180,13 +157,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
           <nav aria-label="External links">
             <div class="footer-social-shell">
-              <FooterSocialSurface />
               <ul class="footer-social-list">
                 <li>
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
-                    class="footer-social-link"
+                    class="btn btn-primary btn-icon footer-social-link"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
                   >
@@ -197,7 +173,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
-                    class="footer-social-link"
+                    class="btn btn-primary btn-icon footer-social-link"
                     aria-label="View my GitHub profile"
                     rel="noreferrer nofollow"
                   >
@@ -208,7 +184,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   <a
                     href="https://www.linkedin.com/in/wrux"
                     target="_blank"
-                    class="footer-social-link"
+                    class="btn btn-primary btn-icon footer-social-link"
                     aria-label="View my LinkedIn profile"
                     rel="noreferrer nofollow"
                   >
@@ -249,7 +225,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <button
       type="button"
-      class="back-to-top-button"
+      class="btn btn-glass btn-icon-lg back-to-top-button"
       aria-label="Back to top"
       aria-hidden="true"
       data-back-to-top-button
@@ -644,20 +620,10 @@ const usesHeroHeader = isHomepage || isArticlePage;
     right: 1rem;
     bottom: 1rem;
     z-index: 60;
-    display: inline-flex;
-    width: 2.75rem;
-    height: 2.75rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: rgb(3 7 18 / 0.78);
-    color: var(--color-gray-50);
-    cursor: pointer;
     opacity: 0;
     pointer-events: none;
     transform: translateY(0.65rem);
     transition:
-      background 220ms ease,
       opacity 220ms ease,
       transform 220ms ease;
   }
@@ -669,17 +635,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
   }
 
   .back-to-top-button:is(:hover, :focus-visible) {
-    background: hsl(225 80% 50%);
     transform: translateY(-0.12rem);
-  }
-
-  .back-to-top-button:focus {
-    outline: none;
-  }
-
-  .back-to-top-button svg {
-    width: 1.2rem;
-    height: 1.2rem;
   }
 
   @media (width < 36rem) {
