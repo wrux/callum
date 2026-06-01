@@ -608,6 +608,12 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  background: var(--color-gray-950);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-gray-950);
 }
 
 /* Better focus styles */
@@ -649,25 +655,28 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(site-main),
-  ::view-transition-old(site-footer),
-  ::view-transition-old(site-header-back),
-  ::view-transition-old(site-header-logo) {
-    animation: wrux-view-fade-out 420ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
-    mix-blend-mode: normal;
+  ::view-transition {
+    background: var(--color-gray-950);
   }
 
-  ::view-transition-new(site-main),
-  ::view-transition-new(site-footer),
-  ::view-transition-new(site-header-back),
-  ::view-transition-new(site-header-logo) {
-    animation: wrux-view-fade-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-old(site-header),
-  ::view-transition-new(site-header) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
     animation: none !important;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    opacity: 0;
+  }
+
+  ::view-transition-new(root) {
+    opacity: 1;
+  }
+
+  ::view-transition-image-pair(root),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
     mix-blend-mode: normal;
   }
 }

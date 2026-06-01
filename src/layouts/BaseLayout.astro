@@ -3,6 +3,7 @@ import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
 import Logo from '~/components/Logo.astro';
+import { wruxChromeFadeTransition } from '~/utils/viewTransitions';
 
 import '../styles/link.css';
 import '../styles/global.css';
@@ -31,7 +32,7 @@ const isArticlePage = Astro.url.pathname.startsWith('/article/');
 const usesHeroHeader = isHomepage || isArticlePage;
 ---
 
-<html lang="en" transition:name="root" transition:animate="none">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -75,7 +76,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="callum.co.uk" />
     <link rel="manifest" href="/site.webmanifest" />
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
   </head>
 
   <body
@@ -112,8 +113,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
       data-is-article-page={isArticlePage}
       data-uses-hero-header={usesHeroHeader}
       data-is-stuck="false"
-      transition:name="site-header"
-      transition:animate="none"
     >
       <div class="container max-w-6xl">
         <div class="site-header-shell">
@@ -125,7 +124,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   class="type-site-action site-header-action site-header-action-back"
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
-                  transition:animate="none"
+                  transition:animate={wruxChromeFadeTransition}
                 >
                   <Icon
                     name="mdi:keyboard-backspace"
@@ -144,7 +143,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                 href="/"
                 aria-label="Go to the homepage"
                 transition:name="site-header-logo"
-                transition:animate="none"
+                transition:animate={wruxChromeFadeTransition}
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
                 <Logo class="type-site-logo-mark site-header-logo" />
@@ -175,19 +174,11 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <slot name="header" />
 
-    <main
-      class="site-main flex-1"
-      transition:name="site-main"
-      transition:animate="none"
-    >
+    <main class="site-main flex-1">
       <slot />
     </main>
 
-    <footer
-      class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14"
-      transition:name="site-footer"
-      transition:animate="none"
-    >
+    <footer class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14">
       <div class="container max-w-6xl">
         <div class="footer-brand">
           <Logo class="type-footer-logo-mark opacity-90" />
@@ -276,6 +267,8 @@ const usesHeroHeader = isHomepage || isArticlePage;
         const chromeInitializedKey = '__callumChromeSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
         const backToTopInitializedKey = '__callumBackToTopInitialized';
+        const viewTransitionInitializedKey =
+          '__callumViewTransitionInitialized';
 
         function syncHeaderScrollState() {
           const header = document.querySelector('.site-header');
@@ -410,6 +403,75 @@ const usesHeroHeader = isHomepage || isArticlePage;
           });
         }
 
+        function waitForImageLoad(image) {
+          return new Promise((resolve) => {
+            let isSettled = false;
+            const timeout = window.setTimeout(() => finish(false), 1200);
+
+            function finish(didLoad) {
+              if (isSettled) {
+                return;
+              }
+
+              isSettled = true;
+              window.clearTimeout(timeout);
+              resolve(didLoad);
+            }
+
+            image.addEventListener('load', () => finish(true), { once: true });
+            image.addEventListener('error', () => finish(false), {
+              once: true,
+            });
+
+            if (image.complete) {
+              finish(image.naturalWidth > 0);
+            }
+          });
+        }
+
+        async function preloadDocumentHeroImage(newDocument) {
+          const source = newDocument?.querySelector?.('.media-hero-image[src]');
+
+          if (!(source instanceof HTMLImageElement)) {
+            return;
+          }
+
+          const image = new Image();
+          image.decoding = 'async';
+
+          if ('fetchPriority' in image) {
+            image.fetchPriority = 'high';
+          }
+
+          if (source.sizes) {
+            image.sizes = source.sizes;
+          }
+
+          if (source.srcset) {
+            image.srcset = source.srcset;
+          }
+
+          image.src = source.currentSrc || source.src;
+          const didLoad = await waitForImageLoad(image);
+
+          if (didLoad && typeof image.decode === 'function') {
+            await image.decode().catch(() => {});
+          }
+        }
+
+        function preloadHeroImageBeforeSwap(event) {
+          if (typeof event.loader !== 'function') {
+            return;
+          }
+
+          const loadPage = event.loader;
+
+          event.loader = async () => {
+            await loadPage();
+            await preloadDocumentHeroImage(event.newDocument);
+          };
+        }
+
         syncHeaderScrollState();
         syncBackToTopButton();
         syncImageLoadStates();
@@ -451,6 +513,14 @@ const usesHeroHeader = isHomepage || isArticlePage;
               scrollToPageTop();
             }
           });
+        }
+
+        if (!window[viewTransitionInitializedKey]) {
+          window[viewTransitionInitializedKey] = true;
+          document.addEventListener(
+            'astro:before-preparation',
+            preloadHeroImageBeforeSwap,
+          );
         }
       })();
     </script>

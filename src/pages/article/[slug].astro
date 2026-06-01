@@ -55,7 +55,6 @@ const heroImageSrcSet =
     })
     .join(', ');
 const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
-const postHeroMediaTransitionName = `post-hero-media-${post.slug}`;
 const hasReadingTime =
   typeof post.readingTime === 'number' && post.readingTime > 0;
 const countryNames = post.countries
@@ -163,8 +162,6 @@ const showTableOfContents = tableOfContents.length > 1;
           <figure
             class="article-hero-media media-hero-asset media-hero-asset-article"
             style={`--article-hero-image-position: ${heroImagePosition};`}
-            transition:name={postHeroMediaTransitionName}
-            transition:animate="none"
           >
             <img
               class="media-hero-image media-hero-image-article"
