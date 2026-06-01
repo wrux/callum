@@ -10,14 +10,15 @@ import {
 import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
 
-import { dataset, projectId } from '~/sanity/config';
-import schema from '~/sanity/schemas';
-import { defaultDocumentNodeResolver, structure } from '~/sanity/structure';
+import { dataset, projectId } from './src/sanity/config';
+import StudioIcon from './src/sanity/components/StudioIcon';
+import schema from './src/sanity/schemas';
+import { defaultDocumentNodeResolver, structure } from './src/sanity/structure';
 
 export default defineConfig({
   name: 'callum',
   title: 'callum.co.uk',
-  icon: () => <img src="/favicon.svg" alt="Callum.co.uk logo" />,
+  icon: StudioIcon,
   projectId,
   dataset,
   plugins: [

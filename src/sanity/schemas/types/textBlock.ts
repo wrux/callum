@@ -1,7 +1,7 @@
 import { Article } from '@phosphor-icons/react';
 import { defineField, defineType } from 'sanity';
 
-import { previewStructuredText } from '~/sanity/helpers/previewStructuredText';
+import { previewStructuredText } from '../../helpers/previewStructuredText';
 
 const schema = defineType({
   type: 'object',

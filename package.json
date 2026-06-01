@@ -2,11 +2,15 @@
   "name": "callum",
   "version": "2.0.0",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "concurrently -k -n astro,studio -c cyan,magenta \"npm run dev:astro\" \"npm run studio:dev\"",
+    "dev:astro": "astro dev --host=localhost --port=4322",
+    "start": "npm run dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "studio:dev": "sanity dev --host=localhost --port=3333",
+    "studio:build": "sanity build",
+    "studio:deploy": "sanity deploy"
   },
   "browserslist": [
     "last 2 Chrome versions",
@@ -29,14 +33,13 @@
     "groq": "^5.28.0"
   },
   "devDependencies": {
-    "@astrojs/react": "^5.0.6",
     "@phosphor-icons/react": "^2.1.10",
-    "@sanity/astro": "^3.4.0",
     "@sanity/dashboard": "^5.0.1",
     "@sanity/vision": "^5.28.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
+    "concurrently": "^10.0.1",
     "country-code-emoji": "^2.3.0",
     "cssnano": "^7.1.9",
     "postcss-nesting": "^14.0.0",

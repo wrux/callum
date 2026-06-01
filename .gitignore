@@ -2,6 +2,7 @@
 dist/
 # generated files
 .astro/
+.sanity/
 .vercel/
 
 # dependencies
