@@ -588,10 +588,7 @@
     margin: 0;
     overflow: hidden;
     background-color: var(--color-gray-900);
-
-    @media (width >= 64rem) {
-      border-radius: 0.5rem;
-    }
+    border-radius: 0.5rem;
   }
 
   .media-hero {
