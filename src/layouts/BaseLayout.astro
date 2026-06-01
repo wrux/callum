@@ -140,14 +140,14 @@ const usesHeroHeader = isHomepage || isArticlePage;
           {
             !isHomepage ? (
               <a
-                class="site-header-logo-link"
+                class="site-header-logo-link group"
                 href="/"
                 aria-label="Go to the homepage"
                 transition:name="site-header-logo"
                 transition:animate={wruxChromeFadeTransition}
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
-                <Logo class="type-site-logo-mark site-header-logo" />
+                <Logo class="type-site-logo-mark site-header-logo transition-[filter] duration-200 group-hover:brightness-0 group-hover:invert group-focus-visible:brightness-0 group-focus-visible:invert" />
               </a>
             ) : (
               <span class="site-header-logo-placeholder" aria-hidden="true" />
