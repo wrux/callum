@@ -24,46 +24,34 @@
 
 @layer utilities {
   .u-container {
-    --container-max: 96rem;
-
-    width: min(100%, var(--container-max));
+    width: min(100%, 96rem);
     margin-inline: auto;
     padding-inline: clamp(1rem, 6.25vw, 6rem);
   }
 
   .u-container-2xl {
-    --container-max: 42rem;
-
     max-width: 42rem;
   }
 
   .u-container-4xl {
-    --container-max: 56rem;
-
     max-width: 56rem;
   }
 
   .u-container-6xl {
-    --container-max: 72rem;
-
     max-width: 72rem;
   }
 
   .u-container-screen-xl {
-    --container-max: 80rem;
-
     max-width: 80rem;
   }
 
   .u-container-screen-2xl {
-    --container-max: 96rem;
-
     max-width: 96rem;
   }
 
   .u-container-from-md {
     @media (width >= 48rem) {
-      width: min(100%, var(--container-max, 96rem));
+      width: min(100%, 96rem);
       margin-inline: auto;
       padding-inline: clamp(1rem, 6.25vw, 6rem);
     }
@@ -83,10 +71,6 @@
 
   .u-text-muted {
     color: var(--color-gray-400);
-  }
-
-  .u-text-left {
-    text-align: left;
   }
 
   .u-text-balance {
@@ -204,6 +188,8 @@
   }
 
   html {
+    scroll-behavior: smooth;
+    background: var(--color-gray-950);
     line-height: 1.5;
     font-family:
       InterVariable, Inter, ui-sans-serif, system-ui, sans-serif,
@@ -215,13 +201,19 @@
 
   body {
     min-height: 100vh;
+    background: var(--color-gray-950);
   }
 
   img,
   picture,
-  svg,
   video,
   canvas {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  svg {
     display: block;
     max-width: 100%;
   }
@@ -241,50 +233,52 @@
   a {
     color: inherit;
   }
+
+  *:focus-visible {
+    outline: 2px solid hsl(225 80% 50%);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: hsl(225 80% 50%);
+    color: white;
+  }
 }
 
 @layer components {
-  .t-h1 {
-    font-size: clamp(2.25rem, 1.31rem + 4.69vw, 4.5rem);
+  :is(.t-h1, .t-h2, .t-h3, .t-h4, .t-h5, .t-h6) {
     line-height: 1.25;
     font-weight: 700;
+  }
+
+  :is(.t-h1, .t-h2, .t-h3, .t-h4, .t-h6) {
     letter-spacing: -0.025em;
+  }
+
+  .t-h1 {
+    font-size: clamp(2.25rem, 1.31rem + 4.69vw, 4.5rem);
   }
 
   .t-h2 {
     font-size: clamp(1.875rem, 1.41rem + 2.34vw, 3rem);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.025em;
   }
 
   .t-h3 {
     font-size: clamp(1.5rem, 1.19rem + 1.56vw, 2.25rem);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.025em;
   }
 
   .t-h4 {
     font-size: clamp(1.25rem, 0.99rem + 1.3vw, 1.875rem);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.025em;
   }
 
   .t-h5 {
     font-size: clamp(1.125rem, 1.07rem + 0.26vw, 1.25rem);
-    line-height: 1.25;
-    font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
   .t-h6 {
     font-size: clamp(1rem, 0.95rem + 0.26vw, 1.125rem);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.025em;
   }
 
   .t-hero-title {
@@ -537,6 +531,39 @@
     transform: scale(1.08);
   }
 
+  .surface-glass {
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background: oklch(13% 0.028 261.692 / 0.56);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+  }
+
+  .link {
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-position: under;
+    text-underline-offset: 0.1em;
+    transition:
+      color 200ms ease,
+      text-decoration-color 200ms ease,
+      text-underline-offset 200ms ease;
+  }
+
+  .link:is(:hover, :focus) {
+    color: hsl(225 80% 70%);
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+  }
+
+  .link-on-hover {
+    text-decoration-color: transparent;
+  }
+
+  .link-on-hover:is(:hover, :focus) {
+    text-decoration-color: currentColor;
+  }
+
   .article-card-link {
     display: inline-flex;
     color: oklch(98.5% 0.002 247.839);
@@ -574,14 +601,12 @@
   }
 
   .brand-logo-svg {
-    display: block;
     width: 1em;
     height: 1em;
     pointer-events: none;
   }
 
   .brand-wordmark-svg {
-    display: block;
     width: 2.44em;
     height: 1em;
     pointer-events: none;
@@ -603,31 +628,39 @@
   }
 
   .media-hero {
-    --media-hero-height: min(216.6667vw, 92svh);
-    --media-hero-aspect: 9 / 19.5;
-
     position: relative;
     isolation: isolate;
     display: grid;
     overflow: hidden;
-    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .media-hero::before,
+  .media-hero::after,
+  .media-hero-asset {
+    width: 100%;
+    height: min(216.6667vw, 92svh);
+    aspect-ratio: 9 / 19.5;
 
     @media (width >= 48rem) {
-      --media-hero-height: auto;
-      --media-hero-aspect: 1;
+      height: auto;
+      aspect-ratio: 1;
     }
 
     @media (width >= 64rem) {
-      --media-hero-aspect: 2 / 1;
+      aspect-ratio: 2 / 1;
     }
   }
 
   .media-hero::before {
     display: block;
     grid-area: 1 / 1;
-    width: 100%;
-    height: var(--media-hero-height);
-    aspect-ratio: var(--media-hero-aspect);
+    content: '';
+  }
+
+  .media-hero::after {
+    position: absolute;
+    z-index: -1;
+    background: oklch(13% 0.028 261.692 / 0.2);
     content: '';
   }
 
@@ -637,6 +670,8 @@
     overflow: hidden;
     margin: 0;
     opacity: 0;
+    -webkit-mask: linear-gradient(#000 calc(100% - 200px), #0000);
+    mask: linear-gradient(#000 calc(100% - 200px), #0000);
     transition: opacity 700ms ease;
   }
 
@@ -644,43 +679,22 @@
     opacity: 0.8;
   }
 
-  :is(.media-hero-asset-article, .media-hero-scrim) {
+  .media-hero::after,
+  .media-hero-asset {
     top: 0;
     right: 0;
     left: 0;
-    width: 100%;
-    height: var(--media-hero-height);
-    aspect-ratio: var(--media-hero-aspect);
   }
 
   .media-hero-image {
-    width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: var(--hero-image-position, 50% 50%);
     filter: brightness(0.5);
   }
 
   .media-hero-asset picture {
-    display: block;
-    width: 100%;
     height: 100%;
-  }
-
-  .media-hero-image-article {
-    object-position: var(--article-hero-image-position, 50% 50%);
-  }
-
-  .media-hero-scrim {
-    position: absolute;
-    z-index: -1;
-    background: oklch(13% 0.028 261.692 / 0.2);
-  }
-
-  .media-hero-asset-home,
-  .media-hero-scrim-home {
-    inset: 0;
-    height: 100%;
-    aspect-ratio: auto;
   }
 
   :is(.home-hero-content, .article-hero-content) {
@@ -752,32 +766,4 @@
       padding-inline: 0.75rem;
     }
   }
-}
-
-/* Let anchors and browser focus move smoothly through long articles. */
-html {
-  scroll-behavior: smooth;
-  background: oklch(13% 0.028 261.692);
-}
-
-body {
-  min-height: 100vh;
-  background: oklch(13% 0.028 261.692);
-}
-
-/* Draw a consistent focus ring for keyboard users. */
-*:focus-visible {
-  outline: 2px solid hsl(225, 80%, 50%);
-  outline-offset: 2px;
-}
-
-/* Apply the brand color to selected text. */
-::selection {
-  background-color: hsl(225, 80%, 50%);
-  color: white;
-}
-
-::-moz-selection {
-  background-color: hsl(225, 80%, 50%);
-  color: white;
 }

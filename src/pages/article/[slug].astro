@@ -1,10 +1,9 @@
 ---
 import { imageBuilder } from '~/sanity/image';
-import { createImageUrlBuilder } from '@sanity/image-url';
-import { sanityClient } from '~/sanity/client';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import DateTime from '~/components/DateTime.astro';
+import HeroMedia from '~/components/HeroMedia.astro';
 import PortableText from '~/components/PortableText.astro';
 import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
@@ -27,48 +26,6 @@ const heroImagePosition =
   heroImageHotspot?.x != null && heroImageHotspot?.y != null
     ? `${heroImageHotspot.x * 100}% ${heroImageHotspot.y * 100}%`
     : '50% 50%';
-const heroImageBuilder = createImageUrlBuilder(sanityClient)
-  .fit('crop')
-  .format('webp');
-const heroImageDesktopWidths = [1280, 1600, 1920, 2400];
-const heroImageTabletWidths = [768, 1024, 1280, 1536];
-const heroImageMobileWidths = [480, 640, 828, 960];
-const heroImageHeightForAspect = (width: number, aspectRatio: number) =>
-  Math.round(width / aspectRatio);
-const heroImageSrcSetForAspect = (widths: number[], aspectRatio: number) =>
-  post.mainImage &&
-  widths
-    .map((width) => {
-      const url = heroImageBuilder
-        .image(post.mainImage)
-        .width(width)
-        .height(heroImageHeightForAspect(width, aspectRatio))
-        .quality(78)
-        .url();
-
-      return `${url} ${width}w`;
-    })
-    .join(', ');
-const heroImageSrc =
-  post.mainImage &&
-  heroImageBuilder
-    .image(post.mainImage)
-    .width(1600)
-    .height(heroImageHeightForAspect(1600, 2))
-    .quality(78)
-    .url();
-const heroImageMobileSrcSet = heroImageSrcSetForAspect(
-  heroImageMobileWidths,
-  9 / 19.5,
-);
-const heroImageTabletSrcSet = heroImageSrcSetForAspect(
-  heroImageTabletWidths,
-  1,
-);
-const heroImageDesktopSrcSet = heroImageSrcSetForAspect(
-  heroImageDesktopWidths,
-  2,
-);
 const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
 const hasReadingTime =
   typeof post.readingTime === 'number' && post.readingTime > 0;
@@ -168,50 +125,13 @@ const showTableOfContents = tableOfContents.length > 1;
   }}
 >
   <article class="article-page">
-    <header
-      class="article-hero media-hero"
-      data-has-image={heroImageSrc ? 'true' : 'false'}
-    >
-      {
-        heroImageSrc && (
-          <figure
-            class="article-hero-media media-hero-asset media-hero-asset-article"
-            style={`--article-hero-image-position: ${heroImagePosition};`}
-          >
-            <picture>
-              <source
-                media="(max-width: 767px)"
-                srcset={heroImageMobileSrcSet}
-                sizes="100vw"
-              />
-              <source
-                media="(max-width: 1023px)"
-                srcset={heroImageTabletSrcSet}
-                sizes="100vw"
-              />
-              <img
-                class="media-hero-image media-hero-image-article"
-                src={heroImageSrc}
-                srcset={heroImageDesktopSrcSet}
-                sizes="100vw"
-                alt={heroImageAlt}
-                width="1600"
-                height={heroImageHeightForAspect(1600, 2)}
-                decoding="async"
-                fetchpriority="high"
-                loading="eager"
-              />
-            </picture>
-            {post.mainImage?.alt && (
-              <figcaption class="hero-image-caption">
-                {post.mainImage.alt}
-              </figcaption>
-            )}
-          </figure>
-        )
-      }
-
-      <div class="media-hero-scrim" aria-hidden="true"></div>
+    <header class="article-hero media-hero">
+      <HeroMedia
+        image={post.mainImage}
+        alt={heroImageAlt}
+        caption={post.mainImage?.alt}
+        position={heroImagePosition}
+      />
 
       <div class="article-hero-content u-container u-container-6xl">
         <div class="u-full u-container-4xl u-min-0">
@@ -247,7 +167,7 @@ const showTableOfContents = tableOfContents.length > 1;
                 aria-label="Article details"
               >
                 {post?.publishedAt && (
-                  <p class="t-meta article-meta-pill">
+                  <p class="t-meta surface-glass article-meta-pill">
                     <Icon
                       name="mdi:calendar-blank-outline"
                       class="article-meta-icon"
@@ -259,7 +179,7 @@ const showTableOfContents = tableOfContents.length > 1;
                 )}
 
                 {hasReadingTime && (
-                  <p class="t-meta article-meta-pill">
+                  <p class="t-meta surface-glass article-meta-pill">
                     <Icon
                       name="mdi:book-open-page-variant-outline"
                       class="article-meta-icon"
@@ -356,11 +276,7 @@ const showTableOfContents = tableOfContents.length > 1;
     margin: 0;
     padding: 0.25rem 0.75rem 0.25rem 0.25rem;
     border-radius: 999px;
-    border: 1px solid rgb(255 255 255 / 0.14);
     color: oklch(92.8% 0.006 264.531);
-    background: oklch(13% 0.028 261.692 / 0.56);
-    -webkit-backdrop-filter: blur(1rem);
-    backdrop-filter: blur(1rem);
   }
 
   .article-location-wrap {
@@ -397,24 +313,5 @@ const showTableOfContents = tableOfContents.length > 1;
     border-radius: 999px;
     color: oklch(98.5% 0.002 247.839);
     background: hsl(225 80% 50%);
-  }
-
-  .article-hero-media {
-    mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
   }
 </style>

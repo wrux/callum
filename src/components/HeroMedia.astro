@@ -1,0 +1,87 @@
+---
+import { createImageUrlBuilder } from '@sanity/image-url';
+import { sanityClient } from '~/sanity/client';
+
+export interface Props {
+  alt: string;
+  caption?: string;
+  image?: any;
+  position?: string;
+}
+
+const { alt, caption, image, position = '50% 50%' } = Astro.props;
+
+const imageBuilder = createImageUrlBuilder(sanityClient)
+  .fit('crop')
+  .format('webp');
+const desktopWidths = [1280, 1600, 1920, 2400];
+const tabletWidths = [768, 1024, 1280, 1536];
+const mobileWidths = [480, 640, 828, 960];
+const heightForAspect = (width: number, aspectRatio: number) =>
+  Math.round(width / aspectRatio);
+const srcSetForAspect = (widths: number[], aspectRatio: number) =>
+  image &&
+  widths
+    .map((width) => {
+      const url = imageBuilder
+        .image(image)
+        .width(width)
+        .height(heightForAspect(width, aspectRatio))
+        .quality(78)
+        .url();
+
+      return `${url} ${width}w`;
+    })
+    .join(', ');
+
+const src =
+  image &&
+  imageBuilder
+    .image(image)
+    .width(1600)
+    .height(heightForAspect(1600, 2))
+    .quality(78)
+    .url();
+const mobileSrcSet = srcSetForAspect(mobileWidths, 9 / 19.5);
+const tabletSrcSet = srcSetForAspect(tabletWidths, 1);
+const desktopSrcSet = srcSetForAspect(desktopWidths, 2);
+---
+
+{
+  src && (
+    <>
+      <figure
+        class="media-hero-asset"
+        style={`--hero-image-position: ${position};`}
+      >
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcset={mobileSrcSet}
+            sizes="100vw"
+          />
+          <source
+            media="(max-width: 1023px)"
+            srcset={tabletSrcSet}
+            sizes="100vw"
+          />
+          <img
+            class="media-hero-image"
+            src={src}
+            srcset={desktopSrcSet}
+            sizes="100vw"
+            alt={alt}
+            width="1600"
+            height={heightForAspect(1600, 2)}
+            decoding="async"
+            fetchpriority="high"
+            loading="eager"
+          />
+        </picture>
+        {caption && (
+          <figcaption class="hero-image-caption">{caption}</figcaption>
+        )}
+      </figure>
+    </>
+  )
+}

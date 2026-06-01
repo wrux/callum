@@ -1,60 +1,17 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { createImageUrlBuilder } from '@sanity/image-url';
 import ArticleTeaser from '~/components/ArticleTeaser.astro';
+import HeroMedia from '~/components/HeroMedia.astro';
 import Logo from '~/components/Logo.astro';
 import TeaserGrid from '~/components/TeaserGrid.astro';
 import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { sanityClient } from '~/sanity/client';
 
 const posts = await getLatestPosts();
 const featuredPost = posts[0];
 const gridPosts = featuredPost ? posts.slice(1) : posts;
 const heroImage = featuredPost?.mainImage;
-const heroImageBuilder = createImageUrlBuilder(sanityClient)
-  .fit('crop')
-  .format('webp');
-const heroImageDesktopWidths = [1280, 1600, 1920, 2400];
-const heroImageTabletWidths = [768, 1024, 1280, 1536];
-const heroImageMobileWidths = [480, 640, 828, 960];
-const heroImageHeightForAspect = (width: number, aspectRatio: number) =>
-  Math.round(width / aspectRatio);
-const heroImageSrcSetForAspect = (widths: number[], aspectRatio: number) =>
-  heroImage &&
-  widths
-    .map((width) => {
-      const url = heroImageBuilder
-        .image(heroImage)
-        .width(width)
-        .height(heroImageHeightForAspect(width, aspectRatio))
-        .quality(78)
-        .url();
-
-      return `${url} ${width}w`;
-    })
-    .join(', ');
-const heroImageSrc =
-  heroImage &&
-  heroImageBuilder
-    .image(heroImage)
-    .width(1600)
-    .height(heroImageHeightForAspect(1600, 2))
-    .quality(78)
-    .url();
-const heroImageMobileSrcSet = heroImageSrcSetForAspect(
-  heroImageMobileWidths,
-  9 / 19.5,
-);
-const heroImageTabletSrcSet = heroImageSrcSetForAspect(
-  heroImageTabletWidths,
-  1,
-);
-const heroImageDesktopSrcSet = heroImageSrcSetForAspect(
-  heroImageDesktopWidths,
-  2,
-);
 const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 ---
 
@@ -66,43 +23,8 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
       'Embark on a journey with Callum Bonnyman as they share their globetrotting to alternative and unknown places!',
   }}
 >
-  <section
-    id="hero-section"
-    class="home-hero media-hero"
-    data-has-image={heroImageSrc ? 'true' : 'false'}
-  >
-    {
-      heroImageSrc && (
-        <figure class="home-hero-media media-hero-asset media-hero-asset-home">
-          <picture>
-            <source
-              media="(max-width: 767px)"
-              srcset={heroImageMobileSrcSet}
-              sizes="100vw"
-            />
-            <source
-              media="(max-width: 1023px)"
-              srcset={heroImageTabletSrcSet}
-              sizes="100vw"
-            />
-            <img
-              class="media-hero-image"
-              src={heroImageSrc}
-              srcset={heroImageDesktopSrcSet}
-              sizes="100vw"
-              alt={heroImageAlt}
-              width="1600"
-              height={heroImageHeightForAspect(1600, 2)}
-              decoding="async"
-              fetchpriority="high"
-              loading="eager"
-            />
-          </picture>
-        </figure>
-      )
-    }
-    <div class="media-hero-scrim media-hero-scrim-home" aria-hidden="true">
-    </div>
+  <section id="hero-section" class="home-hero media-hero">
+    <HeroMedia image={heroImage} alt={heroImageAlt} />
 
     <div class="home-hero-content u-container u-container-6xl">
       <div class="home-hero-brand u-flex u-flex-col u-gap-2">
@@ -220,24 +142,5 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     color: oklch(87.2% 0.01 258.338);
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-  }
-
-  .home-hero-media {
-    mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      rgb(0 0 0) 0%,
-      rgb(0 0 0) calc(100% - 200px),
-      rgb(0 0 0 / 0) 100%
-    );
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
   }
 </style>
