@@ -30,30 +30,45 @@ const heroImagePosition =
 const heroImageBuilder = createImageUrlBuilder(sanityClient)
   .fit('crop')
   .format('webp');
-const heroImageWidths = [640, 960, 1280, 1600, 1920, 2400];
-const heroImageHeightForWidth = (width: number) => Math.round(width / 2);
-const heroImageSrc =
+const heroImageDesktopWidths = [1280, 1600, 1920, 2400];
+const heroImageTabletWidths = [768, 1024, 1280, 1536];
+const heroImageMobileWidths = [480, 640, 828, 960];
+const heroImageHeightForAspect = (width: number, aspectRatio: number) =>
+  Math.round(width / aspectRatio);
+const heroImageSrcSetForAspect = (widths: number[], aspectRatio: number) =>
   post.mainImage &&
-  heroImageBuilder
-    .image(post.mainImage)
-    .width(1600)
-    .height(heroImageHeightForWidth(1600))
-    .quality(78)
-    .url();
-const heroImageSrcSet =
-  post.mainImage &&
-  heroImageWidths
+  widths
     .map((width) => {
       const url = heroImageBuilder
         .image(post.mainImage)
         .width(width)
-        .height(heroImageHeightForWidth(width))
+        .height(heroImageHeightForAspect(width, aspectRatio))
         .quality(78)
         .url();
 
       return `${url} ${width}w`;
     })
     .join(', ');
+const heroImageSrc =
+  post.mainImage &&
+  heroImageBuilder
+    .image(post.mainImage)
+    .width(1600)
+    .height(heroImageHeightForAspect(1600, 2))
+    .quality(78)
+    .url();
+const heroImageMobileSrcSet = heroImageSrcSetForAspect(
+  heroImageMobileWidths,
+  9 / 19.5,
+);
+const heroImageTabletSrcSet = heroImageSrcSetForAspect(
+  heroImageTabletWidths,
+  1,
+);
+const heroImageDesktopSrcSet = heroImageSrcSetForAspect(
+  heroImageDesktopWidths,
+  2,
+);
 const heroImageAlt = post.mainImage?.asset.alt || post.title || '';
 const hasReadingTime =
   typeof post.readingTime === 'number' && post.readingTime > 0;
@@ -163,18 +178,30 @@ const showTableOfContents = tableOfContents.length > 1;
             class="article-hero-media media-hero-asset media-hero-asset-article"
             style={`--article-hero-image-position: ${heroImagePosition};`}
           >
-            <img
-              class="media-hero-image media-hero-image-article"
-              src={heroImageSrc}
-              srcset={heroImageSrcSet}
-              sizes="100vw"
-              alt={heroImageAlt}
-              width="1600"
-              height={heroImageHeightForWidth(1600)}
-              decoding="async"
-              fetchpriority="high"
-              loading="eager"
-            />
+            <picture>
+              <source
+                media="(max-width: 767px)"
+                srcset={heroImageMobileSrcSet}
+                sizes="100vw"
+              />
+              <source
+                media="(max-width: 1023px)"
+                srcset={heroImageTabletSrcSet}
+                sizes="100vw"
+              />
+              <img
+                class="media-hero-image media-hero-image-article"
+                src={heroImageSrc}
+                srcset={heroImageDesktopSrcSet}
+                sizes="100vw"
+                alt={heroImageAlt}
+                width="1600"
+                height={heroImageHeightForAspect(1600, 2)}
+                decoding="async"
+                fetchpriority="high"
+                loading="eager"
+              />
+            </picture>
             {post.mainImage?.alt && (
               <figcaption class="sr-only">{post.mainImage.alt}</figcaption>
             )}
