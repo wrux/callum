@@ -667,7 +667,7 @@
   }
 
   .image-caption-trigger {
-    @apply grid size-10 cursor-pointer list-none place-items-center rounded-full border border-white/15 bg-gray-950/35 text-gray-50 shadow-lg shadow-black/20 backdrop-blur-lg transition-colors duration-200 hover:bg-gray-950/60 focus-visible:bg-gray-950/60;
+    @apply focus-visible:outline-brand-light grid size-10 cursor-pointer list-none place-items-center rounded-full border border-white/15 bg-gray-950/35 text-gray-50 shadow-lg shadow-black/20 backdrop-blur-lg transition-colors duration-200 hover:bg-gray-950/60 focus-visible:bg-gray-950/60 focus-visible:outline-2 focus-visible:outline-offset-2;
   }
 
   .image-caption-trigger::-webkit-details-marker {

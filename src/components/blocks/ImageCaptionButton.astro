@@ -12,7 +12,11 @@ const { caption } = Astro.props;
   caption && (
     <details class="image-caption-popover">
       <summary class="image-caption-trigger" aria-label="Show image caption">
-        <Icon name="mdi:information-outline" class="size-5" />
+        <Icon
+          name="mdi:information-outline"
+          class="size-5"
+          aria-hidden="true"
+        />
       </summary>
       <p class="type-caption image-caption-panel">{caption}</p>
     </details>

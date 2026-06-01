@@ -148,15 +148,23 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 </Section>
 
 <script>
-  import Masonry from 'masonry-layout';
-  import Swiper from 'swiper';
-  import { Thumbs, Navigation } from 'swiper/modules';
+  const desktopGalleryMediaQuery = window.matchMedia('(min-width: 768px)');
 
-  function initMasonryGallery() {
+  async function initMasonryGallery() {
+    if (!desktopGalleryMediaQuery.matches) {
+      return;
+    }
+
     // Find this specific gallery grid
     const galleryGrids = document.querySelectorAll(
       '[data-block="image-gallery"] .masonry-grid',
     );
+
+    if (galleryGrids.length === 0) {
+      return;
+    }
+
+    const { default: Masonry } = await import('masonry-layout');
 
     galleryGrids.forEach((gridElement) => {
       const grid = gridElement as HTMLElement;
@@ -216,8 +224,21 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     });
   }
 
-  function initMobileGallery() {
+  async function initMobileGallery() {
+    if (desktopGalleryMediaQuery.matches) {
+      return;
+    }
+
     const mobileGalleries = document.querySelectorAll('.mobile-gallery');
+
+    if (mobileGalleries.length === 0) {
+      return;
+    }
+
+    const [{ default: Swiper }, { Navigation, Thumbs }] = await Promise.all([
+      import('swiper'),
+      import('swiper/modules'),
+    ]);
 
     mobileGalleries.forEach((gallery) => {
       const galleryId = gallery.getAttribute('data-gallery-id');
@@ -243,7 +264,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
       const canLoopMain = slides.length >= 4;
 
       // Initialize thumbnails swiper first (required for Thumbs module)
-      let thumbsSwiper: Swiper | null = null;
+      let thumbsSwiper: InstanceType<typeof Swiper> | null = null;
       let thumbsLoop = false;
       if (thumbsSwiperEl) {
         const thumbsSlides = thumbsSwiperEl.querySelectorAll('.swiper-slide');
@@ -305,8 +326,8 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   }
 
   function init() {
-    initMasonryGallery();
-    initMobileGallery();
+    void initMasonryGallery();
+    void initMobileGallery();
   }
 
   // Initialize when DOM is ready
@@ -318,6 +339,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 
   // Also initialize on view transitions (Astro)
   document.addEventListener('astro:after-swap', init);
+  desktopGalleryMediaQuery.addEventListener('change', init);
 </script>
 
 <style>
