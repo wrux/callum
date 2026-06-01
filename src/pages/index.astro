@@ -9,7 +9,6 @@ import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { sanityClient } from '~/sanity/client';
-import { typeStyle } from '~/utils/typography';
 
 const posts = await getLatestPosts();
 const featuredPost = posts[0];
@@ -106,38 +105,18 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     <div class="media-hero-scrim media-hero-scrim-home" aria-hidden="true">
     </div>
 
-    <div class="home-hero-content container max-w-6xl">
-      <div class="flex w-fit flex-col gap-2">
-        <Logo
-          class:list={[
-            typeStyle({ variant: 'homeLogoMark' }),
-            'text-gray-50 opacity-95',
-          ]}
-        />
-        <Wordmark
-          class:list={[
-            typeStyle({ variant: 'homeWordmark' }),
-            'text-gray-50 opacity-95',
-          ]}
-        />
+    <div class="home-hero-content u-container u-container-6xl">
+      <div class="home-hero-brand u-flex u-flex-col u-gap-2">
+        <Logo class="t-home-logo-mark u-text-light home-hero-logo" />
+        <Wordmark class="t-home-wordmark u-text-light home-hero-logo" />
       </div>
 
       <div class="home-hero-grid">
-        <div class="max-w-3xl min-w-0">
-          <h1
-            class:list={[
-              typeStyle({ variant: 'heroTitle' }),
-              'm-0 text-balance text-gray-50',
-            ]}
-          >
+        <div class="home-hero-intro u-min-0">
+          <h1 class="t-hero-title u-m-0 u-text-balance u-text-light">
             Journeys beyond the obvious
           </h1>
-          <p
-            class:list={[
-              typeStyle({ variant: 'heroSummary' }),
-              'mt-4 mb-0 max-w-xl text-gray-200',
-            ]}
-          >
+          <p class="t-hero-summary u-mt-4 u-mb-0 home-hero-summary u-text-soft">
             Photographs and field notes from less travelled places, shaped by
             curiosity, wandering, and a preference for the unusual route.
           </p>
@@ -149,38 +128,20 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
               class="home-hero-latest"
               aria-labelledby="home-hero-latest-title"
             >
-              <p
-                class:list={[
-                  typeStyle({ variant: 'overline' }),
-                  'home-hero-latest-label',
-                ]}
-              >
-                Latest story
-              </p>
+              <p class="t-overline home-hero-latest-label">Latest story</p>
               <h2
-                class:list={[
-                  typeStyle({ variant: 'featureTitle' }),
-                  'home-hero-latest-title',
-                ]}
+                class="t-feature-title home-hero-latest-title"
                 id="home-hero-latest-title"
               >
                 {featuredPost.title}
               </h2>
               {featuredPost.excerpt && (
-                <p
-                  class:list={[
-                    typeStyle({ variant: 'cardSummary' }),
-                    'home-hero-latest-summary',
-                  ]}
-                >
+                <p class="t-card-summary home-hero-latest-summary">
                   {featuredPost.excerpt}
                 </p>
               )}
               <a
-                class:list={[
-                  typeStyle({ variant: 'action' }),
-                  'bubble-arrow-link mt-2',
-                ]}
+                class="t-action bubble-arrow-link u-mt-2"
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
@@ -201,7 +162,7 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 
   {
     gridPosts.length > 0 && (
-      <section class="pt-16 pb-24 md:pt-20 md:pb-32 lg:pb-40">
+      <section class="home-post-list">
         <TeaserGrid>
           {gridPosts.map((post, index) => (
             <ArticleTeaser
@@ -227,12 +188,33 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
       oklch(13% 0.028 261.692);
   }
 
+  .home-post-list {
+    padding-block: clamp(4rem, 2.75rem + 2.6vw, 5rem)
+      clamp(6rem, 1rem + 10.4vw, 10rem);
+  }
+
   .home-hero-latest-label {
     margin: 0;
     color: oklch(70.7% 0.022 261.325);
     transition:
       color 500ms cubic-bezier(0, 0, 0.2, 1),
       opacity 500ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .home-hero-logo {
+    opacity: 0.95;
+  }
+
+  .home-hero-brand {
+    width: fit-content;
+  }
+
+  .home-hero-summary {
+    max-width: 36rem;
+  }
+
+  .home-hero-intro {
+    max-width: 48rem;
   }
 
   .home-hero-latest-summary {

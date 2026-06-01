@@ -1,6 +1,4 @@
 ---
-import { typeStyle } from '~/utils/typography';
-
 export type TableOfContentsItem = {
   children: TableOfContentsItem[];
   href: string;
@@ -16,16 +14,16 @@ const { isNested = false, items } = Astro.props;
 ---
 
 <ul
-  class:list={['m-0 grid list-disc gap-2 pl-4', isNested && 'mt-2 gap-2 pl-4']}
+  class:list={[
+    'toc-list u-m-0',
+    isNested && 'u-mt-2',
+  ]}
 >
   {
     items.map((item) => (
-      <li class="toc-item m-0">
+      <li class="toc-item u-m-0">
         <a
-          class:list={[
-            typeStyle({ variant: 'tocLink' }),
-            'link link-on-hover text-balance text-gray-200',
-          ]}
+          class="t-toc-link link link-on-hover u-text-balance u-text-soft"
           href={item.href}
         >
           {item.text}
@@ -40,6 +38,13 @@ const { isNested = false, items } = Astro.props;
 </ul>
 
 <style>
+  .toc-list {
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    list-style: disc;
+  }
+
   .toc-item::marker {
     color: rgb(255 255 255 / 0.4);
   }

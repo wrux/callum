@@ -4,7 +4,6 @@ import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
 import FooterSocialSurface from '~/components/FooterSocialSurface.astro';
 import Logo from '~/components/Logo.astro';
-import { typeStyle } from '~/utils/typography';
 import { wruxChromeFadeTransition } from '~/utils/viewTransitions';
 
 import '../styles/link.css';
@@ -82,7 +81,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
   </head>
 
   <body
-    class="bg-gray-950 text-gray-50 antialiased"
+    class="site-body"
     data-is-homepage={isHomepage}
     data-is-article-page={isArticlePage}
     data-uses-hero-header={usesHeroHeader}
@@ -116,25 +115,19 @@ const usesHeroHeader = isHomepage || isArticlePage;
       data-uses-hero-header={usesHeroHeader}
       data-is-stuck="false"
     >
-      <div class="container max-w-6xl">
+      <div class="u-container u-container-6xl">
         <div class="site-header-shell">
           <div class="site-header-side site-header-side-start">
             {
               !isHomepage && (
                 <a
                   href="/"
-                  class:list={[
-                    typeStyle({ variant: 'siteAction' }),
-                    'site-header-action site-header-action-back',
-                  ]}
+                  class="t-site-action site-header-action site-header-action-back"
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
                   transition:animate={wruxChromeFadeTransition}
                 >
-                  <Icon
-                    name="mdi:keyboard-backspace"
-                    class="site-header-action-icon"
-                  />
+                  <Icon name="mdi:keyboard-backspace" />
                   <span>Back</span>
                 </a>
               )
@@ -144,19 +137,14 @@ const usesHeroHeader = isHomepage || isArticlePage;
           {
             !isHomepage ? (
               <a
-                class="site-header-logo-link group"
+                class="site-header-logo-link"
                 href="/"
                 aria-label="Go to the homepage"
                 transition:name="site-header-logo"
                 transition:animate={wruxChromeFadeTransition}
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
-                <Logo
-                  class:list={[
-                    typeStyle({ variant: 'siteLogoMark' }),
-                    'site-header-logo',
-                  ]}
-                />
+                <Logo class="t-site-logo-mark site-header-logo" />
               </a>
             ) : (
               <span class="site-header-logo-placeholder" aria-hidden="true" />
@@ -170,15 +158,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
             <a
               href="https://wrux.com"
               target="_blank"
-              class:list={[
-                typeStyle({ variant: 'siteAction' }),
-                'site-header-action site-header-action-external',
-              ]}
+              class="t-site-action site-header-action site-header-action-external"
               aria-label="Visit wrux.com"
               rel="noreferrer"
             >
               <span>wrux.com</span>
-              <Icon name="mdi:open-in-new" class="site-header-action-icon" />
+              <Icon name="mdi:open-in-new" />
             </a>
           </nav>
         </div>
@@ -187,61 +172,50 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <slot name="header" />
 
-    <main class="site-main flex-1">
+    <main class="site-main u-flex-1">
       <slot />
     </main>
 
     <footer class="site-footer">
-      <div class="container max-w-6xl">
+      <div class="u-container u-container-6xl">
         <div class="footer-brand">
-          <Logo
-            class:list={[
-              typeStyle({ variant: 'footerLogoMark' }),
-              'opacity-90',
-            ]}
-          />
+          <Logo class="t-footer-logo-mark footer-logo" />
 
           <nav aria-label="External links">
             <div class="footer-social-shell">
               <FooterSocialSurface />
               <ul class="footer-social-list">
-                <li class="footer-social-item footer-social-item-instagram">
+                <li>
                   <a
                     href="https://instagram.com/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my Instagram profile"
                     rel="noreferrer nofollow"
-                    data-social-target="instagram"
                   >
-                    <Icon
-                      name="mdi:instagram"
-                      class="footer-social-link-icon"
-                    />
+                    <Icon name="mdi:instagram" />
                   </a>
                 </li>
-                <li class="footer-social-item footer-social-item-github">
+                <li>
                   <a
                     href="https://github.com/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my GitHub profile"
                     rel="noreferrer nofollow"
-                    data-social-target="github"
                   >
-                    <Icon name="mdi:github" class="footer-social-link-icon" />
+                    <Icon name="mdi:github" />
                   </a>
                 </li>
-                <li class="footer-social-item footer-social-item-linkedin">
+                <li>
                   <a
                     href="https://www.linkedin.com/in/wrux"
                     target="_blank"
                     class="footer-social-link"
                     aria-label="View my LinkedIn profile"
                     rel="noreferrer nofollow"
-                    data-social-target="linkedin"
                   >
-                    <Icon name="mdi:linkedin" class="footer-social-link-icon" />
+                    <Icon name="mdi:linkedin" />
                   </a>
                 </li>
               </ul>
@@ -250,14 +224,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
         </div>
 
         <div class="footer-bottom">
-          <p
-            class:list={[typeStyle({ variant: 'footer' }), 'footer-copyright']}
-          >
+          <p class="t-footer footer-copyright">
             Copyright &copy;{' '}
             <a
               href="https://wrux.com"
               target="_blank"
-              class:list={[typeStyle({ variant: 'footerLink' }), 'link']}
+              class="t-footer-link link"
               aria-label="View my professional profile at wrux.com"
               rel="noreferrer"
             >
@@ -268,10 +240,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
           <a
             href="https://github.com/wrux/callum"
             target="_blank"
-            class:list={[
-              typeStyle({ variant: 'footerLink' }),
-              'footer-repo-link link',
-            ]}
+            class="t-footer-link footer-repo-link link"
             rel="noreferrer nofollow"
           >
             <span>source code</span>
@@ -299,7 +268,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
         const chromeInitializedKey = '__callumChromeSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
         const backToTopInitializedKey = '__callumBackToTopInitialized';
-        const footerSocialInitializedKey = '__callumFooterSocialInitialized';
         const viewTransitionInitializedKey =
           '__callumViewTransitionInitialized';
 
@@ -436,63 +404,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
           });
         }
 
-        function clearFooterSocialState(shell) {
-          shell.classList.remove(
-            'is-social-instagram',
-            'is-social-github',
-            'is-social-linkedin',
-          );
-        }
-
-        function setFooterSocialState(link) {
-          const shell = link.closest('.footer-social-shell');
-          const target = link.dataset.socialTarget;
-
-          if (!shell || !target) {
-            return;
-          }
-
-          clearFooterSocialState(shell);
-          shell.classList.add(`is-social-${target}`);
-        }
-
-        function syncFooterSocialState() {
-          document.querySelectorAll('.footer-social-shell').forEach((shell) => {
-            if (!(shell instanceof HTMLElement)) {
-              return;
-            }
-
-            if (shell.dataset.socialReady === 'true') {
-              return;
-            }
-
-            shell.dataset.socialReady = 'true';
-            shell
-              .querySelectorAll('[data-social-target]')
-              .forEach((socialLink) => {
-                if (!(socialLink instanceof HTMLElement)) {
-                  return;
-                }
-
-                socialLink.addEventListener('pointerenter', () => {
-                  setFooterSocialState(socialLink);
-                });
-
-                socialLink.addEventListener('pointerleave', () => {
-                  clearFooterSocialState(shell);
-                });
-
-                socialLink.addEventListener('focus', () => {
-                  setFooterSocialState(socialLink);
-                });
-
-                socialLink.addEventListener('blur', () => {
-                  clearFooterSocialState(shell);
-                });
-              });
-          });
-        }
-
         function waitForImageLoad(image) {
           return new Promise((resolve) => {
             let isSettled = false;
@@ -565,8 +476,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
         syncHeaderScrollState();
         syncBackToTopButton();
         syncImageLoadStates();
-        syncFooterSocialState();
-
         if (!window[chromeInitializedKey]) {
           window[chromeInitializedKey] = true;
           document.addEventListener('astro:page-load', syncHeaderScrollState);
@@ -606,12 +515,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
           });
         }
 
-        if (!window[footerSocialInitializedKey]) {
-          window[footerSocialInitializedKey] = true;
-          document.addEventListener('astro:after-swap', syncFooterSocialState);
-          document.addEventListener('astro:page-load', syncFooterSocialState);
-        }
-
         if (!window[viewTransitionInitializedKey]) {
           window[viewTransitionInitializedKey] = true;
           document.addEventListener(
@@ -624,7 +527,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
   </body>
 </html>
 
-<style>
+<style is:global>
   .site-header {
     --site-header-gradient-from: rgb(3 7 18 / 0.78);
     --site-header-gradient-to: rgb(3 7 18 / 0.78);
@@ -644,6 +547,13 @@ const usesHeroHeader = isHomepage || isArticlePage;
       background 260ms ease,
       backdrop-filter 220ms ease,
       box-shadow 220ms ease;
+  }
+
+  .site-body {
+    background: var(--color-gray-950);
+    color: var(--color-gray-50);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .site-header[data-uses-hero-header='true'] {
@@ -806,7 +716,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     cursor: default;
   }
 
-  .back-to-top-button :global(.back-to-top-button-icon) {
+  .back-to-top-button .back-to-top-button-icon {
     width: 1.2rem;
     height: 1.2rem;
   }
@@ -839,15 +749,15 @@ const usesHeroHeader = isHomepage || isArticlePage;
     gap: 1.4rem;
   }
 
+  .footer-logo {
+    opacity: 0.9;
+  }
+
   .site-footer {
     margin-top: 2rem;
-    padding-block: 2.5rem;
+    padding-block: clamp(2.5rem, 1.25rem + 2.6vw, 3.5rem);
     border-top: 1px solid oklch(27.8% 0.033 256.848);
     background: oklch(13% 0.028 261.692);
-
-    @media (width >= 48rem) {
-      padding-block: 3.5rem;
-    }
   }
 
   .footer-copyright {
@@ -876,7 +786,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     white-space: nowrap;
   }
 
-  .footer-repo-link :global(.footer-repo-link-icon) {
+  .footer-repo-link .footer-repo-link-icon {
     flex: 0 0 auto;
     width: 0.85rem;
     height: 0.85rem;

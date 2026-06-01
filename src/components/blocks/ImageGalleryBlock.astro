@@ -20,11 +20,11 @@ const { images } = Astro.props.node;
 <Section width="mobile-full" data-block="image-gallery">
   <div class="article-gallery">
     {/* Desktop: Masonry grid */}
-    <div class="masonry-grid hidden md:block">
+    <div class="masonry-grid gallery-desktop">
       {
         images.map(({ caption, image }) => (
           <figure
-            class="masonry-item article-image-frame relative"
+            class="masonry-item article-image-frame u-relative"
             style={{
               aspectRatio: image.asset.metadata?.dimensions?.aspectRatio,
             }}
@@ -42,7 +42,7 @@ const { images } = Astro.props.node;
               sources={[{ options: { quality: 74 } }]}
               img={{
                 alt: image.asset.alt || caption || '',
-                class: 'w-full h-full object-cover',
+                class: 'u-full u-h-full u-object-cover',
                 decoding: 'async',
                 loading: 'lazy',
               }}
@@ -56,13 +56,13 @@ const { images } = Astro.props.node;
     {/* Mobile: Swiper gallery with thumbnails */}
     {
       images.length > 0 && (
-        <div class="mobile-gallery md:hidden">
+        <div class="mobile-gallery gallery-mobile">
           {/* Main Swiper */}
-          <div class="swiper gallery-main relative mb-3">
+          <div class="swiper gallery-main u-relative u-mb-3">
             <div class="swiper-wrapper">
               {images.map(({ caption, image }, index) => (
                 <div class="swiper-slide">
-                  <figure class="article-image-frame relative">
+                  <figure class="article-image-frame u-relative">
                     <SanityPicture
                       src={image}
                       imageUrlBuilder={imageBuilder}
@@ -75,7 +75,7 @@ const { images } = Astro.props.node;
                       sources={[{ options: { quality: 76 } }]}
                       img={{
                         alt: image.asset.alt || caption || '',
-                        class: 'w-full h-auto',
+                        class: 'u-full',
                         decoding: 'async',
                         fetchpriority: index === 0 ? 'high' : 'auto',
                         loading: index === 0 ? 'eager' : 'lazy',
@@ -88,12 +88,12 @@ const { images } = Astro.props.node;
             </div>
             {/* Navigation buttons */}
             {images.length > 1 && (
-              <div class="absolute top-0 left-0 z-10 flex w-full justify-between p-4">
+              <div class="gallery-nav-overlay">
                 <button
                   class:list={[
                     'gallery-nav-prev',
                     'gallery-nav-button',
-                    'disabled:cursor-not-allowed disabled:opacity-50',
+                    'u-disabled-muted',
                   ]}
                   aria-label="Previous image"
                 >
@@ -103,7 +103,7 @@ const { images } = Astro.props.node;
                   class:list={[
                     'gallery-nav-next',
                     'gallery-nav-button',
-                    'disabled:cursor-not-allowed disabled:opacity-50',
+                    'u-disabled-muted',
                   ]}
                   aria-label="Next image"
                 >
@@ -115,7 +115,7 @@ const { images } = Astro.props.node;
 
           {/* Thumbnails Swiper */}
           {images.length > 1 && (
-            <div class="swiper gallery-thumbs px-4">
+            <div class="swiper gallery-thumbs u-px-4">
               <div class="swiper-wrapper">
                 {images.map(({ image, caption }) => (
                   <div class="swiper-slide">
@@ -133,7 +133,7 @@ const { images } = Astro.props.node;
                         sources={[{ options: { quality: 70 } }]}
                         img={{
                           alt: image.asset.alt || caption || '',
-                          class: 'w-full h-full object-cover',
+                          class: 'u-full u-h-full u-object-cover',
                           decoding: 'async',
                           loading: 'lazy',
                         }}
@@ -350,15 +350,17 @@ const { images } = Astro.props.node;
     margin: 0 auto;
   }
 
-  .article-gallery .article-image-frame {
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--color-gray-900);
+  .article-gallery .gallery-desktop {
+    display: none;
   }
 
-  @media (min-width: 64rem) {
-    .article-gallery .article-image-frame {
-      border-radius: var(--radius-lg);
+  @media (min-width: 48rem) {
+    .article-gallery .gallery-desktop {
+      display: block;
+    }
+
+    .article-gallery .gallery-mobile {
+      display: none;
     }
   }
 
@@ -420,6 +422,17 @@ const { images } = Astro.props.node;
     padding: 4px 1rem;
     overflow: hidden;
     max-width: 100%;
+  }
+
+  .article-gallery .gallery-nav-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
   }
 
   .article-gallery .gallery-thumbs .swiper-wrapper {

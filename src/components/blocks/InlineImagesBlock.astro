@@ -32,12 +32,12 @@ const imageSizes = sizes?.[images.length] || sizes[5];
 
 <Section width="mobile-full" data-block="inline-images">
   <div
-    class="md:grid-cols-dynamic grid grid-cols-1 items-center justify-center gap-3 md:gap-4"
+    class="inline-images-grid"
     style={`--column-count: ${images.length};`}
   >
     {
       images.map(({ caption, image }) => (
-        <figure class="article-image-frame relative">
+        <figure class="article-image-frame u-relative">
           <SanityPicture
             src={image}
             imageUrlBuilder={imageBuilder}
@@ -62,15 +62,16 @@ const imageSizes = sizes?.[images.length] || sizes[5];
 </Section>
 
 <style>
-  .article-image-frame {
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--color-gray-900);
-  }
+  .inline-images-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
 
-  @media (min-width: 64rem) {
-    .article-image-frame {
-      border-radius: var(--radius-lg);
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(var(--column-count), minmax(0, 1fr));
+      gap: 1rem;
     }
   }
 </style>

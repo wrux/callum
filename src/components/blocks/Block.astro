@@ -1,6 +1,4 @@
 ---
-import { typeStyle } from '~/utils/typography';
-
 const props = Astro.props;
 const { node, index, isInline, ...attrs } = props;
 const styleIs = (style: string) => style === node.style;
@@ -13,60 +11,42 @@ const headingAttrs = headingId
 {
   styleIs('h1') ? (
     <h1
-      class:list={[
-        typeStyle({ variant: 'h1' }),
-        'content-block-heading content-block-heading-1',
-      ]}
+      class="t-h1 content-block-heading content-block-heading-1"
       {...headingAttrs}
     >
       <slot />
     </h1>
   ) : styleIs('h2') ? (
     <h2
-      class:list={[
-        typeStyle({ variant: 'h2' }),
-        'content-block-heading content-block-heading-2',
-      ]}
+      class="t-h2 content-block-heading content-block-heading-2"
       {...headingAttrs}
     >
       <slot />
     </h2>
   ) : styleIs('h3') ? (
     <h3
-      class:list={[
-        typeStyle({ variant: 'h3' }),
-        'content-block-heading content-block-heading-3',
-      ]}
+      class="t-h3 content-block-heading content-block-heading-3"
       {...headingAttrs}
     >
       <slot />
     </h3>
   ) : styleIs('h4') ? (
     <h4
-      class:list={[
-        typeStyle({ variant: 'h4' }),
-        'content-block-heading content-block-heading-4',
-      ]}
+      class="t-h4 content-block-heading content-block-heading-4"
       {...headingAttrs}
     >
       <slot />
     </h4>
   ) : styleIs('h5') ? (
     <h5
-      class:list={[
-        typeStyle({ variant: 'h5' }),
-        'content-block-heading content-block-heading-4',
-      ]}
+      class="t-h5 content-block-heading content-block-heading-4"
       {...headingAttrs}
     >
       <slot />
     </h5>
   ) : styleIs('h6') ? (
     <h6
-      class:list={[
-        typeStyle({ variant: 'h6' }),
-        'content-block-heading content-block-heading-4',
-      ]}
+      class="t-h6 content-block-heading content-block-heading-4"
       {...headingAttrs}
     >
       <slot />
@@ -76,23 +56,17 @@ const headingAttrs = headingId
       <slot />
     </blockquote>
   ) : styleIs('normal') ? (
-    <p
-      class:list={[typeStyle({ variant: 'textMd' }), 'content-block-copy']}
-      {...attrs}
-    >
+    <p class="t-text-md content-block-copy" {...attrs}>
       <slot />
     </p>
   ) : (
-    <p
-      class:list={[typeStyle({ variant: 'textMd' }), 'content-block-copy']}
-      {...props}
-    >
+    <p class="t-text-md content-block-copy" {...props}>
       <slot />
     </p>
   )
 }
 
-<style>
+<style is:global>
   .content-block-heading {
     scroll-margin-top: 6rem;
   }

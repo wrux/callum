@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { typeStyle } from '~/utils/typography';
 
 export interface Props {
   caption?: string;
@@ -19,11 +18,7 @@ const { caption } = Astro.props;
           aria-hidden="true"
         />
       </summary>
-      <p
-        class:list={[typeStyle({ variant: 'caption' }), 'image-caption-panel']}
-      >
-        {caption}
-      </p>
+      <p class="t-caption image-caption-panel">{caption}</p>
     </details>
   )
 }

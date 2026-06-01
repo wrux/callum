@@ -1,5 +1,3 @@
-@reference './global.css';
-
 .link {
   --link-decoration-color: currentColor;
   --link-hover-decoration-color: transparent;

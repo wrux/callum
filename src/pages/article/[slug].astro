@@ -8,7 +8,6 @@ import DateTime from '~/components/DateTime.astro';
 import PortableText from '~/components/PortableText.astro';
 import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
-import { typeStyle } from '~/utils/typography';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -168,7 +167,7 @@ const showTableOfContents = tableOfContents.length > 1;
       imageBuilder.image(post.mainImage).width(1600).height(900).url(),
   }}
 >
-  <article class="article-page bg-gray-950">
+  <article class="article-page">
     <header
       class="article-hero media-hero"
       data-has-image={heroImageSrc ? 'true' : 'false'}
@@ -214,44 +213,31 @@ const showTableOfContents = tableOfContents.length > 1;
 
       <div class="media-hero-scrim" aria-hidden="true"></div>
 
-      <div class="article-hero-content container max-w-6xl">
-        <div class="w-full max-w-4xl min-w-0">
+      <div class="article-hero-content u-container u-container-6xl">
+        <div class="u-full u-container-4xl u-min-0">
           {
             countryNames && (
               <p
                 class="goo-filter-md article-location-wrap"
                 aria-label="Countries"
               >
-                <span
-                  class:list={[
-                    typeStyle({ variant: 'pill' }),
-                    'article-location-pill',
-                  ]}
-                >
+                <span class="t-pill article-location-pill">
                   <Icon name="mdi:map-marker" class="article-location-icon" />
-                  <span class="min-w-0">{countryNames}</span>
+                  <span class="u-min-0">{countryNames}</span>
                 </span>
               </p>
             )
           }
 
           <h1
-            class:list={[
-              typeStyle({ variant: 'heroTitle' }),
-              'm-0 max-w-4xl text-balance text-gray-50',
-            ]}
+            class="t-hero-title u-m-0 u-container-4xl u-text-balance u-text-light"
           >
             {post.title}
           </h1>
 
           {
             post?.excerpt && (
-              <p
-                class:list={[
-                  typeStyle({ variant: 'heroSummary' }),
-                  'mt-4 mb-0 max-w-2xl text-gray-200',
-                ]}
-              >
+              <p class="t-hero-summary u-mt-4 u-mb-0 u-container-2xl u-text-soft">
                 {post.excerpt}
               </p>
             )
@@ -260,40 +246,30 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             (post?.publishedAt || hasReadingTime) && (
               <div
-                class="mt-4 flex w-full max-w-full min-w-0 flex-wrap items-center gap-2"
+                class="article-meta-list u-mt-4 u-flex u-full u-min-0 u-gap-2"
                 aria-label="Article details"
               >
                 {post?.publishedAt && (
-                  <p
-                    class:list={[
-                      typeStyle({ variant: 'meta' }),
-                      'article-meta-pill',
-                    ]}
-                  >
+                  <p class="t-meta article-meta-pill">
                     <Icon
                       name="mdi:calendar-blank-outline"
                       class="article-meta-icon"
                     />
-                    <span class="min-w-0">
+                    <span class="u-min-0">
                       Published on <DateTime date={post.publishedAt} />
                     </span>
                   </p>
                 )}
 
                 {hasReadingTime && (
-                  <p
-                    class:list={[
-                      typeStyle({ variant: 'meta' }),
-                      'article-meta-pill',
-                    ]}
-                  >
+                  <p class="t-meta article-meta-pill">
                     <Icon
                       name="mdi:book-open-page-variant-outline"
                       class="article-meta-icon"
                     />
-                    <span class="min-w-0">
+                    <span class="u-min-0">
                       Estimated{' '}
-                      <strong class={typeStyle({ variant: 'metaEmphasis' })}>
+                      <strong class="t-meta-emphasis">
                         {post.readingTime} min read
                       </strong>
                     </span>
@@ -305,13 +281,8 @@ const showTableOfContents = tableOfContents.length > 1;
 
           {
             showTableOfContents && (
-              <nav class="mt-6 max-w-xl" aria-label="Table of contents">
-                <p
-                  class:list={[
-                    typeStyle({ variant: 'overline' }),
-                    'text-brand-light m-0 mb-3',
-                  ]}
-                >
+              <nav class="article-toc" aria-label="Table of contents">
+                <p class="t-overline article-toc-label u-m-0 u-mb-3">
                   Table of Contents
                 </p>
                 <TableOfContentsList items={tableOfContentsTree} />
@@ -322,13 +293,13 @@ const showTableOfContents = tableOfContents.length > 1;
       </div>
     </header>
 
-    <div class="pt-12 pb-4 md:pt-16 lg:pt-20">
+    <div class="article-content-wrap">
       <PortableText value={post.content} />
     </div>
   </article>
 </BaseLayout>
 
-<style>
+<style is:global>
   .article-page {
     background:
       radial-gradient(
@@ -347,6 +318,24 @@ const showTableOfContents = tableOfContents.length > 1;
         transparent 25rem
       ),
       oklch(13% 0.028 261.692);
+  }
+
+  .article-toc {
+    margin-top: 1.5rem;
+    max-width: 36rem;
+  }
+
+  .article-toc-label {
+    color: hsl(225 80% 70%);
+  }
+
+  .article-meta-list {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .article-content-wrap {
+    padding-block: clamp(3rem, 0.5rem + 5.2vw, 5rem) 1rem;
   }
 
   .hero-image-caption {

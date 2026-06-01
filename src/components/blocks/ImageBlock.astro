@@ -2,7 +2,6 @@
 import SanityPicture from 'astro-sanity-picture';
 import Section from '../Section.astro';
 import { imageBuilder } from '~/sanity/image';
-import { typeStyle } from '~/utils/typography';
 
 const { caption, image } = Astro.props.node;
 ---
@@ -29,14 +28,9 @@ const { caption, image } = Astro.props.node;
     </div>
     {
       caption && (
-        <div class="relative left-1/2 w-screen -translate-x-1/2">
-          <div class="container max-w-6xl">
-            <figcaption
-              class:list={[
-                typeStyle({ variant: 'figureCaption' }),
-                'article-image-caption max-w-prose',
-              ]}
-            >
+        <div class="article-image-caption-shell">
+          <div class="u-container u-container-6xl">
+            <figcaption class="t-figure-caption article-image-caption u-prose">
               {caption}
             </figcaption>
           </div>
@@ -46,28 +40,17 @@ const { caption, image } = Astro.props.node;
   </figure>
 </Section>
 
-<style>
-  .article-image-frame {
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--color-gray-900);
-  }
-
+<style is:global>
   .article-image-caption {
-    margin-top: 0.75rem;
+    margin-top: clamp(0.75rem, 0.4375rem + 0.65vw, 1rem);
     color: var(--color-gray-400);
     text-align: left;
   }
 
-  @media (min-width: 48rem) {
-    .article-image-caption {
-      margin-top: 1rem;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .article-image-frame {
-      border-radius: var(--radius-lg);
-    }
+  .article-image-caption-shell {
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
   }
 </style>
