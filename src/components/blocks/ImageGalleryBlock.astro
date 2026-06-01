@@ -18,61 +18,37 @@ const { images } = Astro.props.node;
 const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<Section width="mobile-full" data-block="image-gallery">
-  <div class="article-gallery" data-gallery>
-    <div class="gallery-desktop">
-      {
-        images.map(({ caption, image }) => (
-          <figure class="gallery-item article-image-frame u-relative">
-            <SanityPicture
-              src={image}
-              imageUrlBuilder={imageBuilder}
-              style={{
-                width: '100%',
-                height: 'auto',
-              }}
-              sizes="(max-width: 1279px) calc(50vw - 3rem), 420px"
-              widths={[320, 480, 640, 800, 960]}
-              sources={[{ options: { quality: 74 } }]}
-              img={{
-                alt: image.asset.alt || caption || '',
-                class: 'u-full',
-                decoding: 'async',
-                loading: 'lazy',
-              }}
-            />
-            <ImageCaptionButton caption={caption} />
-          </figure>
-        ))
-      }
-    </div>
-
+<Section width="article" data-block="image-gallery">
+  <div class="article-gallery" data-gallery aria-label="Image gallery">
     {
       images.length > 0 && (
-        <div class="gallery-mobile">
+        <>
           <div class="gallery-track" data-gallery-track>
             {images.map(({ caption, image }, index) => {
               const slideId = `${galleryId}-slide-${index}`;
+              const dimensions = image.asset.metadata?.dimensions;
+              const ratio =
+                dimensions?.width && dimensions?.height
+                  ? `${dimensions.width} / ${dimensions.height}`
+                  : '4 / 3';
 
               return (
                 <figure
                   class="gallery-slide article-image-frame u-relative"
                   id={slideId}
+                  style={{ '--gallery-slide-ratio': ratio }}
+                  aria-current={index === 0 ? 'true' : 'false'}
                   data-gallery-slide
                 >
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                    }}
-                    sizes="100vw"
+                    sizes="(max-width: 767px) 88vw, (max-width: 1279px) 72vw, 62vw"
                     widths={[480, 640, 800, 960, 1280]}
                     sources={[{ options: { quality: 76 } }]}
                     img={{
                       alt: image.asset.alt || caption || '',
-                      class: 'u-full',
+                      class: 'gallery-image',
                       decoding: 'async',
                       fetchpriority: index === 0 ? 'high' : 'auto',
                       loading: index === 0 ? 'eager' : 'lazy',
@@ -92,23 +68,19 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
                   type="button"
                   aria-label={`Show image ${index + 1}`}
                   aria-current={index === 0 ? 'true' : 'false'}
+                  tabindex={index === 0 ? '0' : '-1'}
                   data-gallery-thumb
                   data-target-id={`${galleryId}-slide-${index}`}
                 >
                   <SanityPicture
                     src={image}
                     imageUrlBuilder={imageBuilder}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
                     sizes="72px"
                     widths={[72, 144]}
                     sources={[{ options: { quality: 70 } }]}
                     img={{
                       alt: image.asset.alt || caption || '',
-                      class: 'u-full u-h-full u-object-cover',
+                      class: 'gallery-thumbnail-image',
                       decoding: 'async',
                       loading: 'lazy',
                     }}
@@ -117,7 +89,7 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
               ))}
             </div>
           )}
-        </div>
+        </>
       )
     }
   </div>
@@ -148,23 +120,47 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
 
       gallery.dataset.snapReady = 'true';
 
-      const syncActiveThumb = () => {
-        const trackCenter = track.scrollLeft + track.clientWidth / 2;
-        let activeIndex = 0;
-        let activeDistance = Number.POSITIVE_INFINITY;
+      let activeIndex = -1;
+      let programmaticScrollTimer = 0;
+      let isProgrammaticScroll = false;
+
+      const prefersReducedMotion = () =>
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const scrollSlideIntoView = (slide, isProgrammatic = true) => {
+        if (isProgrammatic) {
+          isProgrammaticScroll = true;
+          window.clearTimeout(programmaticScrollTimer);
+          programmaticScrollTimer = window.setTimeout(() => {
+            isProgrammaticScroll = false;
+          }, 1200);
+        }
+
+        slide.scrollIntoView({
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
+      };
+
+      const endProgrammaticScroll = () => {
+        window.clearTimeout(programmaticScrollTimer);
+        isProgrammaticScroll = false;
+      };
+
+      const setActiveItem = (nextActiveIndex, shouldSyncThumb = true) => {
+        if (nextActiveIndex === activeIndex) {
+          return;
+        }
+
+        activeIndex = nextActiveIndex;
 
         slides.forEach((slide, index) => {
           if (!(slide instanceof HTMLElement)) {
             return;
           }
 
-          const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-          const distance = Math.abs(trackCenter - slideCenter);
-
-          if (distance < activeDistance) {
-            activeDistance = distance;
-            activeIndex = index;
-          }
+          slide.setAttribute('aria-current', String(index === activeIndex));
         });
 
         thumbs.forEach((thumb, index) => {
@@ -173,13 +169,84 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
           }
 
           thumb.setAttribute('aria-current', String(index === activeIndex));
+          thumb.tabIndex = index === activeIndex ? 0 : -1;
         });
+
+        const activeThumb = thumbs[activeIndex];
+
+        if (shouldSyncThumb && activeThumb instanceof HTMLElement) {
+          activeThumb.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      };
+
+      const activateThumb = (thumb, shouldFocus = false) => {
+        const index = thumbs.indexOf(thumb);
+        const targetId = thumb.dataset.targetId;
+        const target = targetId ? document.getElementById(targetId) : null;
+
+        if (!(target instanceof HTMLElement)) {
+          return;
+        }
+
+        if (index >= 0) {
+          setActiveItem(index, false);
+        }
+
+        if (shouldFocus) {
+          thumb.focus({ preventScroll: true });
+          thumb.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+
+        scrollSlideIntoView(target);
+      };
+
+      const activateThumbByIndex = (index) => {
+        const thumb = thumbs[index];
+
+        if (!(thumb instanceof HTMLElement)) {
+          return;
+        }
+
+        activateThumb(thumb, true);
+      };
+
+      const syncActiveItem = () => {
+        const trackStart = track.scrollLeft;
+        let nextActiveIndex = 0;
+        let activeDistance = Number.POSITIVE_INFINITY;
+
+        slides.forEach((slide, index) => {
+          if (!(slide instanceof HTMLElement)) {
+            return;
+          }
+
+          const distance = Math.abs(trackStart - slide.offsetLeft);
+
+          if (distance < activeDistance) {
+            activeDistance = distance;
+            nextActiveIndex = index;
+          }
+        });
+
+        setActiveItem(nextActiveIndex);
       };
 
       let frame = 0;
       const requestSync = () => {
+        if (isProgrammaticScroll) {
+          return;
+        }
+
         window.cancelAnimationFrame(frame);
-        frame = window.requestAnimationFrame(syncActiveThumb);
+        frame = window.requestAnimationFrame(syncActiveItem);
       };
 
       thumbs.forEach((thumb) => {
@@ -188,27 +255,61 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
         }
 
         thumb.addEventListener('click', () => {
-          const targetId = thumb.dataset.targetId;
-          const target = targetId ? document.getElementById(targetId) : null;
+          activateThumb(thumb);
+        });
 
-          if (!(target instanceof HTMLElement)) {
+        thumb.addEventListener('keydown', (event) => {
+          const keyMap = {
+            ArrowLeft: -1,
+            ArrowUp: -1,
+            ArrowRight: 1,
+            ArrowDown: 1,
+          };
+          const delta = keyMap[event.key];
+
+          if (delta) {
+            event.preventDefault();
+            const focusedIndex = thumbs.indexOf(thumb);
+            const nextIndex =
+              (focusedIndex + delta + thumbs.length) % thumbs.length;
+
+            activateThumbByIndex(nextIndex);
             return;
           }
 
-          target.scrollIntoView({
-            behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
-              .matches
-              ? 'auto'
-              : 'smooth',
-            block: 'nearest',
-            inline: 'center',
-          });
+          if (event.key === 'Home') {
+            event.preventDefault();
+            activateThumbByIndex(0);
+            return;
+          }
+
+          if (event.key === 'End') {
+            event.preventDefault();
+            activateThumbByIndex(thumbs.length - 1);
+          }
+        });
+      });
+
+      slides.forEach((slide) => {
+        if (!(slide instanceof HTMLElement)) {
+          return;
+        }
+
+        slide.addEventListener('click', () => {
+          const index = slides.indexOf(slide);
+
+          if (index >= 0) {
+            setActiveItem(index);
+          }
+
+          scrollSlideIntoView(slide);
         });
       });
 
       track.addEventListener('scroll', requestSync, { passive: true });
+      track.addEventListener('scrollend', endProgrammaticScroll);
       window.addEventListener('resize', requestSync, { passive: true });
-      syncActiveThumb();
+      syncActiveItem();
     });
   };
 
@@ -222,22 +323,21 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
 </script>
 
 <style is:global>
-  .article-gallery .gallery-desktop {
-    display: none;
-  }
-
-  .article-gallery .gallery-mobile {
+  .article-gallery {
     display: grid;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .article-gallery .gallery-track {
     display: flex;
     gap: 0.75rem;
-    overflow-x: auto;
-    scroll-padding-inline: 1rem;
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    border-radius: var(--gallery-radius);
+    scroll-padding-inline: 0;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    touch-action: pan-x;
   }
 
   .article-gallery .gallery-track::-webkit-scrollbar {
@@ -245,16 +345,42 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
   }
 
   .article-gallery .gallery-slide {
-    flex: 0 0 100%;
-    scroll-snap-align: center;
+    flex: 0 0 auto;
+    width: min(
+      calc(var(--gallery-height) * var(--gallery-slide-ratio)),
+      var(--gallery-slide-max)
+    );
+    height: var(--gallery-height);
+    border-radius: var(--gallery-radius);
+    cursor: pointer;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    transition: opacity 180ms ease;
+  }
+
+  .article-gallery .gallery-slide[aria-current='false'] {
+    opacity: 0.82;
+  }
+
+  .article-gallery .gallery-slide picture,
+  .article-gallery .gallery-slide img,
+  .article-gallery .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .article-gallery .gallery-thumbs {
     display: flex;
     gap: 0.5rem;
+    justify-self: start;
     overflow-x: auto;
-    padding-inline: 1rem;
+    overscroll-behavior-x: contain;
+    width: min(100%, var(--gallery-thumbs-width));
+    margin-inline: calc(var(--gallery-thumb-focus-space) * -1);
+    padding: 0.375rem var(--gallery-thumb-focus-space);
     scrollbar-width: none;
+    touch-action: pan-x;
   }
 
   .article-gallery .gallery-thumbs::-webkit-scrollbar {
@@ -262,8 +388,7 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
   }
 
   .article-gallery .gallery-thumbnail {
-    display: block;
-    flex: 0 0 4.25rem;
+    flex: 0 0 var(--gallery-thumb-size);
     aspect-ratio: 1;
     overflow: hidden;
     padding: 0;
@@ -272,7 +397,14 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
     opacity: 0.65;
     transition:
       border-color 180ms ease,
+      outline-color 180ms ease,
       opacity 180ms ease;
+  }
+
+  .article-gallery .gallery-thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .article-gallery .gallery-thumbnail:is(:hover, :focus-visible),
@@ -281,28 +413,29 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
     opacity: 1;
   }
 
+  .article-gallery .gallery-thumbnail:focus-visible {
+    outline: 3px solid hsl(225 80% 70%);
+    outline-offset: 2px;
+  }
+
+  .article-gallery {
+    --gallery-height: clamp(18rem, 52vw, 34rem);
+    --gallery-radius: 0.5rem;
+    --gallery-slide-max: 100%;
+    --gallery-thumb-focus-space: 0.375rem;
+    --gallery-thumb-size: clamp(3rem, 8vw, 4rem);
+    --gallery-thumbs-width: 100%;
+  }
+
   @media (width >= 48rem) {
-    .article-gallery .gallery-desktop {
-      display: block;
-      columns: 2 18rem;
-      column-gap: 1rem;
-    }
-
-    .article-gallery .gallery-mobile {
-      display: none;
-    }
-
-    .article-gallery .gallery-item {
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 1rem;
-      break-inside: avoid;
+    .article-gallery {
+      --gallery-height: clamp(22rem, 44vw, 34rem);
     }
   }
 
   @media (width >= 80rem) {
-    .article-gallery .gallery-desktop {
-      columns: 3 18rem;
+    .article-gallery {
+      --gallery-height: clamp(26rem, 34vw, 36rem);
     }
   }
 </style>

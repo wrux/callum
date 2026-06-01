@@ -78,6 +78,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
   </head>
 
   <body
+    id="top"
     class="site-body"
     data-is-homepage={isHomepage}
     data-is-article-page={isArticlePage}
@@ -117,7 +118,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
                 transition:name="site-header-logo"
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
-                <Logo class="t-site-logo-mark site-header-logo" />
+                <Logo class="t-logo-md site-header-logo" />
               </a>
             ) : (
               <span class="site-header-logo-placeholder" aria-hidden="true" />
@@ -152,7 +153,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <footer class="site-footer">
       <div class="u-container u-container-6xl">
         <div class="footer-brand">
-          <Logo class="t-footer-logo-mark footer-logo" />
+          <Logo class="t-logo-xl footer-logo" />
 
           <nav aria-label="External links">
             <div class="footer-social-shell">
@@ -222,24 +223,18 @@ const usesHeroHeader = isHomepage || isArticlePage;
       </div>
     </footer>
 
-    <button
-      type="button"
+    <a
+      href="#top"
       class="btn btn-glass btn-icon-lg back-to-top-button"
       aria-label="Back to top"
-      aria-hidden="true"
-      data-back-to-top-button
-      data-is-visible="false"
-      disabled
-      tabindex="-1"
     >
       <Icon name="mdi:arrow-up" />
-    </button>
+    </a>
 
     <script is:inline>
       (() => {
         const chromeInitializedKey = '__callumChromeSyncInitialized';
         const imageInitializedKey = '__callumImageLoadStateInitialized';
-        const backToTopInitializedKey = '__callumBackToTopInitialized';
         const viewTransitionInitializedKey =
           '__callumViewTransitionInitialized';
 
@@ -349,33 +344,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
             });
         }
 
-        function syncBackToTopButton() {
-          const button = document.querySelector('[data-back-to-top-button]');
-
-          if (!(button instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          const threshold = Math.max(420, window.innerHeight * 0.65);
-          const isVisible = window.scrollY > threshold;
-
-          button.dataset.isVisible = String(isVisible);
-          button.disabled = !isVisible;
-          button.tabIndex = isVisible ? 0 : -1;
-          button.setAttribute('aria-hidden', String(!isVisible));
-        }
-
-        function scrollToPageTop() {
-          const prefersReducedMotion = window.matchMedia(
-            '(prefers-reduced-motion: reduce)',
-          ).matches;
-
-          window.scrollTo({
-            top: 0,
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-          });
-        }
-
         function waitForImageLoad(image) {
           return new Promise((resolve) => {
             let isSettled = false;
@@ -446,23 +414,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
         }
 
         syncHeaderScrollState();
-        syncBackToTopButton();
         syncImageLoadStates();
         if (!window[chromeInitializedKey]) {
           window[chromeInitializedKey] = true;
           document.addEventListener('astro:page-load', syncHeaderScrollState);
           document.addEventListener('astro:after-swap', syncHeaderScrollState);
-          document.addEventListener('astro:page-load', syncBackToTopButton);
-          document.addEventListener('astro:after-swap', syncBackToTopButton);
-          window.addEventListener(
-            'scroll',
-            () => {
-              syncHeaderScrollState();
-              syncBackToTopButton();
-            },
-            { passive: true },
-          );
-          window.addEventListener('resize', syncBackToTopButton, {
+          window.addEventListener('scroll', syncHeaderScrollState, {
             passive: true,
           });
         }
@@ -472,19 +429,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
           document.addEventListener('astro:after-swap', syncImageLoadStates);
           document.addEventListener('astro:page-load', syncImageLoadStates);
           window.addEventListener('pageshow', syncImageLoadStates);
-        }
-
-        if (!window[backToTopInitializedKey]) {
-          window[backToTopInitializedKey] = true;
-          document.addEventListener('click', (event) => {
-            const trigger = event.target?.closest?.(
-              '[data-back-to-top-button]',
-            );
-
-            if (trigger) {
-              scrollToPageTop();
-            }
-          });
         }
 
         if (!window[viewTransitionInitializedKey]) {
@@ -618,22 +562,40 @@ const usesHeroHeader = isHomepage || isArticlePage;
     right: 1rem;
     bottom: 1rem;
     z-index: 60;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(0.65rem);
+    opacity: 1;
+    transform: translateY(0);
     transition:
       opacity 220ms ease,
       transform 220ms ease;
   }
 
-  .back-to-top-button[data-is-visible='true'] {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-
   .back-to-top-button:is(:hover, :focus-visible) {
     transform: translateY(-0.12rem);
+  }
+
+  @keyframes back-to-top-reveal {
+    from {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    to {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .back-to-top-button {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      animation: back-to-top-reveal linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 24rem 32rem;
+    }
   }
 
   @media (width < 36rem) {

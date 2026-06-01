@@ -18,9 +18,9 @@ const sectionWidth: Record<SectionWidth, string> = {
   default: 'u-container u-container-screen-xl',
   article: 'u-container u-container-6xl',
   lg: 'u-container u-container-screen-2xl',
-  full: 'u-full u-px-4 md:u-px-6 lg:u-px-8',
+  full: 'u-full u-px-responsive',
   'mobile-full':
-    'u-full u-container-from-md u-container-screen-2xl md:u-px-6 lg:u-px-8',
+    'u-full u-container-from-md u-container-screen-2xl u-px-responsive',
 };
 
 const { spacing, width, ...props } = Astro.props;

@@ -133,21 +133,12 @@
     margin-bottom: 0.75rem;
   }
 
-  .u-px-4 {
-    padding-inline: 1rem;
-  }
-
   .u-gap-2 {
     gap: 0.5rem;
   }
 
   .u-object-cover {
     object-fit: cover;
-  }
-
-  .u-disabled-muted:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
   }
 
   .l-section-sm {
@@ -162,16 +153,8 @@
     margin-block: clamp(4rem, -1rem + 10.4vw, 8rem);
   }
 
-  @media (width >= 48rem) {
-    .md\:u-px-6 {
-      padding-inline: 1.5rem;
-    }
-  }
-
-  @media (width >= 64rem) {
-    .lg\:u-px-8 {
-      padding-inline: 2rem;
-    }
+  .u-px-responsive {
+    padding-inline: clamp(1rem, 3vw, 2rem);
   }
 }
 
@@ -294,12 +277,6 @@
     font-weight: 400;
   }
 
-  .t-feature-title {
-    font-size: 1.25rem;
-    line-height: 1.25;
-    font-weight: 700;
-  }
-
   .t-overline,
   .t-pill {
     font-size: 0.75rem;
@@ -379,25 +356,16 @@
     }
   }
 
-  .t-site-logo-mark {
+  .t-logo-md {
     font-size: clamp(2.25rem, 1.94rem + 1.56vw, 3rem);
   }
 
-  .t-home-logo-mark {
+  .t-logo-lg {
     font-size: clamp(3.75rem, 3.44rem + 1.56vw, 4.5rem);
   }
 
-  .t-home-wordmark {
-    font-size: clamp(2.25rem, 1.94rem + 1.56vw, 3rem);
-  }
-
-  .t-footer-logo-mark {
+  .t-logo-xl {
     font-size: clamp(4.5rem, 3.88rem + 3.13vw, 6rem);
-  }
-
-  .t-text-xs {
-    font-size: clamp(0.75rem, 0.7rem + 0.26vw, 0.875rem);
-    line-height: 1.625;
   }
 
   .t-text-lg {
@@ -534,7 +502,6 @@
   .surface-glass {
     border: 1px solid rgb(255 255 255 / 0.14);
     background: oklch(13% 0.028 261.692 / 0.56);
-    -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
   }
 
@@ -670,7 +637,6 @@
     overflow: hidden;
     margin: 0;
     opacity: 0;
-    -webkit-mask: linear-gradient(#000 calc(100% - 200px), #0000);
     mask: linear-gradient(#000 calc(100% - 200px), #0000);
     transition: opacity 700ms ease;
   }
