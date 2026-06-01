@@ -8,6 +8,7 @@ import DateTime from '~/components/DateTime.astro';
 import PortableText from '~/components/PortableText.astro';
 import TableOfContentsList from '~/components/TableOfContentsList.astro';
 import { getPosts } from '~/sanity/queries';
+import { typeStyle } from '~/utils/typography';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -219,7 +220,12 @@ const showTableOfContents = tableOfContents.length > 1;
                 class="goo-filter-md m-0 mb-5 flex w-fit max-w-full"
                 aria-label="Countries"
               >
-                <span class="type-pill bg-brand-medium inline-flex min-h-8 max-w-full items-center gap-1 rounded-full py-1.5 pr-3 pl-2.5 text-gray-50">
+                <span
+                  class:list={[
+                    typeStyle({ variant: 'pill' }),
+                    'bg-brand-medium inline-flex min-h-8 max-w-full items-center gap-1 rounded-full py-1.5 pr-3 pl-2.5 text-gray-50',
+                  ]}
+                >
                   <Icon name="mdi:map-marker" class="size-3.5" />
                   <span class="min-w-0">{countryNames}</span>
                 </span>
@@ -227,13 +233,23 @@ const showTableOfContents = tableOfContents.length > 1;
             )
           }
 
-          <h1 class="type-hero-title m-0 max-w-4xl text-balance text-gray-50">
+          <h1
+            class:list={[
+              typeStyle({ variant: 'heroTitle' }),
+              'm-0 max-w-4xl text-balance text-gray-50',
+            ]}
+          >
             {post.title}
           </h1>
 
           {
             post?.excerpt && (
-              <p class="type-hero-summary mt-5 mb-0 max-w-2xl text-gray-200">
+              <p
+                class:list={[
+                  typeStyle({ variant: 'heroSummary' }),
+                  'mt-5 mb-0 max-w-2xl text-gray-200',
+                ]}
+              >
                 {post.excerpt}
               </p>
             )
@@ -246,7 +262,12 @@ const showTableOfContents = tableOfContents.length > 1;
                 aria-label="Article details"
               >
                 {post?.publishedAt && (
-                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
+                  <p
+                    class:list={[
+                      typeStyle({ variant: 'meta' }),
+                      'article-meta-pill',
+                    ]}
+                  >
                     <Icon
                       name="mdi:calendar-blank-outline"
                       class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
@@ -258,14 +279,19 @@ const showTableOfContents = tableOfContents.length > 1;
                 )}
 
                 {hasReadingTime && (
-                  <p class="type-meta m-0 inline-flex max-w-full items-center gap-2 rounded-full bg-gray-950/10 py-1 pr-3 pl-1 text-gray-200 backdrop-blur-lg">
+                  <p
+                    class:list={[
+                      typeStyle({ variant: 'meta' }),
+                      'article-meta-pill',
+                    ]}
+                  >
                     <Icon
                       name="mdi:book-open-page-variant-outline"
                       class="bg-brand-medium box-content size-3.5 flex-none rounded-full p-1.5 text-gray-50"
                     />
                     <span class="min-w-0">
                       Estimated{' '}
-                      <strong class="type-meta-emphasis">
+                      <strong class={typeStyle({ variant: 'metaEmphasis' })}>
                         {post.readingTime} min read
                       </strong>
                     </span>
@@ -278,7 +304,12 @@ const showTableOfContents = tableOfContents.length > 1;
           {
             showTableOfContents && (
               <nav class="mt-6 max-w-xl" aria-label="Table of contents">
-                <p class="type-overline text-brand-light m-0 mb-3">
+                <p
+                  class:list={[
+                    typeStyle({ variant: 'overline' }),
+                    'text-brand-light m-0 mb-3',
+                  ]}
+                >
                   Table of Contents
                 </p>
                 <TableOfContentsList items={tableOfContentsTree} />
@@ -300,20 +331,35 @@ const showTableOfContents = tableOfContents.length > 1;
     background:
       radial-gradient(
         circle at 88% 14%,
-        color-mix(in srgb, var(--color-brand-medium) 18%, transparent),
+        rgb(26 77 230 / 0.18),
         transparent 21rem
       ),
-      var(--color-gray-950);
+      oklch(13% 0.028 261.692);
   }
 
   .article-hero {
     background:
       radial-gradient(
         circle at 18% 22%,
-        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        rgb(26 77 230 / 0.34),
         transparent 25rem
       ),
-      var(--color-gray-950);
+      oklch(13% 0.028 261.692);
+  }
+
+  .article-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    border-radius: 999px;
+    color: oklch(92.8% 0.006 264.531);
+    background: oklch(13% 0.028 261.692 / 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .article-hero-media {

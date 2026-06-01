@@ -28,3 +28,13 @@ function urlFor(source: ImageWithMeta) {
   height={image.asset.metadata?.dimensions?.height}
   {...props}
 />
+
+<style>
+  .sanity-image-media {
+    max-height: 95vh;
+    overflow: hidden;
+    object-fit: cover;
+    background-color: var(--color-gray-900);
+    border-radius: var(--radius-lg);
+  }
+</style>

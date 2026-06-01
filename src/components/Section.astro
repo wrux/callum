@@ -27,7 +27,7 @@ export type Props = VariantProps<typeof sectionVariants>;
 
 const { spacing, width, ...props } = Astro.props;
 const contentBlockSpacingReset = props['data-block']
-  ? 'first:!mt-0 last:!mb-0'
+  ? 'section-block-spacing-reset'
   : undefined;
 ---
 
@@ -37,3 +37,13 @@ const contentBlockSpacingReset = props['data-block']
 >
   <slot />
 </section>
+
+<style>
+  .section-block-spacing-reset:first-child {
+    margin-top: 0;
+  }
+
+  .section-block-spacing-reset:last-child {
+    margin-bottom: 0;
+  }
+</style>

@@ -9,6 +9,7 @@ import Wordmark from '~/components/Wordmark.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { sanityClient } from '~/sanity/client';
+import { typeStyle } from '~/utils/typography';
 
 const posts = await getLatestPosts();
 const featuredPost = posts[0];
@@ -107,16 +108,36 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
 
     <div class="home-hero-content container max-w-6xl">
       <div class="flex w-fit flex-col gap-2.5">
-        <Logo class="type-home-logo-mark text-gray-50 opacity-95" />
-        <Wordmark class="type-home-wordmark text-gray-50 opacity-95" />
+        <Logo
+          class:list={[
+            typeStyle({ variant: 'homeLogoMark' }),
+            'text-gray-50 opacity-95',
+          ]}
+        />
+        <Wordmark
+          class:list={[
+            typeStyle({ variant: 'homeWordmark' }),
+            'text-gray-50 opacity-95',
+          ]}
+        />
       </div>
 
       <div class="home-hero-grid">
         <div class="max-w-3xl min-w-0">
-          <h1 class="type-hero-title m-0 text-balance text-gray-50">
+          <h1
+            class:list={[
+              typeStyle({ variant: 'heroTitle' }),
+              'm-0 text-balance text-gray-50',
+            ]}
+          >
             Journeys beyond the obvious
           </h1>
-          <p class="type-hero-summary mt-5 mb-0 max-w-xl text-gray-200">
+          <p
+            class:list={[
+              typeStyle({ variant: 'heroSummary' }),
+              'mt-5 mb-0 max-w-xl text-gray-200',
+            ]}
+          >
             Photographs and field notes from less travelled places, shaped by
             curiosity, wandering, and a preference for the unusual route.
           </p>
@@ -128,22 +149,38 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
               class="home-hero-latest"
               aria-labelledby="home-hero-latest-title"
             >
-              <p class="type-overline m-0 text-gray-400 transition-all duration-500 ease-out">
+              <p
+                class:list={[
+                  typeStyle({ variant: 'overline' }),
+                  'home-hero-latest-label',
+                ]}
+              >
                 Latest story
               </p>
               <h2
-                class="type-feature-title home-hero-latest-title"
+                class:list={[
+                  typeStyle({ variant: 'featureTitle' }),
+                  'home-hero-latest-title',
+                ]}
                 id="home-hero-latest-title"
               >
                 {featuredPost.title}
               </h2>
               {featuredPost.excerpt && (
-                <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-gray-300">
+                <p
+                  class:list={[
+                    typeStyle({ variant: 'cardSummary' }),
+                    'm-0 line-clamp-3 overflow-hidden text-gray-300',
+                  ]}
+                >
                   {featuredPost.excerpt}
                 </p>
               )}
               <a
-                class="type-action bubble-arrow-link mt-2"
+                class:list={[
+                  typeStyle({ variant: 'action' }),
+                  'bubble-arrow-link mt-2',
+                ]}
                 href={`/article/${featuredPost.slug}`}
                 aria-label={`Read article ${featuredPost.title}`}
               >
@@ -184,10 +221,18 @@ const heroImageAlt = heroImage?.asset.alt || featuredPost?.title || '';
     background:
       radial-gradient(
         circle at 20% 25%,
-        color-mix(in srgb, var(--color-brand-medium) 34%, transparent),
+        rgb(26 77 230 / 0.34),
         transparent 24rem
       ),
-      var(--color-gray-950);
+      oklch(13% 0.028 261.692);
+  }
+
+  .home-hero-latest-label {
+    margin: 0;
+    color: oklch(70.7% 0.022 261.325);
+    transition:
+      color 500ms cubic-bezier(0, 0, 0.2, 1),
+      opacity 500ms cubic-bezier(0, 0, 0.2, 1);
   }
 
   .home-hero-media {

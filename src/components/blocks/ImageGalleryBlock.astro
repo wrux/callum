@@ -90,7 +90,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               <button
                 class:list={[
                   `navigate-prev gallery-nav-prev-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
+                  'gallery-nav-button',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
                 aria-label="Previous image"
@@ -100,7 +100,7 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
               <button
                 class:list={[
                   `navigate-next gallery-nav-next-${galleryId}`,
-                  'flex aspect-square h-10 w-10 items-center justify-center rounded-lg bg-black/30 backdrop-blur-sm transition-all duration-500 hover:bg-black/70',
+                  'gallery-nav-button',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                 ]}
                 aria-label="Next image"
@@ -342,15 +342,21 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
   desktopGalleryMediaQuery.addEventListener('change', init);
 </script>
 
-<style>
-  @import 'swiper/css';
-  @import 'swiper/css/navigation';
-  @import 'swiper/css/thumbs';
-</style>
-
 <style scoped>
   .masonry-grid {
     margin: 0 auto;
+  }
+
+  .article-image-frame {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-gray-900);
+  }
+
+  @media (min-width: 64rem) {
+    .article-image-frame {
+      border-radius: var(--radius-lg);
+    }
   }
 
   .masonry-item {
@@ -367,13 +373,44 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     }
   }
 
-  /* Mobile gallery styles */
+  /* Keep the mobile Swiper layout self-contained. */
   .mobile-gallery .swiper {
+    position: relative;
+    z-index: 1;
+    display: block;
     width: 100%;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+  }
+
+  .mobile-gallery .swiper-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    transition-property: transform;
   }
 
   .mobile-gallery .swiper-slide {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
     width: 100%;
+    height: 100%;
+    transition-property: transform;
+  }
+
+  .mobile-gallery .swiper-autoheight,
+  .mobile-gallery .swiper-autoheight .swiper-slide {
+    height: auto;
+  }
+
+  .mobile-gallery .swiper-autoheight .swiper-wrapper {
+    align-items: flex-start;
+    transition-property: transform, height;
   }
 
   .mobile-gallery .swiper[class*='gallery-thumbs'] {
@@ -386,41 +423,54 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     align-items: center;
   }
 
+  .gallery-thumbnail {
+    aspect-ratio: 1;
+    cursor: pointer;
+    overflow: hidden;
+    background-color: var(--color-gray-900);
+    border: 2px solid var(--color-gray-800);
+    border-radius: var(--radius-lg);
+    opacity: 0.6;
+    transition:
+      opacity 0.3s ease,
+      border-color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .gallery-thumbnail:hover {
+    opacity: 1;
+  }
+
+  .gallery-nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    background: rgb(4 13 18 / 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition:
+      background-color 500ms ease,
+      opacity 500ms ease,
+      transform 500ms ease;
+  }
+
+  .gallery-nav-button:hover {
+    background: rgb(4 13 18 / 0.7);
+  }
+
   .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
-    width: calc((100% - 24px) / 3); /* 3 slides with 2 gaps of 12px each */
+    width: calc((100% - 24px) / 3);
     flex-shrink: 0;
   }
 
   @media (min-width: 375px) {
     .mobile-gallery .swiper[class*='gallery-thumbs'] .swiper-slide {
-      width: calc((100% - 48px) / 5); /* 5 slides with 4 gaps of 12px each */
+      width: calc((100% - 48px) / 5);
     }
-  }
-
-  /* Navigation button styles */
-  .mobile-gallery .swiper-button-prev,
-  .mobile-gallery .swiper-button-next {
-    color: white;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-top: 0;
-    top: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-prev {
-    left: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-next {
-    right: 1rem;
-  }
-
-  .mobile-gallery .swiper-button-prev:hover,
-  .mobile-gallery .swiper-button-next:hover {
-    background: rgba(0, 0, 0, 0.7);
   }
 
   .mobile-gallery .swiper-slide-thumb-active .gallery-thumbnail {

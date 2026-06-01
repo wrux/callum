@@ -60,3 +60,17 @@ const imageSizes = sizes?.[images.length] || sizes[5];
     }
   </div>
 </Section>
+
+<style>
+  .article-image-frame {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-gray-900);
+  }
+
+  @media (min-width: 64rem) {
+    .article-image-frame {
+      border-radius: var(--radius-lg);
+    }
+  }
+</style>

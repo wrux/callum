@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { ClientRouter } from 'astro:transitions';
 import FooterSocialSurface from '~/components/FooterSocialSurface.astro';
 import Logo from '~/components/Logo.astro';
+import { typeStyle } from '~/utils/typography';
 import { wruxChromeFadeTransition } from '~/utils/viewTransitions';
 
 import '../styles/link.css';
@@ -122,7 +123,10 @@ const usesHeroHeader = isHomepage || isArticlePage;
               !isHomepage && (
                 <a
                   href="/"
-                  class="type-site-action site-header-action site-header-action-back"
+                  class:list={[
+                    typeStyle({ variant: 'siteAction' }),
+                    'site-header-action site-header-action-back',
+                  ]}
                   aria-label="Back to homepage"
                   transition:name="site-header-back"
                   transition:animate={wruxChromeFadeTransition}
@@ -147,7 +151,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
                 transition:animate={wruxChromeFadeTransition}
               >
                 <span class="site-header-logo-surface" aria-hidden="true" />
-                <Logo class="type-site-logo-mark site-header-logo transition-[filter] duration-200 group-hover:brightness-0 group-hover:invert group-focus-visible:brightness-0 group-focus-visible:invert" />
+                <Logo
+                  class:list={[
+                    typeStyle({ variant: 'siteLogoMark' }),
+                    'site-header-logo',
+                  ]}
+                />
               </a>
             ) : (
               <span class="site-header-logo-placeholder" aria-hidden="true" />
@@ -161,7 +170,10 @@ const usesHeroHeader = isHomepage || isArticlePage;
             <a
               href="https://wrux.com"
               target="_blank"
-              class="type-site-action site-header-action site-header-action-external"
+              class:list={[
+                typeStyle({ variant: 'siteAction' }),
+                'site-header-action site-header-action-external',
+              ]}
               aria-label="Visit wrux.com"
               rel="noreferrer"
             >
@@ -182,7 +194,12 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <footer class="mt-8 border-t border-gray-800 bg-gray-950 py-10 md:py-14">
       <div class="container max-w-6xl">
         <div class="footer-brand">
-          <Logo class="type-footer-logo-mark opacity-90" />
+          <Logo
+            class:list={[
+              typeStyle({ variant: 'footerLogoMark' }),
+              'opacity-90',
+            ]}
+          />
 
           <nav aria-label="External links">
             <div class="footer-social-shell">
@@ -230,12 +247,14 @@ const usesHeroHeader = isHomepage || isArticlePage;
         </div>
 
         <div class="footer-bottom">
-          <p class="type-footer footer-copyright">
+          <p
+            class:list={[typeStyle({ variant: 'footer' }), 'footer-copyright']}
+          >
             Copyright &copy;{' '}
             <a
               href="https://wrux.com"
               target="_blank"
-              class="type-footer-link link"
+              class:list={[typeStyle({ variant: 'footerLink' }), 'link']}
               aria-label="View my professional profile at wrux.com"
               rel="noreferrer"
             >
@@ -246,7 +265,10 @@ const usesHeroHeader = isHomepage || isArticlePage;
           <a
             href="https://github.com/wrux/callum"
             target="_blank"
-            class="type-footer-link footer-repo-link link"
+            class:list={[
+              typeStyle({ variant: 'footerLink' }),
+              'footer-repo-link link',
+            ]}
             rel="noreferrer nofollow"
           >
             <span>source code</span>
@@ -639,7 +661,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     inset: 0;
     z-index: 0;
     border-radius: 999px;
-    background: var(--color-brand-medium);
+    background: hsl(225 80% 50%);
     opacity: 0;
     transform: scale(0.72);
     transition:
@@ -653,6 +675,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
     z-index: 1;
     transition:
       color 220ms ease,
+      filter 200ms ease,
       transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -669,6 +692,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
   .site-header-logo-link:hover .site-header-logo,
   .site-header-logo-link:focus-visible .site-header-logo {
+    filter: brightness(0) invert(1);
     transform: scale(0.9);
   }
 
@@ -712,7 +736,7 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
   .back-to-top-button:hover,
   .back-to-top-button:focus-visible {
-    background: var(--color-brand-medium);
+    background: hsl(225 80% 50%);
     box-shadow:
       0 1.4rem 2.7rem rgb(0 0 0 / 0.34),
       inset 0 0 0 1px rgb(255 255 255 / 0.18);

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { typeStyle } from '~/utils/typography';
 
 export interface Props {
   caption?: string;
@@ -14,11 +15,15 @@ const { caption } = Astro.props;
       <summary class="image-caption-trigger" aria-label="Show image caption">
         <Icon
           name="mdi:information-outline"
-          class="size-5"
+          class="image-caption-icon"
           aria-hidden="true"
         />
       </summary>
-      <p class="type-caption image-caption-panel">{caption}</p>
+      <p
+        class:list={[typeStyle({ variant: 'caption' }), 'image-caption-panel']}
+      >
+        {caption}
+      </p>
     </details>
   )
 }
@@ -78,3 +83,77 @@ const { caption } = Astro.props;
   registerImageCaptionEvents();
   initImageCaptions();
 </script>
+
+<style>
+  .image-caption-popover {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    z-index: 10;
+  }
+
+  .image-caption-trigger {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    list-style: none;
+    cursor: pointer;
+    color: var(--color-gray-50);
+    background-color: rgb(3 7 18 / 0.35);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    border-radius: 999px;
+    box-shadow: 0 0.75rem 1.5rem rgb(4 13 18 / 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: background-color 0.2s ease;
+  }
+
+  .image-caption-trigger:hover,
+  .image-caption-trigger:focus-visible {
+    background-color: rgb(3 7 18 / 0.6);
+  }
+
+  .image-caption-trigger:focus-visible {
+    outline: 2px solid hsl(225 80% 70%);
+    outline-offset: 2px;
+  }
+
+  .image-caption-trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .image-caption-trigger::marker {
+    content: '';
+  }
+
+  .image-caption-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .image-caption-panel {
+    position: absolute;
+    right: 0;
+    bottom: 2.75rem;
+    z-index: 10;
+    width: 18rem;
+    max-width: calc(100vw - 1.5rem);
+    max-height: 11rem;
+    margin: 0;
+    padding: 0.75rem;
+    overflow: auto;
+    color: var(--color-gray-100);
+    background: transparent;
+    border: 1px solid rgb(255 255 255 / 0.15);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1rem 2rem rgb(4 13 18 / 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .image-caption-popover[open] .image-caption-trigger {
+    color: var(--color-gray-50);
+    background-color: hsl(225 80% 50%);
+  }
+</style>

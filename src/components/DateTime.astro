@@ -1,4 +1,6 @@
 ---
+import { typeStyle } from '~/utils/typography';
+
 export type Props = {
   date: string;
 };
@@ -14,4 +16,6 @@ const dateString = dateObject.toLocaleDateString('en-GB', {
 });
 ---
 
-<time class="type-meta-emphasis" datetime={dateIso}>{dateString}</time>
+<time class={typeStyle({ variant: 'metaEmphasis' })} datetime={dateIso}>
+  {dateString}
+</time>

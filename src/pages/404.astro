@@ -4,6 +4,7 @@ import Section from '~/components/Section.astro';
 import TeaserGrid from '~/components/TeaserGrid.astro';
 import { getLatestPosts } from '~/sanity/queries';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { typeStyle } from '~/utils/typography';
 
 const posts = await getLatestPosts(2);
 ---
@@ -18,13 +19,22 @@ const posts = await getLatestPosts(2);
   <Section spacing="md">
     <div class="container">
       <div class="mx-auto max-w-2xl text-center">
-        <h1 class="type-h1 mb-6 lg:mb-8">404: Page not found!</h1>
-        <p class="type-text-lg mb-6 text-gray-400 lg:mb-8">
+        <h1 class:list={[typeStyle({ variant: 'h1' }), 'mb-6 lg:mb-8']}>
+          404: Page not found!
+        </h1>
+        <p
+          class:list={[
+            typeStyle({ variant: 'textLg' }),
+            'mb-6 text-gray-400 lg:mb-8',
+          ]}
+        >
           Oops! It seems you've taken a detour to the unknown. But don't worry,
           getting lost is all part of the adventure.
         </p>
         <p>
-          <a class="type-action link" href="/">Go to the home page</a>
+          <a class:list={[typeStyle({ variant: 'action' }), 'link']} href="/">
+            Go to the home page
+          </a>
         </p>
       </div>
     </div>

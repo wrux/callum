@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import SanityPicture from 'astro-sanity-picture';
 import BubbleArrowSurface from '~/components/BubbleArrowSurface.astro';
 import { imageBuilder } from '~/sanity/image';
+import { typeStyle } from '~/utils/typography';
 
 export type Props = ArticleTeaser & {
   lazy?: boolean | number;
@@ -39,8 +40,7 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
             sources={[{ options: { quality: 74 } }]}
             img={{
               alt: mainImage.asset.alt || title || '',
-              class:
-                'h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105',
+              class: 'article-teaser-image h-full w-full object-cover',
               decoding: 'async',
               fetchpriority: priority ? 'high' : 'auto',
               loading,
@@ -53,26 +53,39 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
   <div class="flex flex-1 flex-col pt-4 md:pt-5">
     {
       hasReadingTime && (
-        <p class="type-card-meta type-text-muted mt-0 mb-2">
+        <p
+          class:list={[
+            typeStyle({ variant: 'cardMeta', tone: 'muted' }),
+            'mt-0 mb-2',
+          ]}
+        >
           {readingTime} min read
         </p>
       )
     }
     <h2
-      class="type-h3 group-hover:text-brand-light group-focus-within:text-brand-light mt-0 mb-2 text-left transition-colors duration-300"
+      class:list={[
+        typeStyle({ variant: 'h3' }),
+        'article-teaser-title mt-0 mb-2 text-left',
+      ]}
     >
       {title}
     </h2>
     {
       excerpt && (
-        <p class="type-card-summary m-0 line-clamp-3 overflow-hidden text-left text-gray-400">
+        <p
+          class:list={[
+            typeStyle({ variant: 'cardSummary' }),
+            'm-0 line-clamp-3 overflow-hidden text-left text-gray-400',
+          ]}
+        >
           {excerpt}
         </p>
       )
     }
     <div class="mt-auto pt-5">
       <a
-        class="type-action article-card-link"
+        class:list={[typeStyle({ variant: 'action' }), 'article-card-link']}
         href={`/article/${slug}`}
         title={`Read article ${title}`}
         aria-label={`Read article ${title}`}
@@ -90,3 +103,22 @@ const hasReadingTime = typeof readingTime === 'number' && readingTime > 0;
     </div>
   </div>
 </article>
+
+<style>
+  .article-teaser-title {
+    transition: color 300ms ease;
+  }
+
+  .article-teaser:hover .article-teaser-title,
+  .article-teaser:focus-within .article-teaser-title {
+    color: hsl(225 80% 70%);
+  }
+
+  .article-teaser :global(.article-teaser-image) {
+    transition: transform 700ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .article-teaser:hover :global(.article-teaser-image) {
+    transform: scale(1.05);
+  }
+</style>
