@@ -35,7 +35,7 @@
   "devDependencies": {
     "@phosphor-icons/react": "^2.1.10",
     "@sanity/dashboard": "^5.0.1",
-    "@sanity/vision": "^5.28.0",
+    "@sanity/vision": "^5.30.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
