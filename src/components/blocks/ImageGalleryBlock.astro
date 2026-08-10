@@ -326,8 +326,6 @@ const galleryId = `gallery-${Astro.props.node._key ?? Math.random().toString(36)
   } else {
     syncScrollGalleries();
   }
-
-  document.addEventListener('astro:after-swap', syncScrollGalleries);
 </script>
 
 <style is:global>

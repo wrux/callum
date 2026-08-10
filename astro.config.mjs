@@ -19,6 +19,9 @@ export default defineConfig({
   }),
   output: 'static',
   prefetch: {
+    // Without the ClientRouter, prefetchAll defaults to false — keep every
+    // internal link prefetching on hover.
+    prefetchAll: true,
     defaultStrategy: 'hover',
   },
   build: {
