@@ -1,10 +1,10 @@
 import groq from 'groq';
-import { sanityClient } from '~/sanity/client';
+import { sanityFetch } from '~/sanity/client';
 import { articleTeaserFragment } from '../fragments/articleTeaserFragment';
 
 export const getCountries = async () => {
   try {
-    return await sanityClient.fetch<CountryWithPosts[]>(
+    return await sanityFetch<CountryWithPosts[]>(
       groq`*[_type == "country"] {
         _id,
         countryCode,

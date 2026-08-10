@@ -1,7 +1,6 @@
 ---
 import { SEO } from 'astro-seo';
 import { Icon } from 'astro-icon/components';
-import { ClientRouter } from 'astro:transitions';
 import Logo from '~/components/Logo.astro';
 
 import '../styles/global.css';
@@ -74,7 +73,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="callum.co.uk" />
     <link rel="manifest" href="/site.webmanifest" />
-    <ClientRouter fallback="swap" />
   </head>
 
   <body
@@ -100,7 +98,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
                   href="/"
                   class="t-site-action btn btn-glass btn-header site-header-action site-header-action-back"
                   aria-label="Back to homepage"
-                  transition:name="site-header-back"
                 >
                   <Icon name="mdi:keyboard-backspace" />
                   <span>Back</span>
@@ -119,7 +116,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
             aria-hidden={isHomepage ? 'true' : undefined}
             tabindex={isHomepage ? '-1' : undefined}
             data-homepage-header-logo={isHomepage ? 'true' : undefined}
-            transition:name="site-header-logo"
           >
             <span class="site-header-logo-surface" aria-hidden="true"></span>
             <Logo class="t-logo-md site-header-logo" />
@@ -233,11 +229,6 @@ const usesHeroHeader = isHomepage || isArticlePage;
 
     <script is:inline>
       (() => {
-        const chromeInitializedKey = '__callumChromeSyncInitialized';
-        const imageInitializedKey = '__callumImageLoadStateInitialized';
-        const viewTransitionInitializedKey =
-          '__callumViewTransitionInitialized';
-
         function syncHeaderScrollState() {
           const header = document.querySelector('.site-header');
           const homepageLogo = document.querySelector(
@@ -355,106 +346,34 @@ const usesHeroHeader = isHomepage || isArticlePage;
             });
         }
 
-        function waitForImageLoad(image) {
-          return new Promise((resolve) => {
-            let isSettled = false;
-            const timeout = window.setTimeout(() => finish(false), 1200);
-
-            function finish(didLoad) {
-              if (isSettled) {
-                return;
-              }
-
-              isSettled = true;
-              window.clearTimeout(timeout);
-              resolve(didLoad);
-            }
-
-            image.addEventListener('load', () => finish(true), { once: true });
-            image.addEventListener('error', () => finish(false), {
-              once: true,
-            });
-
-            if (image.complete) {
-              finish(image.naturalWidth > 0);
-            }
-          });
-        }
-
-        async function preloadDocumentHeroImage(newDocument) {
-          const source = newDocument?.querySelector?.('.media-hero-image[src]');
-
-          if (!(source instanceof HTMLImageElement)) {
-            return;
-          }
-
-          const image = new Image();
-          image.decoding = 'async';
-
-          if ('fetchPriority' in image) {
-            image.fetchPriority = 'high';
-          }
-
-          if (source.sizes) {
-            image.sizes = source.sizes;
-          }
-
-          if (source.srcset) {
-            image.srcset = source.srcset;
-          }
-
-          image.src = source.currentSrc || source.src;
-          const didLoad = await waitForImageLoad(image);
-
-          if (didLoad && typeof image.decode === 'function') {
-            await image.decode().catch(() => {});
-          }
-        }
-
-        function preloadHeroImageBeforeSwap(event) {
-          if (typeof event.loader !== 'function') {
-            return;
-          }
-
-          const loadPage = event.loader;
-
-          event.loader = async () => {
-            await loadPage();
-            await preloadDocumentHeroImage(event.newDocument);
-          };
-        }
-
         syncHeaderScrollState();
         syncImageLoadStates();
-        if (!window[chromeInitializedKey]) {
-          window[chromeInitializedKey] = true;
-          document.addEventListener('astro:page-load', syncHeaderScrollState);
-          document.addEventListener('astro:after-swap', syncHeaderScrollState);
-          window.addEventListener('scroll', syncHeaderScrollState, {
-            passive: true,
-          });
-        }
-
-        if (!window[imageInitializedKey]) {
-          window[imageInitializedKey] = true;
-          document.addEventListener('astro:after-swap', syncImageLoadStates);
-          document.addEventListener('astro:page-load', syncImageLoadStates);
-          window.addEventListener('pageshow', syncImageLoadStates);
-        }
-
-        if (!window[viewTransitionInitializedKey]) {
-          window[viewTransitionInitializedKey] = true;
-          document.addEventListener(
-            'astro:before-preparation',
-            preloadHeroImageBeforeSwap,
-          );
-        }
+        window.addEventListener('scroll', syncHeaderScrollState, {
+          passive: true,
+        });
+        window.addEventListener('pageshow', syncImageLoadStates);
       })();
     </script>
   </body>
 </html>
 
 <style is:global>
+  /* Native cross-document view transitions (progressive enhancement; browsers
+     without support fall back to instant navigation). */
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+
+  .site-header-action-back {
+    view-transition-name: site-header-back;
+  }
+
+  .site-header-logo-link {
+    view-transition-name: site-header-logo;
+  }
+
   .site-header {
     position: fixed;
     inset-block-start: 0;
