@@ -1,5 +1,5 @@
 import groq from 'groq';
-import { sanityClient } from '~/sanity/client';
+import { sanityFetch } from '~/sanity/client';
 import { imageFragment } from '../fragments';
 import { articleCommonDataFragment } from '../fragments/articleCommonDataFragment';
 import { articleTeaserFragment } from '../fragments/articleTeaserFragment';
@@ -45,7 +45,7 @@ export const getLatestPosts = async (limit: number = 9999) => {
       return sortByPublishDate(posts).slice(0, limit).map(toArticleTeaser);
     }
 
-    latestPostsPromise ??= sanityClient.fetch<ArticleTeaser[]>(
+    latestPostsPromise ??= sanityFetch<ArticleTeaser[]>(
       groq`
       *[_type == "post"] | order(publishedAt desc, _updatedAt desc) {
         ${articleTeaserFragment}
@@ -62,7 +62,7 @@ export const getLatestPosts = async (limit: number = 9999) => {
 
 export const getPosts = async () => {
   try {
-    postsPromise ??= sanityClient.fetch<Article[]>(groq`
+    postsPromise ??= sanityFetch<Article[]>(groq`
       *[_type == "post"] | order(publishedAt desc, _updatedAt desc) {
         content[] {
           ...,
