@@ -6,17 +6,11 @@ import { defineConfig } from 'astro/config';
 // network, failing builds or stalling them for 20s+ in retry backoff.
 setDefaultAutoSelectFamily(false);
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel';
 import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://callum.co.uk',
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
   output: 'static',
   prefetch: {
     // Without the ClientRouter, prefetchAll defaults to false — keep every
